@@ -36,26 +36,119 @@
     (:nicknames :util)
     (:use :common-lisp #+cmu :extensions #+sbcl :sb-ext)
     (:export
-      :? :[?] :aand :a?and :ablock :acond :aif :a?if :aif-otherwise-nil
-      :alambda :arefable? :array-raster-line :array-values :awhen :a?when
-      :awhile :a?while :best :bit? :character-range :character-ranges :compose
-      :conjoin :curry :decaying-probability? :deletef :disjoin :distance :divf
-      :do-until :do-while :duplicate :empty-sequence? :escape-tildes :for
-      :forever :fractional-part :fractional-value :function-alias
-      :function-aliases :integer-range :it :list-to-vector :maximum :maximum?
-      :minimum :minimum?  :multf :multicond :nconcf :next-point :nonnegative?
-      :nonnegative-float :nonnegative-integer :nonnegative-integer? :norm
-      :nshuffle :nthable?  :nth-from-end :operator-to-function :opf
-      :otherwise-nil :positive-float :positive-integer :positive-integer?
-      :prepackage :probability :probability? :product :random-array
-      :random-element :random-in-range :random-in-ranges :randomize-array
-      :random-range :raster-line :rcompose :rcurry :read-lines :replace-char
-      :sequence? :set-equal :set-nthcdr :shuffle :similar-points?
-      :simple-vector-to-list :slice :snap-index :sort-on :sort-order :split
-      :strcat :stringify :string-join :strmult :sum :swap :swap-unless
-      :swap-when :the-last :time-multiseries :time-multiseries? :time-series?
-      :tms-dimensions :tmsref :tms-values :toggle :unsigned-integer :until
-      :vector-to-list :while :worst)))
+      :?
+      :[?]
+      :aand
+      :a?and
+      :ablock
+      :acond
+      :aif
+      :a?if
+      :aif-otherwise-nil
+      :alambda
+      :arefable?
+      :array-raster-line
+      :array-values
+      :awhen
+      :a?when
+      :awhile
+      :a?while
+      :best
+      :bit?
+      :character-range
+      :character-ranges
+      :coin-toss
+      :compose
+      :conjoin
+      :curry
+      :decaying-probability?
+      :deletef
+      :disjoin
+      :distance
+      :divf
+      :do-until
+      :do-while
+      :duplicate
+      :empty-sequence?
+      :escape-tildes
+      :for
+      :forever
+      :fractional-part
+      :fractional-value
+      :function-alias
+      :function-aliases
+      :integer-range
+      :it
+      :list-to-vector
+      :maximum
+      :maximum?
+      :minimum
+      :minimum?
+      :multf
+      :multicond
+      :nconcf
+      :next-point
+      :nonnegative?
+      :nonnegative-float
+      :nonnegative-integer
+      :nonnegative-integer?
+      :norm
+      :nshuffle
+      :nthable?
+      :nth-from-end
+      :operator-to-function
+      :opf
+      :otherwise-nil
+      :positive-float
+      :positive-integer
+      :positive-integer?
+      :prepackage
+      :probability
+      :probability?
+      :product
+      :random-array
+      :random-element
+      :random-in-range
+      :random-in-ranges
+      :randomize-array
+      :random-range
+      :raster-line
+      :rcompose
+      :rcurry
+      :read-lines
+      :replace-char
+      :sequence?
+      :set-equal
+      :set-nthcdr
+      :shuffle
+      :similar-points?
+      :simple-vector-to-list
+      :slice
+      :snap-index
+      :sort-on
+      :sort-order
+      :split
+      :strcat
+      :stringify
+      :string-join
+      :strmult
+      :sum
+      :swap
+      :swap-unless
+      :swap-when
+      :the-last
+      :time-multiseries
+      :time-multiseries?
+      :time-series?
+      :tms-dimensions
+      :tmsref
+      :tms-values
+      :toggle
+      :unsigned-integer
+      :until
+      :vector-to-list
+      :while
+      :worst)))
 (in-package :utilities)
 
 (defun function-alias (function &rest aliases)
@@ -414,6 +507,9 @@ in any Common Lisp I have used."
   "This method returns a random element from an array."
   (when (plusp (array-total-size array))
     (row-major-aref array (random (array-total-size array)))))
+
+(defun coin-toss ()
+  (random-element t nil))
 
 (defgeneric minimum (sequence &key key start end))
 
