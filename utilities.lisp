@@ -106,6 +106,7 @@
       :probability
       :probability?
       :product
+      :random-argument
       :random-array
       :random-element
       :random-in-range
@@ -508,8 +509,21 @@ in any Common Lisp I have used."
   (when (plusp (array-total-size array))
     (row-major-aref array (random (array-total-size array)))))
 
+(defun random-argument (&rest rest)
+  (random-element rest))
+
 (defun coin-toss ()
-  (random-element t nil))
+  (random-argument t nil))
+
+;; This is a simple assertion to ensure that the distribution of coin tosses is
+;; within our general assumptions for distribution.
+(let ((nils 0)
+      (ts 0))
+  (loop for i from 1 to 100000
+        do (if (coin-toss)
+             (incf ts)
+             (incf nils)))
+  (assert (< 0.9 (/ ts nils) 1.1)))
 
 (defgeneric minimum (sequence &key key start end))
 
