@@ -1,5 +1,4 @@
-;;;; Copyright (c) 2005 -- 2011, Christopher Mark Gore,
-;;;; All rights reserved.
+;;;; Copyright (c) 2011, Christopher Mark Gore, All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
 ;;;; Web: http://cgore.com
@@ -31,13 +30,11 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(unless (find-package 'utilities) (load "utilities"))
-
-(unless (find-package 'random)
-  (defpackage :random
-    (:use :common-lisp :utilities)
-    (:export :gauss)))
-(in-package :random)
+(defpackage :cgore-random
+  (:nicknames :random)
+  (:use :common-lisp :cgore-utilities)
+  (:export :gauss))
+(in-package :cgore-random)
 
 ;;; When x and y are two variables from [0, 1), uniformly distributed, then
 ;;;

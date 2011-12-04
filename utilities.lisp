@@ -31,8 +31,8 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :utilities
-  (:nicknames :util)
+(defpackage :cgore-utilities
+  (:nicknames :utilities :util)
   (:use :common-lisp #+cmu :extensions #+sbcl :sb-ext)
   (:export
     :?
@@ -149,7 +149,7 @@
     :vector-to-list
     :while
     :worst))
-(in-package :utilities)
+(in-package :cgore-utilities)
 
 (defun function-alias (function &rest aliases)
   "This produces one or more aliases (alternate names) for a function.
