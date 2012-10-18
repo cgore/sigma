@@ -52,7 +52,6 @@
     :coin-toss
     :decaying-probability?
     :distance
-    :divf
     :duplicate
     :empty-sequence?
     :escape-tildes
@@ -65,7 +64,6 @@
     :maximum?
     :minimum
     :minimum?
-    :multf
     :nconcf
     :next-point
     :nonnegative?
@@ -76,14 +74,12 @@
     :nshuffle
     :nthable?
     :nth-from-end
-    :opf
     :positive-float
     :positive-integer
     :positive-integer?
     :prepackage
     :probability
     :probability?
-    :product
     :random-argument
     :random-array
     :random-element
@@ -109,7 +105,6 @@
     :stringify
     :string-join
     :strmult
-    :sum
     :the-last
     :time-multiseries
     :time-multiseries?
@@ -225,12 +220,6 @@ else -> 1."
        (opf #'- ,variable ,@subtrahends))))
 |#
 
-(defmacro multf (variable &rest multiplicands)
-  `(opf #'* ,variable ,@multiplicands))
-
-(defmacro divf (variable &rest divisors)
-  `(opf #'/ ,variable ,@divisors))
-
 (defun sequence? (sequence)
   (typep sequence 'sequence))
 
@@ -243,14 +232,6 @@ else -> 1."
 (defun the-last (list)
   (assert (listp list))
   (car (last list)))
-
-(defun sum (sequence &key (key 'identity) (start 0) (end nil))
-  (assert (sequence? sequence))
-  (reduce #'+ sequence :key key :start start :end end :initial-value 0))
-
-(defun product (sequence &key (key 'identity) (start 0) (end nil))
-  (assert (sequence? sequence))
-  (reduce #'* sequence :key key :start start :end end :initial-value 1))
 
 (defgeneric duplicate (item))
 

@@ -37,9 +37,19 @@
   (:use :common-lisp
         :cgore-constructs)
   (:export
+    :divf
     :fractional-part
-    :fractional-value))
+    :fractional-value
+    :multf
+    :product
+    :sum
+    ))
 (in-package :cgore-numerics)
+
+
+(defmacro divf (variable &rest divisors)
+  `(opf #'/ ,variable ,@divisors))
+
 
 (defun fractional-part (number)
   "This is the fractional part formula most familiar to computer scientists.
@@ -49,8 +59,23 @@ It possesses the useful feature that frac(x)+int(x)=x, but may be negative."
     (- number (floor number) 1)
     (- number (floor number))))
 
+
 (defun fractional-value (number)
   "This is the fractional value formula most familiar to most mathematicians.
 Note that the result of this is always positive, forming a sawtooth."
   (assert (numberp number))
   (- number (floor number)))
+
+
+(defmacro multf (variable &rest multiplicands)
+  `(opf #'* ,variable ,@multiplicands))
+
+
+(defun product (sequence &key (key 'identity) (start 0) (end nil))
+  (assert (sequence? sequence))
+  (reduce #'* sequence :key key :start start :end end :initial-value 1))
+
+
+(defun sum (sequence &key (key 'identity) (start 0) (end nil))
+  (assert (sequence? sequence))
+  (reduce #'+ sequence :key key :start start :end end :initial-value 0))
