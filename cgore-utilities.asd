@@ -48,10 +48,14 @@
                                    "string"))
                (:file "random"
                       :depends-on ("design-pattern"))
+               (:file "sequence"
+                      :depends-on ("design-pattern"))
                (:file "string"
                       :depends-on ("design-pattern"
-                                   "numeric"))
+                                   "numeric"
+                                   "sequence"))
                (:file "utilities"
                       :depends-on ("design-pattern"
                                    "numeric"
+                                   "sequence"
                                    "string"))))

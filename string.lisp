@@ -37,13 +37,15 @@
   (:use
     :common-lisp
     :cgore-design-pattern
-    :cgore-numeric)
+    :cgore-numeric
+    :cgore-sequence)
   (:export
     :escape-tildes
     :replace-char
     :strcat
     :stringify
     :string-join
+    :split
     :strmult
     :to-string
     ))
@@ -69,6 +71,17 @@
         (if (char= (char string i) from-char)
           (setf (char string i) to-char)))
   string)
+
+
+(defmethod split ((string string)
+                   separators
+                   &key
+                   (key #'identity)
+                   (test #'string=)
+                   (remove-separators? t))
+  (mapcar (rcurry #'coerce 'string)
+          (split (coerce string 'list) separators
+                 :key key :test test :remove-separators? remove-separators?)))
 
 
 (defun string-join (strings &optional (connecting-string ""))
