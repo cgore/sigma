@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2012, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2012, Christopher Mark Gore,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
@@ -31,6 +31,7 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
+
 (defpackage :cgore-utilities
   (:nicknames :utilities :util)
   (:use
@@ -49,7 +50,6 @@
     :bit?
     :character-range
     :character-ranges
-    :coin-toss
     :decaying-probability?
     :distance
     :duplicate
@@ -67,26 +67,17 @@
     :nconcf
     :next-point
     :norm
-    :nshuffle
     :nthable?
     :nth-from-end
     :prepackage
     :probability
     :probability?
-    :random-argument
-    :random-array
-    :random-element
-    :random-in-range
-    :random-in-ranges
-    :randomize-array
-    :random-range
     :raster-line
     :read-lines
     :replace-char
     :sequence?
     :set-equal
     :set-nthcdr
-    :shuffle
     :similar-points?
     :simple-vector-to-list
     :slice
@@ -248,34 +239,6 @@ else -> 1."
   (loop for index from 0 to (1- (length vector))
         collect (svref vector index)))
 
-(defgeneric random-element (sequence))
-
-(defmethod random-element ((list list))
-  "This method returns a random element from a list."
-  (when list
-    (nth (random (length list)) list)))
-
-(defmethod random-element ((array array))
-  "This method returns a random element from an array."
-  (when (plusp (array-total-size array))
-    (row-major-aref array (random (array-total-size array)))))
-
-(defun random-argument (&rest rest)
-  (random-element rest))
-
-(defun coin-toss ()
-  (random-argument t nil))
-
-;; This is a simple assertion to ensure that the distribution of coin tosses is
-;; within our general assumptions for distribution.
-(let ((nils 0)
-      (ts 0))
-  (loop for i from 1 to 100000
-        do (if (coin-toss)
-             (incf ts)
-             (incf nils)))
-  (assert (< 0.9 (/ ts nils) 1.1)))
-
 (defgeneric minimum (sequence &key key start end))
 
 (defmethod minimum ((sequence sequence)
@@ -307,45 +270,6 @@ else -> 1."
     (setf position (1- (length sequence))))
   (>= (funcall key (elt sequence position))
       (maximum sequence :key key :start start :end end)))
-
-(defun random-in-range (lower upper)
-  "This function returns a random number in the range [lower, upper).  Lower
-and upper may both be sequences, in which case their most extreme members."
-  (when (sequence? lower)
-    (setf lower (maximum lower)))
-  (when (sequence? upper)
-    (setf upper (minimum upper)))
-  (assert (numberp lower))
-  (assert (numberp upper))
-  (cond ((< lower upper)
-         (+ lower (random (- upper lower))))
-        ((= lower upper)
-         lower)
-        ((> lower upper)
-         (random-in-range upper lower))))
-
-(defun random-in-ranges (&rest ranges)
-  "This function, given many restricting ranges all as two-element lists, will
-return a random number in the range that is a common subset to all of them."
-  (let ((lower (minimum ranges :key #'minimum))
-        (upper (maximum ranges :key #'maximum)))
-    (random-in-range lower upper)))
-
-(defun random-range (lower upper &key (containing nil))
-  (when (null containing)
-    (let ((a (random-in-range lower upper))
-          (b (random-in-range lower upper)))
-      (return-from random-range
-                   (list (min a b)
-                         (max a b)))))
-  (let ((low-max (if (sequence? containing)
-                   (minimum containing)
-                   containing))
-        (high-min (if (sequence? containing)
-                    (maximum containing)
-                    containing)))
-    (list (random-in-range lower low-max)
-          (random-in-range high-min upper))))
 
 (defgeneric best (sequence predicate &key key))
 
@@ -531,13 +455,6 @@ SEQUENCE for membership in the SEPERATORS."
      (when (>= ,index ,bound)
        (setf ,index (- ,index ,bound)))))
 
-(defun randomize-array (array argument-for-random)
-  "This function randomizes the contents of the array."
-  (assert (arrayp array))
-  (dotimes (index (array-total-size array) array)
-    (setf (row-major-aref array index)
-          (random argument-for-random))))
-
 (defun nthable? (n list)
   (and (listp list)
        (typep n `(integer 0 ,(1- (length list))))))
@@ -551,10 +468,6 @@ SEQUENCE for membership in the SEPERATORS."
                   (typep position `(integer 0 ,(1- dimension))))
               position
               (array-dimensions array))))
-
-(defun random-array (dimensions argument-for-random)
-  "This function returns a new array with randomized contents."
-  (randomize-array (make-array dimensions) argument-for-random))
 
 (defgeneric sort-on (sequence-to-sort ordering-sequence predicate &key key))
 
@@ -589,25 +502,6 @@ SEQUENCE for membership in the SEPERATORS."
            (vector-to-list ordering-sequence)
            predicate
            :key key))
-
-(defgeneric shuffle (container))
-
-(defmethod shuffle ((array array))
-  "This randomly shuffles the contents of an array."
-  (let ((result (duplicate array)))
-    (do* ((j (1- (array-total-size result)) (1- j))
-          (k (random-in-range 1 (1+ j)) (random-in-range 1 (1+ j))))
-      ((minusp j) result)
-      (swap (row-major-aref result j)
-            (row-major-aref result k)))))
-
-(defmethod shuffle ((list list))
-  "This randomly shuffles a list."
-  (vector-to-list (shuffle (list-to-vector list))))
-
-(defmacro nshuffle (argument)
-  "This randomly shuffles the argument in place."
-  `(setf ,argument (shuffle ,argument)))
 
 (defun sort-order (sequence predicate &key (key #'identity))
   "This function returns the indices in the order for the sorted sequence."
