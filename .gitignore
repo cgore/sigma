@@ -1,2 +1,6 @@
+# Ignore vim swap and temp files.
 *~
 *.sw[nop]
+
+# Ignore SBCL compiled code.
+*.fasl
