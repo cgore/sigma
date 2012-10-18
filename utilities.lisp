@@ -56,7 +56,6 @@
     :join-symbol-to-all-following
     :next-point
     :norm
-    :prepackage
     :raster-line
     :read-lines
     :set-equal
