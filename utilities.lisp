@@ -118,68 +118,6 @@
   function)
 
 
-(defun integer-range (x &optional y z)
-  "This function generates lists of integer ranges of the form [start, stop].
-It has three forms:
-
-First form: (integer-range stop)
-> (integer-range 10)
-=> '(0 1 2 3 4 5 6 7 8 9 10)
-
-Second form: (integer-range start stop)
-> (integer-range 5 10)
-=> '(5 6 7 8 9 10)
-
-Third form: (integer-range start stop step)
-> (integer-range 5 10 2)
-=> '(5 7 9)
-
-Negative numbers are allowed, and operate in a logical manner.
-> (integer-range -5 0)
-=> '(-5 -4 -3 -2 -1 0)
-> (integer-range 10 5 -1)
-=> '(10 9 8 7 6 5) "
-  (let (start stop step)
-    (flet ((step-function ()
-             (if (< start stop) 1 -1)))
-      (cond ((and y z)             (setf start x
-                                         stop  y
-                                         step  z))
-            ((and y (not z))       (setf start x
-                                         stop  y
-                                         step  (step-function)))
-            ((and (not y) (not z)) (setf start 0
-                                         stop  x
-                                         step  (step-function))))
-      (do ((i     start (+ i step))
-           (range nil   (cons i range)))
-        ((or (and (plusp step)
-                  (> i stop))
-             (and (minusp step)
-                  (< i stop)))
-         (reverse range))))))
-
-(assert (equal (integer-range 5)
-               '(0 1 2 3 4 5)))
-(assert (equal (integer-range 5 10)
-               '(5 6 7 8 9 10)))
-(assert (equal (integer-range 5 10 2)
-               '(5 7 9)))
-(assert (equal (integer-range -5)
-               '(0 -1 -2 -3 -4 -5)))
-(assert (equal (integer-range -5 0)
-               '(-5 -4 -3 -2 -1 0)))
-(assert (equal (integer-range 10 5)
-               '(10 9 8 7 6 5)))
-(assert (equal (integer-range 10 5 1)
-               nil))
-(assert (equal (integer-range 5 10 -1)
-               nil))
-(assert (equal (integer-range -5 5)
-               '(-5 -4 -3 -2 -1 0 1 2 3 4 5)))
-(assert (equal (integer-range -5 5 2)
-               '(-5 -3 -1 1 3 5)))
-
 (defmacro nconcf (list-1 list-2)
   `(setf ,list-1 (nconc ,list-1 ,list-2)))
 
