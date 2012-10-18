@@ -42,6 +42,7 @@
     :cgore-numeric
     :cgore-sequence
     :cgore-string
+    :cgore-time-series
     :cgore-truth)
   (:export
     :array-raster-line
@@ -60,12 +61,6 @@
     :set-equal
     :similar-points?
     :snap-index
-    :time-multiseries
-    :time-multiseries?
-    :time-series?
-    :tms-dimensions
-    :tmsref
-    :tms-values
     ))
 (in-package :cgore-utilities)
 
@@ -262,80 +257,6 @@ positions."
                               (length (array-dimensions array)))))
               (apply #'aref array position))
           positions))
-
-(defun time-series? (time-series &optional (element-type t))
-  "The TIME-SERIES? predicate returns true if the argument could be a time
-series."
-  (and (listp time-series)
-       (not (null time-series))
-       (every (rcurry #'typep element-type) time-series)))
-
-(defun time-multiseries? (time-multiseries)
-  "This predicate returns true if the argument is a time multiseries
-(multivariate time series), which we represent as a list of arrays of equal
-dimensions, where each array represents data from a single time step."
-  (and (listp time-multiseries)
-       (not (null time-multiseries))
-       (every #'arrayp time-multiseries)
-       (let ((dimensions (array-dimensions (first time-multiseries))))
-         (every #'(lambda (array)
-                    (equalp dimensions (array-dimensions array)))
-                time-multiseries))))
-
-(deftype time-multiseries ()
-  '(satisfies time-multiseries?))
-
-(defun tmsref (time-multiseries time &rest position)
-  "This function works like AREF, but for a time series or multiseries.  The
-time multiseries is represented as a list of arrays, where there is an array
-for each time step representing all of the data for that step in time.
-A time series is represented as a list."
-  (assert (or (time-multiseries? time-multiseries)
-              (and (listp time-multiseries)
-                   (null position))))
-  (if (null position)
-    ;; A (one-dimensional) time series.
-    (nth time time-multiseries)
-    ;; A (multi-dimensional) time multiseries.
-    (apply #'aref (nth time time-multiseries) position)))
-
-(defun tms-values (time-multiseries positions)
-  "This function returns a list of the values in a time series or multiseries
-at the specified positions.  A time multiseries is represented as a list of
-arrays with identical dimensions, where each array represents a single time
-step's entire data.  A time series is represented as a list.  The first value
-in each position is the time position."
-  (assert (listp positions))
-  (setf positions (mapcar #'(lambda (position)
-                              (if (listp position)
-                                position
-                                (list position)))
-                          positions))
-  (assert (or (and (time-multiseries? time-multiseries)
-                   (every #'listp positions))
-              (and (listp time-multiseries)
-                   (every #'(lambda (position)
-                              (or (nonnegative-integer? position)
-                                  (and (listp position)
-                                       (= 1 (length position))
-                                       (nonnegative-integer?
-                                         (first position)))))
-                          positions))))
-  (mapcar #'(lambda (position)
-              (apply #'tmsref time-multiseries position))
-          positions))
-
-(defun tms-dimensions (time-multiseries)
-  "This works like the ARRAY-DIMENSIONS function, but for a time multiseries.
-  The first dimension listed is the time dimension."
-  (assert (or (time-multiseries? time-multiseries)
-              (listp time-multiseries)))
-  (if (time-multiseries? time-multiseries)
-    ;; A (multi-dimensional) time multi-series.
-    (cons (length time-multiseries)
-          (array-dimensions (first time-multiseries)))
-    ;; A (one-dimensional) time series.
-    (list (length time-multiseries))))
 
 (defun array-raster-line (array
                            start-point

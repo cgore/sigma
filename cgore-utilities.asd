@@ -57,6 +57,10 @@
                       :depends-on ("design-pattern"
                                    "numeric"
                                    "sequence"))
+               (:file "time-series"
+                      :depends-on ("design-pattern"
+                                   "numeric"
+                                   "sequence"))
                (:file "truth"
                       :depends-on ("design-pattern"))
                (:file "utilities"
@@ -64,4 +68,5 @@
                                    "numeric"
                                    "sequence"
                                    "string"
+                                   "time-series"
                                    "truth"))))
