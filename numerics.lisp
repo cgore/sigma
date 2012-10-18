@@ -41,6 +41,13 @@
     :fractional-part
     :fractional-value
     :multf
+    :nonnegative?
+    :nonnegative-float
+    :nonnegative-integer
+    :nonnegative-integer?
+    :positive-float
+    :positive-integer
+    :positive-integer?
     :product
     :sum
     ))
@@ -69,6 +76,34 @@ Note that the result of this is always positive, forming a sawtooth."
 
 (defmacro multf (variable &rest multiplicands)
   `(opf #'* ,variable ,@multiplicands))
+
+
+(defun nonnegative? (x)
+  (not (minusp x)))
+
+
+(deftype nonnegative-float ()
+  '(float 0.0 *))
+
+
+(deftype nonnegative-integer ()
+  '(integer 0 *))
+
+
+(defun nonnegative-integer? (nonnegative-integer)
+  (typep nonnegative-integer 'nonnegative-integer))
+
+
+(deftype positive-float ()
+  '(float (0.0) *))
+
+
+(deftype positive-integer ()
+  '(integer (0) *))
+
+
+(defun positive-integer? (positive-integer)
+  (typep positive-integer 'positive-integer))
 
 
 (defun product (sequence &key (key 'identity) (start 0) (end nil))

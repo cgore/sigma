@@ -66,17 +66,10 @@
     :minimum?
     :nconcf
     :next-point
-    :nonnegative?
-    :nonnegative-float
-    :nonnegative-integer
-    :nonnegative-integer?
     :norm
     :nshuffle
     :nthable?
     :nth-from-end
-    :positive-float
-    :positive-integer
-    :positive-integer?
     :prepackage
     :probability
     :probability?
@@ -158,27 +151,6 @@ else -> 1."
 
 (defun bit? (b)
   (typep b 'bit))
-
-(defun nonnegative? (x)
-  (not (minusp x)))
-
-(deftype positive-integer ()
-  '(integer (0) *))
-
-(defun positive-integer? (positive-integer)
-  (typep positive-integer 'positive-integer))
-
-(deftype nonnegative-integer ()
-  '(integer 0 *))
-
-(defun nonnegative-integer? (nonnegative-integer)
-  (typep nonnegative-integer 'nonnegative-integer))
-
-(deftype positive-float ()
-  '(float (0.0) *))
-
-(deftype nonnegative-float ()
-  '(float 0.0 *))
 
 (deftype probability ()
   '(or (float 0.0 1.0)
