@@ -1,5 +1,4 @@
-;;;; Copyright (c) 2005 -- 2012, Christopher Mark Gore,
-;;;; All rights reserved.
+;;;; Copyright (c) 2012, Christopher Mark Gore, All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
 ;;;; Web: http://cgore.com
@@ -31,17 +30,42 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :asdf)
+(defpackage :cgore-os
+  (:nicknames :os)
+  (:use :common-lisp :cgore-utilities)
+  (:export :*perl-path*
+           :perl
+           :*python-path*
+           :python
+           :*ruby-path*
+           :*ruby*))
 
-(defsystem "cgore-utilities"
-  :description "This is a set of generic utility functions and macros that I
-           use throughout my Common Lisp code pretty much everywhere.  I find
-           them useful, and hopefully you do too."
-  :version "1.3.0"
-  :author "Christopher Mark Gore <cgore@cgore.com>"
-  :license "BSD-style"
-  :components ((:file "os"
-                      :depends-on ("utilities"))
-               (:file "random"
-                      :depends-on ("utilities"))
-               (:file "utilities")))
+(in-package :cgore-os)
+
+(defparameter *perl-path* "/usr/bin/perl")
+
+(defun perl (&rest code)
+  "This is a simple function to easily call Perl code snippets.  It is far
+  from a full interface, instead just a convenient little script runner."
+  (sb-ext:run-program *perl-path*
+                      `("-e" ,(apply #'strcat code))
+                      :output t))
+
+(defparameter *python-path* "/usr/bin/python")
+
+(defun python (&rest code)
+  "This is a simple function to easily call Python code snippets.  It is far
+  from a full interface, instead just a convenient little script runner."
+  (sb-ext:run-program *python-path*
+                      `("-c" ,(apply #'strcat code))
+                      :output t))
+
+(defparameter *ruby-path* "/usr/bin/ruby")
+
+(defun ruby (&rest code)
+  "This is a simple function to easily call Ruby code snippets.  It is far
+  from a full interface, instead just a convenient little script runner."
+  (sb-ext:run-program *ruby-path*
+                      `("-e" ,(apply #'strcat code))
+                      :output t))
+
