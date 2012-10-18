@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2012, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2012, Christopher Mark Gore,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
@@ -31,34 +31,35 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :asdf)
 
-(defsystem "cgore-utilities"
-  :description "This is a set of generic utility functions and macros that I
-           use throughout my Common Lisp code pretty much everywhere.  I find
-           them useful, and hopefully you do too."
-  :version "1.6.0+"
-  :author "Christopher Mark Gore <cgore@cgore.com>"
-  :license "BSD-style"
-  :components ((:file "design-pattern")
-               (:file "numeric"
-                      :depends-on ("design-pattern"))
-               (:file "os"
-                      :depends-on ("design-pattern"
-                                   "string"))
-               (:file "random"
-                      :depends-on ("design-pattern"))
-               (:file "sequence"
-                      :depends-on ("design-pattern"))
-               (:file "string"
-                      :depends-on ("design-pattern"
-                                   "numeric"
-                                   "sequence"))
-               (:file "truth"
-                      :depends-on ("design-pattern"))
-               (:file "utilities"
-                      :depends-on ("design-pattern"
-                                   "numeric"
-                                   "sequence"
-                                   "string"
-                                   "truth"))))
+(defpackage :cgore-truth
+  (:nicknames :truth)
+  (:use
+    :common-lisp
+    :cgore-design-pattern)
+  (:export
+    :?
+    :[?]
+    :toggle
+    ))
+(in-package :cgore-truth)
+
+
+(defgeneric ? (x))
+
+
+(defmethod ? (x)
+  "This turns a generalized truth value (NIL, anything else) into a traditional
+Lisp-style simplistic truth value (NIL, T)."
+  (if x t nil))
+
+
+(defun toggle (x)
+  (if x nil t))
+
+
+(defun [?] (x)
+  "This is Knuth's truth function.  It converts it's input to 1 for true and 0
+for false based upon its truth value.  In other words, NIL -> 0 and everything
+else -> 1."
+  (if x 1 0))

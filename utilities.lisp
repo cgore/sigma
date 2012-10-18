@@ -41,10 +41,9 @@
     :cgore-design-pattern
     :cgore-numeric
     :cgore-sequence
-    :cgore-string)
+    :cgore-string
+    :cgore-truth)
   (:export
-    :?
-    :[?]
     :array-raster-line
     :array-values
     :bit?
@@ -74,25 +73,8 @@
     :tms-dimensions
     :tmsref
     :tms-values
-    :toggle
     ))
 (in-package :cgore-utilities)
-
-(defgeneric ? (x))
-
-(defmethod ? (x)
-  "This turns a generalized truth value (NIL, anything else) into a traditional
-Lisp-style simplistic truth value (NIL, T)."
-  (if x t nil))
-
-(defun toggle (x)
-  (if x nil t))
-
-(defun [?] (x)
-  "This is Knuth's truth function.  It converts it's input to 1 for true and 0
-for false based upon its truth value.  In other words, NIL -> 0 and everything
-else -> 1."
-  (if x 1 0))
 
 (defun bit? (b)
   (typep b 'bit))
