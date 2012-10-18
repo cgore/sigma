@@ -57,7 +57,6 @@
     :next-point
     :norm
     :raster-line
-    :read-lines
     :set-equal
     :similar-points?
     :snap-index
@@ -371,26 +370,6 @@ in each position is the time position."
                            :coordinate-assertion coordinate-assertion
                            :from-start from-start
                            :from-end from-end)))
-
-(defun read-file (filename)
-  "This reads in the entire file FILENAME, and returns a string."
-  (with-open-file (input-file filename :direction :input)
-    (do* ((current-char (read-char input-file nil)
-                        (read-char input-file nil))
-          (result (list current-char)
-                  (cons current-char result)))
-      ((null current-char)
-       (concatenate 'string (nreverse (rest result)))))))
-
-(defun read-lines (filename)
-  "This reads in the entire file FILENAME, and returns a list of its lines."
-  (with-open-file (input-file filename :direction :input)
-    (do* ((current-line (read-line input-file nil)
-                        (read-line input-file nil))
-          (result (list current-line)
-                  (cons current-line result)))
-      ((null current-line)
-       (reverse (rest result))))))
 
 (defun character-range (start end)
   (loop for i from (char-code start) to (char-code end) collect (code-char i)))

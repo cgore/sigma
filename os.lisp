@@ -36,12 +36,16 @@
   (:use :common-lisp
         :cgore-design-pattern
         :cgore-string)
-  (:export :*perl-path*
-           :perl
-           :*python-path*
-           :python
-           :*ruby-path*
-           :*ruby*))
+  (:export
+    :*perl-path*
+    :perl
+    :*python-path*
+    :python
+    :read-file
+    :read-lines
+    :*ruby-path*
+    :*ruby*
+    ))
 (in-package :cgore-os)
 
 
@@ -65,6 +69,28 @@
   (sb-ext:run-program *python-path*
                       `("-c" ,(apply #'strcat code))
                       :output t))
+
+
+(defun read-file (filename)
+  "This reads in the entire file FILENAME, and returns a string."
+  (with-open-file (input-file filename :direction :input)
+    (do* ((current-char (read-char input-file nil)
+                        (read-char input-file nil))
+          (result (list current-char)
+                  (cons current-char result)))
+      ((null current-char)
+       (concatenate 'string (nreverse (rest result)))))))
+
+
+(defun read-lines (filename)
+  "This reads in the entire file FILENAME, and returns a list of its lines."
+  (with-open-file (input-file filename :direction :input)
+    (do* ((current-line (read-line input-file nil)
+                        (read-line input-file nil))
+          (result (list current-line)
+                  (cons current-line result)))
+      ((null current-line)
+       (reverse (rest result))))))
 
 
 (defparameter *ruby-path* "/usr/bin/ruby")
