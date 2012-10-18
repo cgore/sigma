@@ -34,7 +34,7 @@
   (:nicknames :os)
   (:use :common-lisp
         :cgore-constructs
-        :cgore-utilities)
+        :cgore-string)
   (:export :*perl-path*
            :perl
            :*python-path*

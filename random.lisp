@@ -34,8 +34,7 @@
 (defpackage :cgore-random
   (:nicknames :random)
   (:use :common-lisp
-        :cgore-constructs
-        :cgore-utilities)
+        :cgore-constructs)
   (:export
     :coin-toss
     :gauss

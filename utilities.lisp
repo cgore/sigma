@@ -39,7 +39,8 @@
     #+cmu :extensions
     #+sbcl :sb-ext
     :cgore-constructs
-    :cgore-numerics)
+    :cgore-numerics
+    :cgore-string)
   (:export
     :?
     :[?]
@@ -54,7 +55,6 @@
     :distance
     :duplicate
     :empty-sequence?
-    :escape-tildes
     :integer-range
     :it
     :join-symbol-to-all-preceeding
@@ -74,7 +74,6 @@
     :probability?
     :raster-line
     :read-lines
-    :replace-char
     :sequence?
     :set-equal
     :set-nthcdr
@@ -85,10 +84,6 @@
     :sort-on
     :sort-order
     :split
-    :strcat
-    :stringify
-    :string-join
-    :strmult
     :the-last
     :time-multiseries
     :time-multiseries?
@@ -96,7 +91,6 @@
     :tms-dimensions
     :tmsref
     :tms-values
-    :to-string
     :toggle
     :vector-to-list
     :worst
@@ -802,23 +796,6 @@ The slice argument may be any positive rational number."
       ((null current-line)
        (reverse (rest result))))))
 
-(defun strcat (&rest rest)
-  (apply #'concatenate 'string rest))
-
-(defun strmult (count &rest strings)
-  (apply #'strcat (loop for i from 1 to count collect (apply #'strcat strings))))
-
-(defun replace-char (string from-char to-char)
-  "Replaces every instance of FROM-CHAR with TO-CHAR."
-  (assert (stringp string))
-  (loop for i from 0 to (1- (length string)) do
-        (if (char= (char string i) from-char)
-          (setf (char string i) to-char)))
-  string)
-
-(defun stringify (argument)
-  (format nil "~A" argument))
-
 (defun character-range (start end)
   (loop for i from (char-code start) to (char-code end) collect (code-char i)))
 
@@ -831,41 +808,6 @@ The slice argument may be any positive rational number."
          (concatenate 'list
                       (character-range (car rest) (cadr rest))
                       (apply #'character-ranges (cddr rest))))))
-
-(defun string-join (strings &optional (connecting-string ""))
-  (assert (or (stringp strings)
-              (and (listp strings)
-                   (every #'stringp strings))))
-  (if (stringp strings)
-    (string-join (list strings))
-    (apply #'concatenate 'string
-           (first strings)
-           (mapcar (lambda (string)
-                     (concatenate 'string connecting-string string))
-                   (rest strings)))))
-
-(defun escape-tildes (string)
-  (let ((input (vector-to-list string))
-        (result nil)
-        (current nil))
-    (while (not (null input))
-           (setf current (pop input))
-           (when (eq current #\~)
-             (push #\~ result))
-           (push current result))
-    (strcat (reverse result))))
-
-(defun to-string (s)
-  "Converts common types of things into a string."
-  (cond ((null s) "")
-        ((symbolp s) (string-downcase (symbol-name s)))
-        ((stringp s) s)
-        (t (format nil "~A" s))))
-
-(assert (equal (to-string nil) ""))
-(assert (equal (to-string :foo) "foo"))
-(assert (equal (to-string "hello") "hello"))
-(assert (equal (to-string "Hello, world!") "Hello, world!"))
 
 (defun join-symbol-to-all-preceeding (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
