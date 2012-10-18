@@ -1,4 +1,5 @@
-;;;; Copyright (c) 2011-2012, Christopher Mark Gore, All rights reserved.
+;;;; Copyright (c) 2005 -- 2012, Christopher Mark Gore,
+;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
 ;;;; Web: http://cgore.com
@@ -30,33 +31,27 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :cgore-random
-  (:nicknames :random)
-  (:use :common-lisp :constructs :utilities)
-  (:export :gauss))
-(in-package :cgore-random)
 
-;;; When x and y are two variables from [0, 1), uniformly distributed, then
-;;;
-;;;   cos(2*pi*x)*sqrt(-2*log(1-y))
-;;;   sin(2*pi*x)*sqrt(-2*log(1-y))
-;;;
-;;; are two independent variables with normal distribution (mu = 0, sigma = 1).
-;;;
-;;; [This approach is from Python's random library.  The implementation used
-;;; here is somewhat different though.  They say it is faster then the normal
-;;; algorithm I'm used to, Kinderman and Monahan.]
-(let ((next nil))
-  (defun gauss (mu sigma)
-    "This is the Gaussian distribution. Mu is the mean and sigma is the standard
-    deviation."
-    (let ((z next)
-          (x (random 1.0))
-          (y (random 1.0)))
-      (setf next nil)
-      (when (null z)
-        (setf z    (* (cos (* 2 pi x))
-                      (expt 0.5 (* -2 (log (- 1 y)))))
-              next (* (sin (* 2 pi x))
-                      (expt 0.5 (* -2 (log (- 1 y)))))))
-      (+ mu (* z sigma)))))
+(defpackage :cgore-numerics
+  (:nicknames :numerics)
+  (:use :common-lisp
+        :cgore-constructs
+        :cgore-utilities)
+  (:export
+    :fractional-part
+    :fractional-value))
+(in-package :cgore-numerics)
+
+(defun fractional-part (number)
+  "This is the fractional part formula most familiar to computer scientists.
+It possesses the useful feature that frac(x)+int(x)=x, but may be negative."
+  (assert (numberp number))
+  (if (minusp number)
+    (- number (floor number) 1)
+    (- number (floor number))))
+
+(defun fractional-value (number)
+  "This is the fractional value formula most familiar to most mathematicians.
+Note that the result of this is always positive, forming a sawtooth."
+  (assert (numberp number))
+  (- number (floor number)))

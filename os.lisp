@@ -32,7 +32,9 @@
 
 (defpackage :cgore-os
   (:nicknames :os)
-  (:use :common-lisp :cgore-utilities)
+  (:use :common-lisp
+        :cgore-constructs
+        :cgore-utilities)
   (:export :*perl-path*
            :perl
            :*python-path*

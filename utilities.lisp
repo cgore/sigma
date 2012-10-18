@@ -33,49 +33,28 @@
 
 (defpackage :cgore-utilities
   (:nicknames :utilities :util)
-  (:use :common-lisp #+cmu :extensions #+sbcl :sb-ext)
+  (:use
+    :common-lisp
+    #+cmu :extensions
+    #+sbcl :sb-ext
+    :cgore-constructs)
   (:export
     :?
     :[?]
-    :aand
-    :a?and
-    :ablock
-    :acond
-    :aif
-    :a?if
-    :aif-otherwise-nil
-    :alambda
     :arefable?
     :array-raster-line
     :array-values
-    :awhen
-    :a?when
-    :awhile
-    :a?while
     :best
     :bit?
     :character-range
     :character-ranges
     :coin-toss
-    :compose
-    :conjoin
-    :curry
     :decaying-probability?
-    :deletef
-    :disjoin
     :distance
     :divf
-    :do-until
-    :do-while
     :duplicate
     :empty-sequence?
     :escape-tildes
-    :for
-    :forever
-    :fractional-part
-    :fractional-value
-    :function-alias
-    :function-aliases
     :integer-range
     :it
     :join-symbol-to-all-preceeding
@@ -86,7 +65,6 @@
     :minimum
     :minimum?
     :multf
-    :multicond
     :nconcf
     :next-point
     :nonnegative?
@@ -97,9 +75,7 @@
     :nshuffle
     :nthable?
     :nth-from-end
-    :operator-to-function
     :opf
-    :otherwise-nil
     :positive-float
     :positive-integer
     :positive-integer?
@@ -115,8 +91,6 @@
     :randomize-array
     :random-range
     :raster-line
-    :rcompose
-    :rcurry
     :read-lines
     :replace-char
     :sequence?
@@ -135,9 +109,6 @@
     :string-join
     :strmult
     :sum
-    :swap
-    :swap-unless
-    :swap-when
     :the-last
     :time-multiseries
     :time-multiseries?
@@ -147,36 +118,11 @@
     :tms-values
     :to-string
     :toggle
-    :unimplemented
     :unsigned-integer
-    :until
     :vector-to-list
-    :while
-    :worst))
+    :worst
+    ))
 (in-package :cgore-utilities)
-
-(defun function-alias (function &rest aliases)
-  "This produces one or more aliases (alternate names) for a function.
-For example, you might do something like:
-> (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)"
-  (loop for alias in aliases
-        do (setf (fdefinition alias) (fdefinition function))))
-
-(function-alias 'function-alias 'function-aliases) ; This line seemed fitting.
-
-(defun fractional-value (number)
-  "This is the fractional value formula most familiar to most mathematicians.
-Note that the result of this is always positive, forming a sawtooth."
-  (assert (numberp number))
-  (- number (floor number)))
-
-(defun fractional-part (number)
-  "This is the fractional part formula most familiar to computer scientists.
-It possesses the useful feature that frac(x)+int(x)=x, but may be negative."
-  (assert (numberp number))
-  (if (minusp number)
-    (- number (floor number) 1)
-    (- number (floor number))))
 
 (defun nth-from-end (n list)
   "This macro is similar to NTH, but counting from the back."
@@ -197,28 +143,6 @@ It possesses the useful feature that frac(x)+int(x)=x, but may be negative."
                  0))
   (assert (equal (nth-from-end 11 0-to-10)
                  nil)))
-
-(defmacro swap (x y)
-  "A simple SWAP macro.  The values of the first form and the second form are
-swapped with each other."
-  `(psetf ,x ,y
-          ,y ,x))
-
-(let ((x 15)
-      (y 37))
-  (swap x y)
-  (assert (= y 15))
-  (assert (= x 37)))
-
-(defmacro swap-when (predicate x y)
-  "This macro calls SWAP only when the predicate evaluates to true."
-  `(when (funcall ,predicate ,x ,y)
-     (swap ,x ,y)))
-
-(defmacro swap-unless (predicate x y)
-  "This macro calls SWAP unless the predicate evaluates to true."
-  `(unless (funcall ,predicate ,x ,y)
-     (swap ,x ,y)))
 
 (defgeneric ? (x))
 
@@ -275,114 +199,6 @@ else -> 1."
      (progn (multf ,probability ,factor)
             t)
      nil))
-
-(defmacro while (conditional &rest body)
-  "A WHILE macro, operating in a matter similar to the while loop in C."
-  `(do ()
-     ((not ,conditional))
-     ,@body))
-
-(defmacro until (conditional &rest body)
-  "An UNTIL loop construct."
-  `(while (not ,conditional)
-     ,@body))
-
-(defmacro do-while (conditional &rest body)
-  "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
-  programming language."
-  `(progn ,@body
-          (while ,conditional
-                 ,@body)))
-
-(defmacro do-until (conditional &rest body)
-  "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
-construct in the C programming language."
-  `(do-while (not ,conditional)
-     ,@body))
-
-(defmacro for (initial conditional step-action &rest body)
-  "A FOR macro, much like the ``for'' in the C programming language.
-A simple example:
-  (for ((i 0))
-       (< i 10)
-       (incf i)
-    (format t \"~%~A\" i))
-prints the numbers from 0 through 9, each on their own lines.
-Generally this should not be used, but instead the native looping methods."
-  `(let ,initial
-     (while ,conditional
-       (prog1 (progn ,@body) ,step-action))))
-
-(defmacro a?if (anaphor conditional t-action &optional nil-action)
-  "This is an anaphoric IF that allows for specification of the anaphor."
-  `(let ((,anaphor ,conditional))
-     (if ,anaphor ,t-action ,nil-action)))
-
-(defmacro aif (conditional t-action &optional nil-action)
-  "This is anaphoric IF, from Paul Graham's ``On Lisp'' page 190."
-  `(let ((it ,conditional))
-     (if it ,t-action ,nil-action)))
-
-(defmacro a?when (anaphor test-form &body body)
-  "This is an anaphoric WHEN that allows for the specification of the anaphor."
-  `(a?if ,anaphor ,test-form (progn ,@body)))
-
-(defmacro awhen (test-form &body body)
-  "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
-  `(aif ,test-form (progn ,@body)))
-
-(defmacro a?while (anaphor expression &body body)
-  "This is an anaphoric WHILE that allows for the specification of the anaphor."
-  `(do ((,anaphor ,expression ,expression))
-       ((not ,anaphor))
-     ,@body))
-
-(defmacro awhile (expression &body body)
-  "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191."
-  `(do ((it ,expression ,expression))
-       ((not it))
-     ,@body))
-
-(defmacro a?and (anaphor &rest arguments)
-  "This is an anaphoric AND that allows for the specification of the anaphor."
-  (cond ((null arguments) t)
-        ((null (rest arguments)) (first arguments))
-        (t `(a?if ,anaphor ,(first arguments)
-                  (a?and ,anaphor ,@(rest arguments))))))
-
-(defmacro aand (&rest arguments)
-  "This is anaphoric AND, from Paul Graham's ``On Lisp'' page 191."
-  (cond ((null arguments) t)
-        ((null (rest arguments)) (first arguments))
-        (t `(aif ,(first arguments)
-                  (aand ,@(rest arguments))))))
-
-(defmacro acond (&rest clauses)
-  "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 191."
-  (if (null clauses)
-    nil
-    (let ((cl1 (car clauses))
-          (sym (gensym)))
-      `(let ((,sym ,(car cl1)))
-            (if ,sym
-              (let ((it ,sym)) ,@(cdr cl1))
-              (acond ,@(cdr clauses)))))))
-
-(defmacro alambda (parms &body body)
-  "This is anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193."
-  `(labels ((self ,parms ,@body))
-           #'self))
-
-(defmacro ablock (tag &rest args)
-  "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 193."
-  `(block ,tag
-          ,(funcall (alambda (args)
-                             (case (length args)
-                               (0 nil)
-                               (1 (car args))
-                               (t `(let ((it ,(car args)))
-                                        ,(self (cdr args))))))
-                    args)))
 
 (defmacro set-nthcdr (n list new-value)
   `(progn (assert (nonnegative-integer? ,n))
@@ -475,13 +291,6 @@ in any Common Lisp I have used."
 (defmethod duplicate ((function function))
   ;; XXX: I believe this is correct, but I am not really sure.
   function)
-
-(defmacro multicond (&rest clauses)
-  "A macro much like COND, but where multiple clauses may be evaluated."
-  `(mapcar #'(lambda (clause)
-               (when (first clause)
-                 (mapcar #'eval (rest clause))))
-           ',clauses))
 
 
 (defun list-to-vector (list)
@@ -721,9 +530,6 @@ Negative numbers are allowed, and operate in a logical manner.
 (assert (equal (integer-range -5 5 2)
                '(-5 -3 -1 1 3 5)))
 
-(defmacro forever (&rest body)
-  `(while t ,@body))
-
 (defmacro nconcf (list-1 list-2)
   `(setf ,list-1 (nconc ,list-1 ,list-2)))
 
@@ -739,86 +545,6 @@ Negative numbers are allowed, and operate in a logical manner.
                                              :key key :test-not test-not))))
         (t (and (not (set-difference list-1 list-2 :key key))
                 (not (set-difference list-2 list-1 :key key))))))
-
-(defun rcompose (&rest functions)
-  "A version of COMPOSE in reverse order."
-  (dolist (function functions)
-    (assert (or (functionp function)
-                (symbolp function))))
-  (destructuring-bind (function-1 . rest)
-    functions
-    #'(lambda (&rest arguments)
-        (reduce #'(lambda (v f)
-                    (funcall f v))
-                rest
-                :initial-value (apply function-1 arguments)))))
-
-(defun compose (&rest functions)
-  "This function composes a single function from a list of several functions
-such that the new function is equivalent to calling the functions in
-succession.  This is based upon a COMPOSE function in Paul Graham's ``ANSI
-Common Lisp'' which is  based upon the compose function from Dylan, a
-programming language which he describes as a ``cross between Scheme and Common
-Lisp, with a syntax like Pascal.''"
-  (apply #'rcompose (reverse functions)))
-
-(defun disjoin (predicate &rest predicates)
-  "This function takes in one or more predicates, and returns a predicate that
-returns true whenever any of the predicates return true.  This is from Paul
-Graham's ``ANSI Common Lisp'' and is based upon the disjoin function from
-Dylan, a programming language which he describes as a ``cross between Scheme
-and Common Lisp, with a syntax like Pascal.''"
-  (assert (or (functionp predicate)
-              (symbolp predicate)))
-  (dolist (predicate predicates)
-    (assert (or (functionp predicate)
-                (symbolp predicate))))
-  (if (null predicates)
-    predicate
-    (let ((disjoinment (apply #'disjoin predicates)))
-      #'(lambda (&rest arguments)
-          (or (apply predicate arguments)
-              (apply disjoinment arguments))))))
-
-(defun conjoin (predicate &rest predicates)
-  "This function takes in one or more predicates, and returns a predicate that
-returns true whenever all of the predicates return true.  This is from Paul
-Graham's ``ANSI Common Lisp'' and is based upon the conjoin function from
-Dylan, a programming language which he describes as a ``cross between Scheme
-and Common Lisp, with a syntax like Pascal.''"
-  (assert (or (functionp predicate)
-              (symbolp predicate)))
-  (dolist (predicate predicates)
-    (assert (or (functionp predicate)
-                (symbolp predicate))))
-  (if (null predicates)
-    predicate
-    (let ((conjoinment (apply #'conjoin predicates)))
-      #'(lambda (&rest arguments)
-          (and (apply predicate arguments)
-               (apply conjoinment arguments))))))
-
-(defun curry (function &rest arguments)
-  "This function takes in a function and some of its arguments, and returns a
-function that expects the rest of the required arguments.  This is from Paul
-Graham's ``ANSI Common Lisp'' and is based upon the curry function from
-Dylan, a programming language which he describes as a ``cross between Scheme
-and Common Lisp, with a syntax like Pascal.''"
-  (assert (or (functionp function)
-              (symbolp function)))
-  #'(lambda (&rest more-arguments)
-      (apply function (append arguments more-arguments))))
-
-(defun rcurry (function &rest arguments)
-  "This function takes in a function and some of its ending arguments, and
-returns a function that expects the rest of the required arguments.  This is
-from Paul Graham's ``ANSI Common Lisp'' and is based upon the rcurry function
-from Dylan, a programming language which he describes as a ``cross between
-Scheme and Common Lisp, with a syntax like Pascal.''"
-  (assert (or (functionp function)
-              (symbolp function)))
-  #'(lambda (&rest more-arguments)
-      (apply function (append more-arguments arguments))))
 
 (defgeneric split (sequence separators &key key test remove-separators?))
 
@@ -1253,15 +979,6 @@ The slice argument may be any positive rational number."
 (defun strmult (count &rest strings)
   (apply #'strcat (loop for i from 1 to count collect (apply #'strcat strings))))
 
-#-cmu
-(defmacro deletef (item sequence &rest rest)
-  `(setf ,sequence
-         (delete ,item ,sequence ,@rest)))
-
-(defun operator-to-function (operator)
-  (lambda (&rest rest)
-    (eval `(,operator ,@rest))))
-
 (defun replace-char (string from-char to-char)
   "Replaces every instance of FROM-CHAR with TO-CHAR."
   (assert (stringp string))
@@ -1272,12 +989,6 @@ The slice argument may be any positive rational number."
 
 (defun stringify (argument)
   (format nil "~A" argument))
-
-(defmacro otherwise-nil (conditional t-action)
-  `(if ,conditional ,t-action nil))
-
-(defmacro aif-otherwise-nil (conditional t-action)
-  `(aif ,conditional ,t-action nil))
 
 (defun character-range (start end)
   (loop for i from (char-code start) to (char-code end) collect (code-char i)))
@@ -1394,6 +1105,3 @@ symbol in the list, it joins it to the item following it.  For example:
                '(:a :b :c :d :e)))
 (assert (equal (join-symbol-to-all-following :foo '(:foo bar :foo :baz))
                '(:foobar :foobaz)))
-
-(defun unimplemented ()
-  (assert nil))
