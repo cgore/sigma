@@ -49,7 +49,6 @@
     :bit?
     :character-range
     :character-ranges
-    :decaying-probability?
     :distance
     :duplicate
     :integer-range
@@ -60,8 +59,6 @@
     :next-point
     :norm
     :prepackage
-    :probability
-    :probability?
     :raster-line
     :read-lines
     :set-equal
@@ -78,22 +75,6 @@
 
 (defun bit? (b)
   (typep b 'bit))
-
-(deftype probability ()
-  '(or (float 0.0 1.0)
-       (integer 0 1)
-       bit))
-
-(defun probability? (probability)
-  "This is a simple probabilistic testing function."
-  (assert (typep probability 'probability))
-  (<= (random 1.0) probability))
-
-(defmacro decaying-probability? (probability &optional (factor 1/2))
-  `(if (probability? ,probability)
-     (progn (multf ,probability ,factor)
-            t)
-     nil))
 
 #|
 (ext:without-package-locks

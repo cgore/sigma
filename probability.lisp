@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2012, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2012, Christopher Mark Gore,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
@@ -31,37 +31,36 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :asdf)
 
-(defsystem "cgore-utilities"
-  :description "This is a set of generic utility functions and macros that I
-           use throughout my Common Lisp code pretty much everywhere.  I find
-           them useful, and hopefully you do too."
-  :version "1.6.0+"
-  :author "Christopher Mark Gore <cgore@cgore.com>"
-  :license "BSD-style"
-  :components ((:file "design-pattern")
-               (:file "numeric"
-                      :depends-on ("design-pattern"))
-               (:file "os"
-                      :depends-on ("design-pattern"
-                                   "string"))
-               (:file "probability"
-                      :depends-on ("design-pattern"
-                                   "numeric"))
-               (:file "random"
-                      :depends-on ("design-pattern"))
-               (:file "sequence"
-                      :depends-on ("design-pattern"))
-               (:file "string"
-                      :depends-on ("design-pattern"
-                                   "numeric"
-                                   "sequence"))
-               (:file "truth"
-                      :depends-on ("design-pattern"))
-               (:file "utilities"
-                      :depends-on ("design-pattern"
-                                   "numeric"
-                                   "sequence"
-                                   "string"
-                                   "truth"))))
+(defpackage :cgore-probability
+  (:nicknames :probability)
+  (:use
+    :common-lisp
+    :cgore-design-pattern
+    :cgore-numeric)
+  (:export
+    :decaying-probability?
+    :probability
+    :probability?
+    ))
+(in-package :cgore-probability)
+
+
+(deftype probability ()
+  '(or (float 0.0 1.0)
+       (integer 0 1)
+       bit))
+
+
+(defun probability? (probability)
+  "This is a simple probabilistic testing function."
+  (assert (typep probability 'probability))
+  (<= (random 1.0) probability))
+
+
+(defmacro decaying-probability? (probability &optional (factor 1/2))
+  `(if (probability? ,probability)
+     (progn (multf ,probability ,factor)
+            t)
+     nil))
+
