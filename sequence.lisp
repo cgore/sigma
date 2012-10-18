@@ -44,6 +44,7 @@
     :maximum?
     :minimum
     :minimum?
+    :nconcf
     :nthable?
     :nth-from-end
     :sequence?
@@ -101,6 +102,10 @@
        (or (null sequence)
            (and (arrayp sequence)
                 (some #'zerop (array-dimensions sequence))))))
+
+
+(defmacro nconcf (list-1 list-2)
+  `(setf ,list-1 (nconc ,list-1 ,list-2)))
 
 
 (defun the-last (list)

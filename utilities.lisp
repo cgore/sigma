@@ -51,11 +51,9 @@
     :character-ranges
     :distance
     :duplicate
-    :integer-range
     :it
     :join-symbol-to-all-preceeding
     :join-symbol-to-all-following
-    :nconcf
     :next-point
     :norm
     :prepackage
@@ -117,9 +115,6 @@
   ;; XXX: I believe this is correct, but I am not really sure.
   function)
 
-
-(defmacro nconcf (list-1 list-2)
-  `(setf ,list-1 (nconc ,list-1 ,list-2)))
 
 (defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
   (assert (listp list-1))
