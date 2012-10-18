@@ -32,8 +32,8 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-constructs
-  (:nicknames :constructs)
+(defpackage :cgore-design-pattern
+  (:nicknames :design-pattern)
   (:use :common-lisp)
   (:export
     :aand
@@ -73,7 +73,7 @@
     :until
     :while
     ))
-(in-package :cgore-constructs)
+(in-package :cgore-design-pattern)
 
 
 (defmacro aand (&rest arguments)

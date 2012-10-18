@@ -30,10 +30,11 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
+
 (defpackage :cgore-os
   (:nicknames :os)
   (:use :common-lisp
-        :cgore-constructs
+        :cgore-design-pattern
         :cgore-string)
   (:export :*perl-path*
            :perl
@@ -41,10 +42,11 @@
            :python
            :*ruby-path*
            :*ruby*))
-
 (in-package :cgore-os)
 
+
 (defparameter *perl-path* "/usr/bin/perl")
+
 
 (defun perl (&rest code)
   "This is a simple function to easily call Perl code snippets.  It is far
@@ -53,7 +55,9 @@
                       `("-e" ,(apply #'strcat code))
                       :output t))
 
+
 (defparameter *python-path* "/usr/bin/python")
+
 
 (defun python (&rest code)
   "This is a simple function to easily call Python code snippets.  It is far
@@ -62,7 +66,9 @@
                       `("-c" ,(apply #'strcat code))
                       :output t))
 
+
 (defparameter *ruby-path* "/usr/bin/ruby")
+
 
 (defun ruby (&rest code)
   "This is a simple function to easily call Ruby code snippets.  It is far
@@ -70,4 +76,3 @@
   (sb-ext:run-program *ruby-path*
                       `("-e" ,(apply #'strcat code))
                       :output t))
-

@@ -32,10 +32,10 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-numerics
-  (:nicknames :numerics)
+(defpackage :cgore-numeric
+  (:nicknames :numeric)
   (:use :common-lisp
-        :cgore-constructs)
+        :cgore-design-pattern)
   (:export
     :divf
     :fractional-part
@@ -52,7 +52,7 @@
     :sum
     :unsigned-integer?
     ))
-(in-package :cgore-numerics)
+(in-package :cgore-numeric)
 
 
 (defmacro divf (variable &rest divisors)

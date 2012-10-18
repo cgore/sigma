@@ -40,18 +40,18 @@
   :version "1.6.0+"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
-  :components ((:file "constructs")
-               (:file "numerics"
-                      :depends-on ("constructs"))
+  :components ((:file "design-pattern")
+               (:file "numeric"
+                      :depends-on ("design-pattern"))
                (:file "os"
-                      :depends-on ("constructs"
+                      :depends-on ("design-pattern"
                                    "string"))
                (:file "random"
-                      :depends-on ("constructs"))
+                      :depends-on ("design-pattern"))
                (:file "string"
-                      :depends-on ("constructs"
-                                   "numerics"))
+                      :depends-on ("design-pattern"
+                                   "numeric"))
                (:file "utilities"
-                      :depends-on ("constructs"
-                                   "numerics"
+                      :depends-on ("design-pattern"
+                                   "numeric"
                                    "string"))))

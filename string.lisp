@@ -36,8 +36,8 @@
   (:nicknames :string)
   (:use
     :common-lisp
-    :cgore-constructs
-    :cgore-numerics)
+    :cgore-design-pattern
+    :cgore-numeric)
   (:export
     :escape-tildes
     :replace-char

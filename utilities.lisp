@@ -38,8 +38,8 @@
     :common-lisp
     #+cmu :extensions
     #+sbcl :sb-ext
-    :cgore-constructs
-    :cgore-numerics
+    :cgore-design-pattern
+    :cgore-numeric
     :cgore-string)
   (:export
     :?
