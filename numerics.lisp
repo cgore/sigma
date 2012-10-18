@@ -50,6 +50,7 @@
     :positive-integer?
     :product
     :sum
+    :unsigned-integer?
     ))
 (in-package :cgore-numerics)
 
@@ -114,3 +115,8 @@ Note that the result of this is always positive, forming a sawtooth."
 (defun sum (sequence &key (key 'identity) (start 0) (end nil))
   (assert (sequence? sequence))
   (reduce #'+ sequence :key key :start start :end end :initial-value 0))
+
+
+(defun unsigned-integer? (x)
+  (and (integerp x)
+       (not (minusp x))))

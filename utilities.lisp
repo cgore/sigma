@@ -107,7 +107,6 @@
     :tms-values
     :to-string
     :toggle
-    :unsigned-integer
     :vector-to-list
     :worst
     ))
@@ -523,10 +522,6 @@ SEQUENCE for membership in the SEPERATORS."
   (mapcar (rcurry #'coerce 'string)
           (split (coerce string 'list) separators
                  :key key :test test :remove-separators? remove-separators?)))
-
-(defun unsigned-integer? (x)
-  (and (integerp x)
-       (not (minusp x))))
 
 (defmacro snap-index (index bound)
   "This wraps the value of index between 0 and bound."
