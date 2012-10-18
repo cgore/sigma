@@ -37,15 +37,16 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "1.4.0"
+  :version "1.5.0"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
   :components ((:file "constructs")
                (:file "numerics"
-                      :depends-on ("utilities"))
+                      :depends-on ("constructs"))
                (:file "os"
                       :depends-on ("utilities"))
                (:file "random"
                       :depends-on ("utilities"))
                (:file "utilities"
-                      :depends-on ("constructs"))))
+                      :depends-on ("constructs"
+                                   "numerics"))))

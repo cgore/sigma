@@ -35,8 +35,7 @@
 (defpackage :cgore-numerics
   (:nicknames :numerics)
   (:use :common-lisp
-        :cgore-constructs
-        :cgore-utilities)
+        :cgore-constructs)
   (:export
     :fractional-part
     :fractional-value))

@@ -62,6 +62,7 @@
     :it
     :multicond
     :operator-to-function
+    :opf
     :otherwise-nil
     :rcompose
     :rcurry
@@ -296,6 +297,21 @@ For example, you might do something like:
 (defun operator-to-function (operator)
   (lambda (&rest rest)
     (eval `(,operator ,@rest))))
+
+
+(defmacro opf (operator variable &rest arguments)
+  "OPF is a generic operate-and-store macro, along the lines of INCF and DECF,
+but allowing for any operation.  For example:
+  (opf #'+ foo 42)
+does something like
+  (incf foo 42)
+but you could also do
+  (opf #'+ foo 1 2 3 4 5)
+with it doing the obvious thing, whereas you cannot do
+  (incf foo 1 2 3 4 5)
+in any Common Lisp I have used."
+  `(setf ,variable
+         (funcall ,operator ,variable ,@arguments)))
 
 
 (defmacro otherwise-nil (conditional t-action)
