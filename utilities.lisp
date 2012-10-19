@@ -48,8 +48,6 @@
     :array-raster-line
     :array-values
     :bit?
-    :character-range
-    :character-ranges
     :distance
     :duplicate
     :it
@@ -292,18 +290,6 @@ positions."
                            :from-start from-start
                            :from-end from-end)))
 
-(defun character-range (start end)
-  (loop for i from (char-code start) to (char-code end) collect (code-char i)))
-
-(defun character-ranges (&rest rest)
-  (cond ((<= (length rest) 1)
-         rest)
-        ((= 2 (length rest))
-         (character-range (car rest) (cadr rest)))
-        ((< 2 (length rest))
-         (concatenate 'list
-                      (character-range (car rest) (cadr rest))
-                      (apply #'character-ranges (cddr rest))))))
 
 (defun join-symbol-to-all-preceeding (symbol list)
   "This function takes a symbol and a list, and for every occurance of the

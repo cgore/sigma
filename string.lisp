@@ -34,22 +34,36 @@
 
 (defpackage :cgore-string
   (:nicknames :string)
-  (:use
-    :common-lisp
-    :cgore-design-pattern
-    :cgore-numeric
-    :cgore-sequence)
-  (:export
-    :escape-tildes
-    :replace-char
-    :strcat
-    :stringify
-    :string-join
-    :split
-    :strmult
-    :to-string
-    ))
+  (:use :common-lisp
+	:cgore-design-pattern
+	:cgore-numeric
+	:cgore-sequence)
+  (:export :character-range
+	   :character-ranges
+	   :escape-tildes
+	   :replace-char
+	   :strcat
+	   :stringify
+	   :string-join
+	   :split
+	   :strmult
+	   :to-string))
 (in-package :cgore-string)
+
+
+(defun character-range (start end)
+  (loop for i from (char-code start) to (char-code end) collect (code-char i)))
+
+
+(defun character-ranges (&rest rest)
+  (cond ((<= (length rest) 1)
+         rest)
+        ((= 2 (length rest))
+         (character-range (car rest) (cadr rest)))
+        ((< 2 (length rest))
+         (concatenate 'list
+                      (character-range (car rest) (cadr rest))
+                      (apply #'character-ranges (cddr rest))))))
 
 
 (defun escape-tildes (string)
