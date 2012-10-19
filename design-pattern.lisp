@@ -35,44 +35,43 @@
 (defpackage :cgore-design-pattern
   (:nicknames :design-pattern)
   (:use :common-lisp)
-  (:export
-    :aand
-    :a?and
-    :ablock
-    :acond
-    :aif
-    :a?if
-    :aif-otherwise-nil
-    :awhen
-    :a?when
-    :awhile
-    :a?while
-    :alambda
-    :compose
-    :conjoin
-    :curry
-    :deletef
-    :disjoin
-    :do-until
-    :do-while
-    :for
-    :forever
-    :function-alias
-    :function-aliases
-    :it
-    :multicond
-    :operator-to-function
-    :opf
-    :otherwise-nil
-    :rcompose
-    :rcurry
-    :swap
-    :swap-unless
-    :swap-when
-    :unimplemented
-    :until
-    :while
-    ))
+  (:export :aand
+	   :a?and
+	   :ablock
+	   :acond
+	   :aif
+	   :a?if
+	   :aif-otherwise-nil
+	   :awhen
+	   :a?when
+	   :awhile
+	   :a?while
+	   :alambda
+	   :compose
+	   :conjoin
+	   :curry
+	   :deletef
+	   :disjoin
+	   :do-until
+	   :do-while
+	   :duplicate
+	   :for
+	   :forever
+	   :function-alias
+	   :function-aliases
+	   :it
+	   :multicond
+	   :operator-to-function
+	   :opf
+	   :otherwise-nil
+	   :rcompose
+	   :rcurry
+	   :swap
+	   :swap-unless
+	   :swap-when
+	   :unimplemented
+	   :until
+	   :while))
 (in-package :cgore-design-pattern)
 
 
@@ -255,6 +254,39 @@ construct in the C programming language."
   `(progn ,@body
           (while ,conditional
                  ,@body)))
+
+
+(defgeneric duplicate (item))
+
+
+(defmethod duplicate ((list list))
+  "This returns a deeply new duplicate of the list."
+  (mapcar 'duplicate list))
+
+
+(defmethod duplicate ((array array))
+  "This returns a deeply new duplicate of the array."
+  (let ((result (make-array (array-dimensions array)
+                            :element-type (array-element-type array)
+                            :adjustable (adjustable-array-p array))))
+    (when (array-dimensions array)
+      (dotimes (index (array-total-size array))
+        (setf (row-major-aref result index)
+              (duplicate (row-major-aref array index)))))
+    result))
+
+
+(defmethod duplicate ((number number))
+  number)
+
+
+(defmethod duplicate ((symbol symbol))
+  symbol)
+
+
+(defmethod duplicate ((function function))
+  ;; XXX: I believe this is correct, but I am not really sure.
+  function)
 
 
 (defmacro for (initial conditional step-action &rest body)

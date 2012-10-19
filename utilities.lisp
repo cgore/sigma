@@ -49,7 +49,6 @@
     :array-values
     :bit?
     :distance
-    :duplicate
     :it
     :next-point
     :norm
@@ -76,34 +75,6 @@
        (opf #'- ,variable 1)
        (opf #'- ,variable ,@subtrahends))))
 |#
-
-(defgeneric duplicate (item))
-
-(defmethod duplicate ((list list))
-  "This returns a deeply new duplicate of the list."
-  (mapcar 'duplicate list))
-
-(defmethod duplicate ((array array))
-  "This returns a deeply new duplicate of the array."
-  (let ((result (make-array (array-dimensions array)
-                            :element-type (array-element-type array)
-                            :adjustable (adjustable-array-p array))))
-    (when (array-dimensions array)
-      (dotimes (index (array-total-size array))
-        (setf (row-major-aref result index)
-              (duplicate (row-major-aref array index)))))
-    result))
-
-(defmethod duplicate ((number number))
-  number)
-
-(defmethod duplicate ((symbol symbol))
-  symbol)
-
-(defmethod duplicate ((function function))
-  ;; XXX: I believe this is correct, but I am not really sure.
-  function)
-
 
 (defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
   (assert (listp list-1))
