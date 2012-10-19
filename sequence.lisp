@@ -36,6 +36,7 @@
   (:use :common-lisp
         :cgore-design-pattern)
   (:export :arefable?
+	   :array-values
 	   :best
 	   :empty-sequence?
 	   :join-symbol-to-all-preceeding
@@ -49,6 +50,7 @@
 	   :nthable?
 	   :nth-from-end
 	   :sequence?
+	   :set-equal
 	   :set-nthcdr
 	   :simple-vector-to-list
 	   :slice
@@ -434,3 +436,31 @@ symbol in the list, it joins it to the item following it.  For example:
                '(:a :b :c :d :e)))
 (assert (equal (join-symbol-to-all-following :foo '(:foo bar :foo :baz))
                '(:foobar :foobaz)))
+
+
+(defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
+  (assert (listp list-1))
+  (assert (listp list-2))
+  (assert (not (and test test-not)))
+  (cond (test (and (not (set-difference list-1 list-2 :key key :test test))
+                   (not (set-difference list-2 list-1 :key key :test test))))
+        (test-not  (and (not (set-difference list-1 list-2
+                                             :key key :test-not test-not))
+                        (not (set-difference list-2 list-1
+                                             :key key :test-not test-not))))
+        (t (and (not (set-difference list-1 list-2 :key key))
+                (not (set-difference list-2 list-1 :key key))))))
+
+
+
+(defun array-values (array positions)
+  "This function returns a list of the values in array found at the specified
+positions."
+  (assert (arrayp array))
+  (assert (listp positions))
+  (mapcar #'(lambda (position)
+              (assert (and (listp position)
+                           (= (length position)
+                              (length (array-dimensions array)))))
+              (apply #'aref array position))
+          positions))

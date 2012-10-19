@@ -36,24 +36,43 @@
   (:nicknames :numeric)
   (:use :common-lisp
         :cgore-design-pattern)
-  (:export
-    :divf
-    :fractional-part
-    :fractional-value
-    :integer-range
-    :multf
-    :nonnegative?
-    :nonnegative-float
-    :nonnegative-integer
-    :nonnegative-integer?
-    :positive-float
-    :positive-integer
-    :positive-integer?
-    :product
-    :sum
-    :unsigned-integer?
-    ))
+  (:export :bit?
+	   :divf
+	   :fractional-part
+	   :fractional-value
+	   :integer-range
+	   :multf
+	   :nonnegative?
+	   :nonnegative-float
+	   :nonnegative-integer
+	   :nonnegative-integer?
+	   :positive-float
+	   :positive-integer
+	   :positive-integer?
+	   :product
+	   :sum
+	   :unsigned-integer?))
 (in-package :cgore-numeric)
+
+
+(defun bit? (b)
+  (typep b 'bit))
+
+
+#|
+(ext:without-package-locks
+  (defmacro incf (variable &rest addends)
+    `(if (null ,addends)
+       (opf #'+ ,variable 1)
+       (opf #'+ ,variable ,@addends))))
+
+
+(ext:without-package-locks
+  (defmacro decf (variable &rest subtrahends)
+    `(if (null ,addends)
+       (opf #'- ,variable 1)
+       (opf #'- ,variable ,@subtrahends))))
+|#
 
 
 (defmacro divf (variable &rest divisors)

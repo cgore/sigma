@@ -46,48 +46,15 @@
     :cgore-truth)
   (:export
     :array-raster-line
-    :array-values
-    :bit?
     :distance
     :it
     :next-point
     :norm
     :raster-line
-    :set-equal
     :similar-points?
     :snap-index
     ))
 (in-package :cgore-utilities)
-
-(defun bit? (b)
-  (typep b 'bit))
-
-#|
-(ext:without-package-locks
-  (defmacro incf (variable &rest addends)
-    `(if (null ,addends)
-       (opf #'+ ,variable 1)
-       (opf #'+ ,variable ,@addends))))
-
-(ext:without-package-locks
-  (defmacro decf (variable &rest subtrahends)
-    `(if (null ,addends)
-       (opf #'- ,variable 1)
-       (opf #'- ,variable ,@subtrahends))))
-|#
-
-(defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
-  (assert (listp list-1))
-  (assert (listp list-2))
-  (assert (not (and test test-not)))
-  (cond (test (and (not (set-difference list-1 list-2 :key key :test test))
-                   (not (set-difference list-2 list-1 :key key :test test))))
-        (test-not  (and (not (set-difference list-1 list-2
-                                             :key key :test-not test-not))
-                        (not (set-difference list-2 list-1
-                                             :key key :test-not test-not))))
-        (t (and (not (set-difference list-1 list-2 :key key))
-                (not (set-difference list-2 list-1 :key key))))))
 
 (defmacro snap-index (index bound)
   "This wraps the value of index between 0 and bound."
@@ -212,18 +179,6 @@ infinity norm, use :INFINITY for the power."
 (defun distance (initial-point final-point &optional (power 2))
   "This calculates the distance between two points."
   (norm (mapcar #'- initial-point final-point) power))
-
-(defun array-values (array positions)
-  "This function returns a list of the values in array found at the specified
-positions."
-  (assert (arrayp array))
-  (assert (listp positions))
-  (mapcar #'(lambda (position)
-              (assert (and (listp position)
-                           (= (length position)
-                              (length (array-dimensions array)))))
-              (apply #'aref array position))
-          positions))
 
 (defun array-raster-line (array
                            start-point
