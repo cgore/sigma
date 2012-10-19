@@ -35,29 +35,29 @@
 (defpackage :cgore-sequence
   (:use :common-lisp
         :cgore-design-pattern)
-  (:export
-    :arefable?
-    :best
-    :empty-sequence?
-    :list-to-vector
-    :maximum
-    :maximum?
-    :minimum
-    :minimum?
-    :nconcf
-    :nthable?
-    :nth-from-end
-    :sequence?
-    :set-nthcdr
-    :simple-vector-to-list
-    :slice
-    :sort-on
-    :sort-order
-    :split
-    :the-last
-    :vector-to-list
-    :worst
-    ))
+  (:export :arefable?
+	   :best
+	   :empty-sequence?
+	   :join-symbol-to-all-preceeding
+	   :join-symbol-to-all-following
+	   :list-to-vector
+	   :maximum
+	   :maximum?
+	   :minimum
+	   :minimum?
+	   :nconcf
+	   :nthable?
+	   :nth-from-end
+	   :sequence?
+	   :set-nthcdr
+	   :simple-vector-to-list
+	   :slice
+	   :sort-on
+	   :sort-order
+	   :split
+	   :the-last
+	   :vector-to-list
+	   :worst))
 (in-package :cgore-sequence)
 
 
@@ -365,3 +365,72 @@ The slice argument may be any positive rational number."
       (incf index slice))
     (reverse result)))
 
+
+(defun join-symbol-to-all-preceeding (symbol list)
+  "This function takes a symbol and a list, and for every occurance of the
+symbol in the list, it joins it to the item preceeding it.  For example:
+> (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
+=> '(:10% :20% :30%)"
+  (assert (symbolp symbol))
+  (assert (listp list))
+  (aif (position symbol list)
+    ;;; There is at least one instance of the symbol in the list.  We will
+    ;;; therefore remove it and modify the previous item.
+    (progn
+      (assert (<= 1 it))
+      (let ((previous (nth (1- it) list)))
+        (setf (nth (1- it) list)
+              (intern (format nil "~A~A" previous symbol) "KEYWORD"))
+        ;; Recursively apply the modification to the entire list.
+        (join-symbol-to-all-preceeding symbol (remove symbol list :count 1))))
+    ;; Otherwise, we have no instances of the specified symbol in the list.
+    ;; Just return the list passed in unmodified.
+    list))
+
+(assert (equal (join-symbol-to-all-preceeding :% '(100 :%))
+               '(:100%)))
+(assert (equal (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
+               '(:10% :20% :30%)))
+(assert (equal (join-symbol-to-all-preceeding :% '(10 :55%))
+               '(10 :55%)))
+(assert (equal (join-symbol-to-all-preceeding :% '(1 2 3 4 5))
+               '(1 2 3 4 5)))
+(assert (equal (join-symbol-to-all-preceeding :% '(:a :b :c :d :e))
+               '(:a :b :c :d :e)))
+(assert (equal (join-symbol-to-all-preceeding :foo '(:bar :foo :baz :foo))
+               '(:barfoo :bazfoo)))
+
+
+(defun join-symbol-to-all-following (symbol list)
+  "This function takes a symbol and a list, and for every occurance of the
+symbol in the list, it joins it to the item following it.  For example:
+> (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
+=> '(:#10 :#20 :#30)"
+  (assert (symbolp symbol))
+  (assert (listp list))
+  (aif (position symbol list)
+    ;;; There is at least one instance of the symbol in the list.  We will
+    ;;; therefore remove it and modify the previous item.
+    (progn
+      (assert (< it (length list)))
+      (let ((next (nth (1+ it) list)))
+        (setf (nth (1+ it) list)
+              (intern (format nil "~A~A" symbol next) "KEYWORD"))
+        ;; Recursively apply the modification to the entire list.
+        (join-symbol-to-all-following symbol (remove symbol list :count 1))))
+    ;; Otherwise, we have no instances of the specified symbol in the list.
+    ;; Just return the list passed in unmodified.
+    list))
+
+(assert (equal (join-symbol-to-all-following :# '(:# :aabbcc))
+               '(:#aabbcc)))
+(assert (equal (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
+               '(:#10 :#20 :#30)))
+(assert (equal (join-symbol-to-all-following :# '(:#55 10))
+               '(:#55 10)))
+(assert (equal (join-symbol-to-all-following :# '(1 2 3 4 5))
+               '(1 2 3 4 5)))
+(assert (equal (join-symbol-to-all-following :# '(:a :b :c :d :e))
+               '(:a :b :c :d :e)))
+(assert (equal (join-symbol-to-all-following :foo '(:foo bar :foo :baz))
+               '(:foobar :foobaz)))
