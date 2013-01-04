@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2012, Christopher Mark Gore, All rights reserved.
+;;;; Copyright (C) 2005 -- 2013, Christopher Mark Gore, All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
 ;;;; Web: http://cgore.com
@@ -34,7 +34,7 @@
 (defpackage :cgore-random
   (:nicknames :random)
   (:use :common-lisp
-        :cgore-design-pattern)
+        :cgore-control)
   (:export
     :coin-toss
     :gauss

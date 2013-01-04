@@ -37,34 +37,34 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "2.0.0"
+  :version "2.1.0"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
-  :components ((:file "design-pattern")
+  :components ((:file "control")
                (:file "numeric"
-                      :depends-on ("design-pattern"))
+                      :depends-on ("control"))
                (:file "os"
-                      :depends-on ("design-pattern"
+                      :depends-on ("control"
                                    "string"))
                (:file "probability"
-                      :depends-on ("design-pattern"
+                      :depends-on ("control"
                                    "numeric"))
                (:file "random"
-                      :depends-on ("design-pattern"))
+                      :depends-on ("control"))
                (:file "sequence"
-                      :depends-on ("design-pattern"))
+                      :depends-on ("control"))
                (:file "string"
-                      :depends-on ("design-pattern"
+                      :depends-on ("control"
                                    "numeric"
                                    "sequence"))
                (:file "time-series"
-                      :depends-on ("design-pattern"
+                      :depends-on ("control"
                                    "numeric"
                                    "sequence"))
                (:file "truth"
-                      :depends-on ("design-pattern"))
+                      :depends-on ("control"))
                (:file "utilities"
-                      :depends-on ("design-pattern"
+                      :depends-on ("control"
                                    "numeric"
                                    "sequence"
                                    "string"

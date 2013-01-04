@@ -38,7 +38,7 @@
     :common-lisp
     #+cmu :extensions
     #+sbcl :sb-ext
-    :cgore-design-pattern
+    :cgore-control
     :cgore-numeric
     :cgore-sequence
     :cgore-string

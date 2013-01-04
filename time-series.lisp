@@ -36,7 +36,7 @@
   (:nicknames :time-series)
   (:use
     :common-lisp
-    :cgore-design-pattern
+    :cgore-control
     :cgore-numeric
     :cgore-sequence)
   (:export

@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2012, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2013, Christopher Mark Gore,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
@@ -36,7 +36,7 @@
   (:nicknames :probability)
   (:use
     :common-lisp
-    :cgore-design-pattern
+    :cgore-control
     :cgore-numeric)
   (:export
     :decaying-probability?
