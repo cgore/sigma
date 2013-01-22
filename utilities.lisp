@@ -45,6 +45,17 @@
     :cgore-time-series
     :cgore-truth)
   (:export
-    :it))
+    :*cgore-utilities-packages*
+    :use-all-cgore-utilities))
 (in-package :cgore-utilities)
 
+(defvar *cgore-utilities-packages*
+  '(:cgore-control
+    :cgore-numeric
+    :cgore-sequence
+    :cgore-string
+    :cgore-time-series
+    :cgore-truth))
+
+(defun use-all-cgore-utilities ()
+  (mapcar #'use-package *cgore-utilities-packages*))
