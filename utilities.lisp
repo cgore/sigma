@@ -55,7 +55,8 @@
     :cgore-sequence
     :cgore-string
     :cgore-time-series
-    :cgore-truth))
+    :cgore-truth
+    :cgore-utilities))
 
 (defun use-all-cgore-utilities ()
   (mapcar #'use-package *cgore-utilities-packages*))
