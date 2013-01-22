@@ -137,6 +137,13 @@ Note that the result of this is always positive, forming a sawtooth."
   (assert (sequence? sequence))
   (reduce #'+ sequence :key key :start start :end end :initial-value 0))
 
+(let ((1-to-100 (loop for i from 1 to 100 collect i)))
+  (assert (= 5050 (sum 1-to-100)))
+  (assert (= 3775 (sum 1-to-100 :start 50)))
+  (assert (= 265  (sum 1-to-100 :start 50 :end 55)))
+  (assert (= 55   (sum 1-to-100 :end 10)))
+  (assert (= 110  (sum 1-to-100 :end 10 :key (lambda (i) (* i 2)))))
+
 
 (defun unsigned-integer? (x)
   (and (integerp x)
