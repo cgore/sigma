@@ -35,7 +35,8 @@
 (defpackage :cgore-numeric
   (:nicknames :numeric)
   (:use :common-lisp
-        :cgore-control)
+        :cgore-control
+	:cgore-sequence)
   (:export :bit?
 	   :divf
 	   :fractional-part
