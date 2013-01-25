@@ -142,7 +142,7 @@ Note that the result of this is always positive, forming a sawtooth."
   (assert (= 3775 (sum 1-to-100 :start 50)))
   (assert (= 265  (sum 1-to-100 :start 50 :end 55)))
   (assert (= 55   (sum 1-to-100 :end 10)))
-  (assert (= 110  (sum 1-to-100 :end 10 :key (lambda (i) (* i 2)))))
+  (assert (= 110  (sum 1-to-100 :end 10 :key (lambda (i) (* i 2))))))
 
 
 (defun unsigned-integer? (x)
