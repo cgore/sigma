@@ -75,6 +75,18 @@
 (in-package :cgore-control)
 
 
+(defmacro aif (conditional t-action &optional nil-action)
+  "This is anaphoric IF, from Paul Graham's ``On Lisp'' page 190."
+  `(let ((it ,conditional))
+     (if it ,t-action ,nil-action)))
+
+
+(defmacro a?if (anaphor conditional t-action &optional nil-action)
+  "This is an anaphoric IF that allows for specification of the anaphor."
+  `(let ((,anaphor ,conditional))
+     (if ,anaphor ,t-action ,nil-action)))
+
+
 (defmacro aand (&rest arguments)
   "This is anaphoric AND, from Paul Graham's ``On Lisp'' page 191."
   (cond ((null arguments) t)
@@ -133,18 +145,6 @@
             (if ,sym
               (let ((it ,sym)) ,@(cdr cl1))
               (acond ,@(cdr clauses)))))))
-
-
-(defmacro aif (conditional t-action &optional nil-action)
-  "This is anaphoric IF, from Paul Graham's ``On Lisp'' page 190."
-  `(let ((it ,conditional))
-     (if it ,t-action ,nil-action)))
-
-
-(defmacro a?if (anaphor conditional t-action &optional nil-action)
-  "This is an anaphoric IF that allows for specification of the anaphor."
-  `(let ((,anaphor ,conditional))
-     (if ,anaphor ,t-action ,nil-action)))
 
 
 (defmacro aif-otherwise-nil (conditional t-action)
