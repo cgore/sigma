@@ -82,6 +82,20 @@
         (t `(aif ,(first arguments)
                   (aand ,@(rest arguments))))))
 
+(assert (eq nil (aand nil)))
+(assert (eq nil (aand nil nil nil)))
+(assert (eq nil (aand 1 2 3 nil 4 5 6)))
+(assert (= 1 (aand 1)))
+(assert (= 2 (aand 1 (* 2 it))))
+(assert (= 4 (aand 1
+		   (* 2 it)
+		   (* 2 it))))
+(assert (= 16 (aand 1
+		    (* 2 it)
+		    (* 2 it)
+		    (* 2 it)
+		    (* 2 it))))
+
 
 (defmacro a?and (anaphor &rest arguments)
   "This is an anaphoric AND that allows for the specification of the anaphor."
