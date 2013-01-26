@@ -78,18 +78,20 @@
   `(let ((it ,conditional))
      (if it ,t-action ,nil-action)))
 
-(assert (= 12 (aif 12 it)))
+(assert (eq 'foo (aif 'foo it)))
 (assert (eq 'no (aif nil 'yes 'no)))
 (assert (eq '(nil) (aif nil 'yes `(,it))))
+(assert (eq 'inner (aif 'outer (aif 'inner it))))
 
 (defmacro a?if (anaphor conditional t-action &optional nil-action)
   "This is an anaphoric IF that allows for specification of the anaphor."
   `(let ((,anaphor ,conditional))
      (if ,anaphor ,t-action ,nil-action)))
 
-(assert (= 12 (a?if foo 12 foo)))
+(assert (eq 'value (a?if foo 'value foo)))
 (assert (eq 'no (a?if foo nil 'yes 'no)))
 (assert (eq '(nil) (a?if foo nil 'yes `(,foo))))
+(assert (eq '(outer inner) (a?if foo 'outer (a?if bar 'inner `(,foo ,bar)))))
 
 (defmacro aand (&rest arguments)
   "This is anaphoric AND, from Paul Graham's ``On Lisp'' page 191."
