@@ -113,6 +113,8 @@
 		    (* 2 it)
 		    (* 2 it)
 		    (* 2 it))))
+(assert (= 2 (aand 100 (* 200 it)
+		   (aand 2 it))))
 
 
 (defmacro a?and (anaphor &rest arguments)
