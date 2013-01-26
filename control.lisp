@@ -31,7 +31,6 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-
 (defpackage :cgore-control
   (:nicknames :control)
   (:use :common-lisp)
@@ -74,18 +73,23 @@
 	   :while))
 (in-package :cgore-control)
 
-
 (defmacro aif (conditional t-action &optional nil-action)
   "This is anaphoric IF, from Paul Graham's ``On Lisp'' page 190."
   `(let ((it ,conditional))
      (if it ,t-action ,nil-action)))
 
+(assert (= 12 (aif 12 it)))
+(assert (eq 'no (aif nil 'yes 'no)))
+(assert (eq '(nil) (aif nil 'yes `(,it))))
 
 (defmacro a?if (anaphor conditional t-action &optional nil-action)
   "This is an anaphoric IF that allows for specification of the anaphor."
   `(let ((,anaphor ,conditional))
      (if ,anaphor ,t-action ,nil-action)))
 
+(assert (= 12 (a?if foo 12 foo)))
+(assert (eq 'no (a?if foo nil 'yes 'no)))
+(assert (eq '(nil) (a?if foo nil 'yes `(,foo))))
 
 (defmacro aand (&rest arguments)
   "This is anaphoric AND, from Paul Graham's ``On Lisp'' page 191."
