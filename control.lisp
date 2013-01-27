@@ -81,7 +81,7 @@
 
 (assert (eq 'foo (aif 'foo it)))
 (assert (eq 'no (aif nil 'yes 'no)))
-(assert (eq '(nil) (aif nil 'yes `(,it))))
+(assert (equal '(nil) (aif nil 'yes `(,it))))
 (assert (eq 'inner (aif 'outer (aif 'inner it))))
 
 (defmacro a?if (anaphor conditional t-action &optional nil-action)
@@ -91,8 +91,8 @@
 
 (assert (eq 'value (a?if foo 'value foo)))
 (assert (eq 'no (a?if foo nil 'yes 'no)))
-(assert (eq '(nil) (a?if foo nil 'yes `(,foo))))
-(assert (eq '(outer inner) (a?if foo 'outer (a?if bar 'inner `(,foo ,bar)))))
+(assert (equal '(nil) (a?if foo nil 'yes `(,foo))))
+(assert (equal '(outer inner) (a?if foo 'outer (a?if bar 'inner `(,foo ,bar)))))
 
 (defmacro aand (&rest arguments)
   "This is anaphoric AND, from Paul Graham's ``On Lisp'' page 191."
@@ -131,8 +131,8 @@
 (assert (= 1 (a?and foo 1)))
 (assert (= 2 (a?and foo 1 (* 2 foo))))
 (assert (= 6 (a?and foo 1 2 3 (a?and foo 4 5 6))))
-(assert (eq '(outer inner)
-	    (a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar)))))
+(assert (equal '(outer inner)
+	       (a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar)))))
 
 (defmacro alambda (parms &body body)
   "This is anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193."
