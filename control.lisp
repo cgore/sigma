@@ -1,4 +1,5 @@
 ;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
@@ -115,7 +116,7 @@
 		    (* 2 it))))
 (assert (= 2 (aand 100 (* 200 it)
 		   (aand 2 it))))
-
+(assert (= 6 (aand 1 2 3 (aand 4 5 6))))
 
 (defmacro a?and (anaphor &rest arguments)
   "This is an anaphoric AND that allows for the specification of the anaphor."
@@ -124,12 +125,19 @@
         (t `(a?if ,anaphor ,(first arguments)
                   (a?and ,anaphor ,@(rest arguments))))))
 
+(assert (eq nil (a?and foo nil)))
+(assert (eq nil (a?and foo nil nil nil)))
+(assert (eq nil (a?and foo 1 2 3 nil 4 5 6)))
+(assert (= 1 (a?and foo 1)))
+(assert (= 2 (a?and foo 1 (* 2 foo))))
+(assert (= 6 (a?and foo 1 2 3 (a?and foo 4 5 6))))
+(assert (eq '(outer inner)
+	    (a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar)))))
 
 (defmacro alambda (parms &body body)
   "This is anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193."
   `(labels ((self ,parms ,@body))
            #'self))
-
 
 (defmacro ablock (tag &rest args)
   "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 193."
@@ -141,7 +149,6 @@
                                (t `(let ((it ,(car args)))
                                         ,(self (cdr args))))))
                     args)))
-
 
 (defmacro acond (&rest clauses)
   "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 191."
