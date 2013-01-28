@@ -32,7 +32,6 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-
 (defpackage :cgore-string
   (:nicknames :string)
   (:use :common-lisp
@@ -51,10 +50,8 @@
 	   :to-string))
 (in-package :cgore-string)
 
-
 (defun character-range (start end)
   (loop for i from (char-code start) to (char-code end) collect (code-char i)))
-
 
 (defun character-ranges (&rest rest)
   (cond ((<= (length rest) 1)
@@ -65,7 +62,6 @@
          (concatenate 'list
                       (character-range (car rest) (cadr rest))
                       (apply #'character-ranges (cddr rest))))))
-
 
 (defun escape-tildes (string)
   (let ((input (vector-to-list string))
@@ -78,7 +74,6 @@
            (push current result))
     (strcat (reverse result))))
 
-
 (defun replace-char (string from-char to-char)
   "Replaces every instance of FROM-CHAR with TO-CHAR."
   (assert (stringp string))
@@ -86,7 +81,6 @@
         (if (char= (char string i) from-char)
           (setf (char string i) to-char)))
   string)
-
 
 (defmethod split ((string string)
                    separators
@@ -97,7 +91,6 @@
   (mapcar (rcurry #'coerce 'string)
           (split (coerce string 'list) separators
                  :key key :test test :remove-separators? remove-separators?)))
-
 
 (defun string-join (strings &optional (connecting-string ""))
   (assert (or (stringp strings)
@@ -111,21 +104,16 @@
                      (concatenate 'string connecting-string string))
                    (rest strings)))))
 
-
 (defun stringify (argument)
+  "The STRINGIFY function takes in an argument of any type and converts it to a string.
+   This produces the string as from the ~A directive to FORMAT.  Also see TO-STRING."
   (format nil "~A" argument))
 
-
-(defun strcat (&rest rest)
-  (apply #'concatenate 'string rest))
-
-
-(defun strmult (count &rest strings)
-  (apply #'strcat (loop for i from 1 to count collect (apply #'strcat strings))))
-
+(assert (string= "12" (stringify 12)))
 
 (defun to-string (s)
-  "Converts common types of things into a string."
+  "The TO-STRING function converts common types of things into a string.
+   It handles some special cases more usefully than STRINGIFY for most user-facing output."
   (cond ((null s) "")
         ((symbolp s) (string-downcase (symbol-name s)))
         ((stringp s) s)
@@ -135,3 +123,17 @@
 (assert (equal (to-string :foo) "foo"))
 (assert (equal (to-string "hello") "hello"))
 (assert (equal (to-string "Hello, world!") "Hello, world!"))
+
+(defun strcat (&rest rest)
+  "The STRCAT function takes in a list of things concatenates their string versions."
+  (apply #'concatenate 'string (mapcar #'to-string rest)))
+
+(assert (string= "foobar" (strcat "foo" "bar")))
+(assert (string= "foo123bar" (strcat "foo" 123 "bar")))
+(assert (string= "" (strcat)))
+(assert (string= "foo" (strcat "foo")))
+(assert (string= "1234" (strcat 1 2 3 4)))
+(assert (string= "1" (strcat 1)))
+
+(defun strmult (count &rest strings)
+  (apply #'strcat (loop for i from 1 to count collect (apply #'strcat strings))))
