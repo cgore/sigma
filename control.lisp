@@ -41,7 +41,6 @@
 	   :acond
 	   :aif
 	   :a?if
-	   :aif-otherwise-nil
 	   :awhen
 	   :a?when
 	   :awhile
@@ -63,7 +62,6 @@
 	   :multicond
 	   :operator-to-function
 	   :opf
-	   :otherwise-nil
 	   :rcompose
 	   :rcurry
 	   :swap
@@ -160,9 +158,6 @@
             (if ,sym
               (let ((it ,sym)) ,@(cdr cl1))
               (acond ,@(cdr clauses)))))))
-
-(defmacro aif-otherwise-nil (conditional t-action)
-  `(aif ,conditional ,t-action nil))
 
 (defmacro awhen (test-form &body body)
   "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
@@ -347,9 +342,6 @@ with it doing the obvious thing, whereas you cannot do
 in any Common Lisp I have used."
   `(setf ,variable
          (funcall ,operator ,variable ,@arguments)))
-
-(defmacro otherwise-nil (conditional t-action)
-  `(if ,conditional ,t-action nil))
 
 (defun rcurry (function &rest arguments)
   "This function takes in a function and some of its ending arguments, and
