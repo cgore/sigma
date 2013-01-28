@@ -161,20 +161,16 @@
               (let ((it ,sym)) ,@(cdr cl1))
               (acond ,@(cdr clauses)))))))
 
-
 (defmacro aif-otherwise-nil (conditional t-action)
   `(aif ,conditional ,t-action nil))
-
 
 (defmacro awhen (test-form &body body)
   "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
   `(aif ,test-form (progn ,@body)))
 
-
 (defmacro a?when (anaphor test-form &body body)
   "This is an anaphoric WHEN that allows for the specification of the anaphor."
   `(a?if ,anaphor ,test-form (progn ,@body)))
-
 
 (defmacro awhile (expression &body body)
   "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191."
@@ -182,13 +178,11 @@
        ((not it))
      ,@body))
 
-
 (defmacro a?while (anaphor expression &body body)
   "This is an anaphoric WHILE that allows for the specification of the anaphor."
   `(do ((,anaphor ,expression ,expression))
        ((not ,anaphor))
      ,@body))
-
 
 (defun rcompose (&rest functions)
   "A version of COMPOSE in reverse order."
@@ -203,7 +197,6 @@
                 rest
                 :initial-value (apply function-1 arguments)))))
 
-
 (defun compose (&rest functions)
   "This function composes a single function from a list of several functions
 such that the new function is equivalent to calling the functions in
@@ -212,7 +205,6 @@ Common Lisp'' which is  based upon the compose function from Dylan, a
 programming language which he describes as a ``cross between Scheme and Common
 Lisp, with a syntax like Pascal.''"
   (apply #'rcompose (reverse functions)))
-
 
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
@@ -232,7 +224,6 @@ and Common Lisp, with a syntax like Pascal.''"
           (and (apply predicate arguments)
                (apply conjoinment arguments))))))
 
-
 (defun curry (function &rest arguments)
   "This function takes in a function and some of its arguments, and returns a
 function that expects the rest of the required arguments.  This is from Paul
@@ -244,12 +235,10 @@ and Common Lisp, with a syntax like Pascal.''"
   #'(lambda (&rest more-arguments)
       (apply function (append arguments more-arguments))))
 
-
 #-cmu
 (defmacro deletef (item sequence &rest rest)
   `(setf ,sequence
          (delete ,item ,sequence ,@rest)))
-
 
 (defun disjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
@@ -269,13 +258,11 @@ and Common Lisp, with a syntax like Pascal.''"
           (or (apply predicate arguments)
               (apply disjoinment arguments))))))
 
-
 (defmacro do-until (conditional &rest body)
   "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
 construct in the C programming language."
   `(do-while (not ,conditional)
      ,@body))
-
 
 (defmacro do-while (conditional &rest body)
   "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
@@ -284,14 +271,11 @@ construct in the C programming language."
           (while ,conditional
                  ,@body)))
 
-
 (defgeneric duplicate (item))
-
 
 (defmethod duplicate ((list list))
   "This returns a deeply new duplicate of the list."
   (mapcar 'duplicate list))
-
 
 (defmethod duplicate ((array array))
   "This returns a deeply new duplicate of the array."
@@ -304,19 +288,15 @@ construct in the C programming language."
               (duplicate (row-major-aref array index)))))
     result))
 
-
 (defmethod duplicate ((number number))
   number)
-
 
 (defmethod duplicate ((symbol symbol))
   symbol)
 
-
 (defmethod duplicate ((function function))
   ;; XXX: I believe this is correct, but I am not really sure.
   function)
-
 
 (defmacro for (initial conditional step-action &rest body)
   "A FOR macro, much like the ``for'' in the C programming language.
@@ -331,10 +311,8 @@ Generally this should not be used, but instead the native looping methods."
      (while ,conditional
        (prog1 (progn ,@body) ,step-action))))
 
-
 (defmacro forever (&rest body)
   `(while t ,@body))
-
 
 (defun function-alias (function &rest aliases)
   "This produces one or more aliases (alternate names) for a function.
@@ -343,9 +321,7 @@ For example, you might do something like:
   (loop for alias in aliases
         do (setf (fdefinition alias) (fdefinition function))))
 
-
 (function-alias 'function-alias 'function-aliases) ; This line seemed fitting.
-
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."
@@ -354,11 +330,9 @@ For example, you might do something like:
                  (mapcar #'eval (rest clause))))
            ',clauses))
 
-
 (defun operator-to-function (operator)
   (lambda (&rest rest)
     (eval `(,operator ,@rest))))
-
 
 (defmacro opf (operator variable &rest arguments)
   "OPF is a generic operate-and-store macro, along the lines of INCF and DECF,
@@ -374,10 +348,8 @@ in any Common Lisp I have used."
   `(setf ,variable
          (funcall ,operator ,variable ,@arguments)))
 
-
 (defmacro otherwise-nil (conditional t-action)
   `(if ,conditional ,t-action nil))
-
 
 (defun rcurry (function &rest arguments)
   "This function takes in a function and some of its ending arguments, and
@@ -389,7 +361,6 @@ Scheme and Common Lisp, with a syntax like Pascal.''"
               (symbolp function)))
   #'(lambda (&rest more-arguments)
       (apply function (append more-arguments arguments))))
-
 
 (defmacro swap (x y)
   "A simple SWAP macro.  The values of the first form and the second form are
@@ -403,31 +374,48 @@ swapped with each other."
   (assert (= y 15))
   (assert (= x 37)))
 
-
 (defmacro swap-unless (predicate x y)
   "This macro calls SWAP unless the predicate evaluates to true."
   `(unless (funcall ,predicate ,x ,y)
      (swap ,x ,y)))
 
+(let ((smaller 1)
+      (larger 2))
+  (swap-unless #'< smaller larger)
+  (assert (eq smaller 1))
+  (assert (eq larger 2)))
 
 (defmacro swap-when (predicate x y)
   "This macro calls SWAP only when the predicate evaluates to true."
   `(when (funcall ,predicate ,x ,y)
      (swap ,x ,y)))
 
+(let ((smaller 2)
+      (larger 1))
+  (swap-when #'> smaller larger)
+  (assert (eq smaller 1))
+  (assert (eq larger 2)))
 
 (defun unimplemented ()
   (assert nil))
-
 
 (defmacro until (conditional &rest body)
   "An UNTIL loop construct."
   `(while (not ,conditional)
      ,@body))
 
+(let ((x 0))
+  (until (<= 10 x)
+    (incf x))
+  (assert (= x 10)))
 
 (defmacro while (conditional &rest body)
   "A WHILE macro, operating in a matter similar to the while loop in C."
   `(do ()
      ((not ,conditional))
      ,@body))
+
+(let ((x 0))
+  (while (< x 10)
+    (incf x))
+  (assert (= x 10)))
