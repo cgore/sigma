@@ -47,7 +47,8 @@
     :cgore-truth)
   (:export
     :*cgore-utilities-packages*
-    :use-all-cgore-utilities))
+    :use-all-cgore-utilities
+    :use-all-utilities))
 (in-package :cgore-utilities)
 
 (defvar *cgore-utilities-packages*
@@ -61,3 +62,6 @@
 
 (defun use-all-cgore-utilities ()
   (mapcar #'use-package *cgore-utilities-packages*))
+
+(defun use-all-utilities ()
+  (use-all-cgore-utilities))
