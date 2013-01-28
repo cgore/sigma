@@ -391,16 +391,6 @@ swapped with each other."
 (defun unimplemented ()
   (assert nil))
 
-(defmacro until (conditional &rest body)
-  "An UNTIL loop construct."
-  `(while (not ,conditional)
-     ,@body))
-
-(let ((x 0))
-  (until (<= 10 x)
-    (incf x))
-  (assert (= x 10)))
-
 (defmacro while (conditional &rest body)
   "A WHILE macro, operating in a matter similar to the while loop in C."
   `(do ()
@@ -409,5 +399,15 @@ swapped with each other."
 
 (let ((x 0))
   (while (< x 10)
+    (incf x))
+  (assert (= x 10)))
+
+(defmacro until (conditional &rest body)
+  "An UNTIL loop construct.  It operates in the negative sense as WHILE."
+  `(while (not ,conditional)
+     ,@body))
+
+(let ((x 0))
+  (until (<= 10 x)
     (incf x))
   (assert (= x 10)))
