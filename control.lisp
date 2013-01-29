@@ -156,6 +156,16 @@
                                         ,(self (cdr args))))))
                     args)))
 
+(let ((x 1))
+  (ablock foo
+	  (setf x (* x 2))
+	  (setf x (* it 2))
+	  (setf x (* it 3))
+	  (return-from foo)
+	  (setf x 1234))
+  (assert (= x (* 1 2 2 3))))
+			 
+
 (defmacro acond (&rest clauses)
   "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 191."
   (if (null clauses)
