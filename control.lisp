@@ -85,7 +85,7 @@
 (assert (= 30 (aif (* 2 3) (* 5 it))))
 
 (defmacro a?if (anaphor conditional t-action &optional nil-action)
-  "This is an anaphoric IF that allows for specification of the anaphor."
+  "A?IF This is a variant of AIF that allows for specification of the anaphor."
   `(let ((,anaphor ,conditional))
      (if ,anaphor ,t-action ,nil-action)))
 
