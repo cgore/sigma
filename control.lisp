@@ -133,9 +133,17 @@
 	       (a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar)))))
 
 (defmacro alambda (parms &body body)
-  "This is anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193."
+  "This is anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193.
+   It works like LAMBDA, but you can call it recursively with SELF."
   `(labels ((self ,parms ,@body))
            #'self))
+
+(assert (= (* 10 9 8 7 6 5 4 3 2 1)
+	   (funcall (alambda (x) ; Simple recursive factorial example.
+		      (if (* x 0)
+			  1
+			  (* x (self (1- x)))))
+		    10))
 
 (defmacro ablock (tag &rest args)
   "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 193."
