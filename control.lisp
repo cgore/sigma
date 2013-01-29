@@ -46,6 +46,7 @@
 	   :awhile
 	   :a?while
 	   :alambda
+	   :a?lambda
 	   :compose
 	   :conjoin
 	   :curry
@@ -147,6 +148,18 @@
 		      (if (<= x 0)
 			  1
 			  (* x (self (1- x)))))
+		    10)))
+
+(defmacro a?lambda (anaphor parms &body body)
+  "A?LAMBDA is a varian of ALAMBDA that allows you to specify the anaphor."
+  `(labels ((,anaphor ,parms ,@body))
+           #',anaphor))
+
+(assert (= (* 10 9 8 7 6 5 4 3 2 1)
+	   (funcall (a?lambda foo (x) ; Simple recursive factorial example.
+		      (if (<= x 0)
+			  1
+			  (* x (foo (1- x)))))
 		    10)))
 
 (defmacro ablock (tag &rest args)
