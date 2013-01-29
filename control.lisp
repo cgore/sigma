@@ -73,7 +73,8 @@
 (in-package :cgore-control)
 
 (defmacro aif (conditional t-action &optional nil-action)
-  "This is anaphoric IF, from Paul Graham's ``On Lisp'' page 190."
+  "AIF is an anaphoric IF, from Paul Graham's ``On Lisp'' page 190.
+   It works like IF, but automatically sets IT to the conditional."
   `(let ((it ,conditional))
      (if it ,t-action ,nil-action)))
 
@@ -81,6 +82,7 @@
 (assert (eq 'no (aif nil 'yes 'no)))
 (assert (equal '(nil) (aif nil 'yes `(,it))))
 (assert (eq 'inner (aif 'outer (aif 'inner it))))
+(assert (= 30 (aif (* 2 3) (* 5 it))))
 
 (defmacro a?if (anaphor conditional t-action &optional nil-action)
   "This is an anaphoric IF that allows for specification of the anaphor."
@@ -93,7 +95,8 @@
 (assert (equal '(outer inner) (a?if foo 'outer (a?if bar 'inner `(,foo ,bar)))))
 
 (defmacro aand (&rest arguments)
-  "This is anaphoric AND, from Paul Graham's ``On Lisp'' page 191."
+  "AAND is an anaphoric AND, from Paul Graham's ``On Lisp'' page 191.
+   It works like AND, but defines IT over and over for each argument."
   (cond ((null arguments) t)
         ((null (rest arguments)) (first arguments))
         (t `(aif ,(first arguments)
@@ -133,7 +136,7 @@
 	       (a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar)))))
 
 (defmacro alambda (parms &body body)
-  "This is anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193.
+  "ALAMBDA is an anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193.
    It works like LAMBDA, but you can call it recursively with SELF."
   `(labels ((self ,parms ,@body))
            #'self))
@@ -146,8 +149,8 @@
 		    10))
 
 (defmacro ablock (tag &rest args)
-  "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 193.
-   It works like COND, but defines IT over and over for each argument."
+  "ABLOCK is an anaphoric BLOCK, from Paul Graham's ``On Lisp'' page 193.
+   It works like BLOCK, but defines IT over and over for each argument."
   `(block ,tag
           ,(funcall (alambda (args)
                              (case (length args)
@@ -166,9 +169,9 @@
 	  (setf x 1234))
   (assert (= x (* 1 2 2 3))))
 			 
-
 (defmacro acond (&rest clauses)
-  "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 191."
+  "ACOND is an anaphoric COND, from Paul Graham's ``On Lisp'' page 191.
+   It works like COND, but defines IT over and over for each argument."
   (if (null clauses)
     nil
     (let ((cl1 (car clauses))
