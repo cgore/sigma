@@ -146,7 +146,8 @@
 		    10))
 
 (defmacro ablock (tag &rest args)
-  "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 193."
+  "This is anaphoric COND, from Paul Graham's ``On Lisp'' page 193.
+   It works like COND, but defines IT over and over for each argument."
   `(block ,tag
           ,(funcall (alambda (args)
                              (case (length args)
