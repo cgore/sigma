@@ -37,7 +37,7 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "2.2.3"
+  :version "2.2.4"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
   :components ((:file "control")

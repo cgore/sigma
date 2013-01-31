@@ -38,6 +38,7 @@
   (:export :aand
 	   :a?and
 	   :ablock
+	   :a?block
 	   :acond
 	   :aif
 	   :a?if
@@ -151,7 +152,7 @@
 		    10)))
 
 (defmacro a?lambda (anaphor parms &body body)
-  "A?LAMBDA is a varian of ALAMBDA that allows you to specify the anaphor."
+  "A?LAMBDA is a variant of ALAMBDA that allows you to specify the anaphor."
   `(labels ((,anaphor ,parms ,@body))
            #',anaphor))
 
@@ -179,6 +180,26 @@
 	  (setf x (* x 2))
 	  (setf x (* it 2))
 	  (setf x (* it 3))
+	  (return-from foo)
+	  (setf x 1234))
+  (assert (= x (* 1 2 2 3))))
+			 
+(defmacro a?block (tag anaphor &rest args)
+  "A?BLOCK is a variant of ABLOCK that allows you to specify the anaphor."
+  `(block ,tag
+          ,(funcall (alambda (args)
+                             (case (length args)
+                               (0 nil)
+                               (1 (car args))
+                               (t `(let ((,anaphor ,(car args)))
+                                        ,(self (cdr args))))))
+                    args)))
+
+(let ((x 1))
+  (a?block foo bar
+	  (setf x (* x 2))
+	  (setf x (* bar 2))
+	  (setf x (* bar 3))
 	  (return-from foo)
 	  (setf x 1234))
   (assert (= x (* 1 2 2 3))))
