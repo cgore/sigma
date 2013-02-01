@@ -220,9 +220,15 @@
   "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
   `(aif ,test-form (progn ,@body)))
 
+(assert (= 24 (awhen 12 (* 2 it))))
+(assert (null (awhen nil (* 2 it))))
+
 (defmacro a?when (anaphor test-form &body body)
   "This is an anaphoric WHEN that allows for the specification of the anaphor."
   `(a?if ,anaphor ,test-form (progn ,@body)))
+
+(assert (= 24 (a?when foo 12 (* 2 foo))))
+(assert (null (a?when foo nil (* 2 foo))))
 
 (defmacro awhile (expression &body body)
   "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191."
