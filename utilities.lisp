@@ -40,6 +40,7 @@
     #+sbcl :sb-ext
     :cgore-control
     :cgore-numeric
+    :cgore-os
     :cgore-sequence
     :cgore-string
     :cgore-time-series
@@ -53,6 +54,7 @@
 (defvar *cgore-utilities-packages*
   '(:cgore-control
     :cgore-numeric
+    :cgore-os
     :cgore-sequence
     :cgore-string
     :cgore-time-series
