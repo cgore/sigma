@@ -216,6 +216,13 @@
               (let ((it ,sym)) ,@(cdr cl1))
               (acond ,@(cdr clauses)))))))
 
+(let ((a nil)
+      (b nil)
+      (c 3))
+  (assert (= c (acond (a :foo)
+		      (b :bar)
+		      (c it)))))
+
 (defmacro awhen (test-form &body body)
   "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
   `(aif ,test-form (progn ,@body)))
