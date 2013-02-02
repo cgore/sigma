@@ -40,6 +40,7 @@
 	   :ablock
 	   :a?block
 	   :acond
+	   :a?cond
 	   :aif
 	   :a?if
 	   :awhen
@@ -222,6 +223,25 @@
   (assert (= c (acond (a :foo)
 		      (b :bar)
 		      (c it)))))
+
+(defmacro a?cond (anaphor &rest clauses)
+  "A?COND is a variant of ACOND that allows you to specify the anaphor."
+  (if (null clauses)
+    nil
+    (let ((cl1 (car clauses))
+          (sym (gensym)))
+      `(let ((,sym ,(car cl1)))
+            (if ,sym
+              (let ((,anaphor ,sym)) ,@(cdr cl1))
+              (a?cond ,anaphor ,@(cdr clauses)))))))
+
+(let ((a nil)
+      (b nil)
+      (c 3))
+  (assert (= c (a?cond baz
+		       (a :foo)
+		       (b :bar)
+		       (c baz)))))
 
 (defmacro awhen (test-form &body body)
   "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
