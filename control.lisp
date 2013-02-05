@@ -263,6 +263,10 @@
        ((not it))
      ,@body))
 
+(let ((i 0))
+  (assert (null (awhile (< i 10) (incf i))))
+  (assert (= i 10)))
+
 (defmacro a?while (anaphor expression &body body)
   "This is an anaphoric WHILE that allows for the specification of the anaphor."
   `(do ((,anaphor ,expression ,expression))
