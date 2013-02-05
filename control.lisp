@@ -485,6 +485,8 @@ swapped with each other."
 (defun unimplemented ()
   (assert nil))
 
+;;; TODO: It would be nice if this returned the last evaluated element of
+;;;       the body instead of the conditional.
 (defmacro while (conditional &rest body)
   "A WHILE macro, operating in a matter similar to the while loop in C."
   `(do ()
