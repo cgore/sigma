@@ -266,12 +266,28 @@
 (let ((i 0))
   (assert (null (awhile (< i 10) (incf i))))
   (assert (= i 10)))
+(let ((forward '(1 2 3 4 5))
+      (backward nil))
+  (assert (null (awhile (pop forward)
+		  (push it backward))))
+  (assert (null forward))
+  (assert (equal '(5 4 3 2 1) backward)))
 
 (defmacro a?while (anaphor expression &body body)
   "This is an anaphoric WHILE that allows for the specification of the anaphor."
   `(do ((,anaphor ,expression ,expression))
        ((not ,anaphor))
      ,@body))
+
+(let ((i 0))
+  (assert (null (a?while foo (< i 10) (incf i))))
+  (assert (= i 10)))
+(let ((forward '(1 2 3 4 5))
+      (backward nil))
+  (assert (null (a?while number (pop forward)
+		  (push number backward))))
+  (assert (null forward))
+  (assert (equal '(5 4 3 2 1) backward)))
 
 (defun rcompose (&rest functions)
   "A version of COMPOSE in reverse order."
