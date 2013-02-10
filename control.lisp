@@ -302,6 +302,12 @@
                 rest
                 :initial-value (apply function-1 arguments)))))
 
+(let ((numbers '(1 2 3 4 5 6 7 8 9)))
+  (assert (equal (mapcar (lambda (number)
+			   (sin (cos number)))
+			 numbers)
+		 (mapcar (rcompose #'cos #'sin) numbers))))
+
 (defun compose (&rest functions)
   "This function composes a single function from a list of several functions
 such that the new function is equivalent to calling the functions in
@@ -310,6 +316,12 @@ Common Lisp'' which is  based upon the compose function from Dylan, a
 programming language which he describes as a ``cross between Scheme and Common
 Lisp, with a syntax like Pascal.''"
   (apply #'rcompose (reverse functions)))
+
+(let ((numbers '(1 2 3 4 5 6 7 8 9)))
+  (assert (equal (mapcar (lambda (number)
+			   (sin (cos number)))
+			 numbers)
+		 (mapcar (compose #'sin #'cos) numbers))))
 
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
