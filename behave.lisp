@@ -1,4 +1,5 @@
 ;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
@@ -31,47 +32,35 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :asdf)
+(defpackage :cgore-behave
+  (:nicknames :behave)
+  (:use :common-lisp)
+  (:export :should
+	   :should-not
+	   :should-be-null
+	   :should=
+	   :should-eq
+	   :should-equal
+	   :should-string=))
+(in-package :cgore-behave)
 
-(defsystem "cgore-utilities"
-  :description "This is a set of generic utility functions and macros that I
-           use throughout my Common Lisp code pretty much everywhere.  I find
-           them useful, and hopefully you do too."
-  :version "2.3.0"
-  :author "Christopher Mark Gore <cgore@cgore.com>"
-  :license "BSD-style"
-  :components ((:file "behave")
-	       (:file "control"
-		      :depends-on ("behave"))
-               (:file "numeric"
-                      :depends-on ("control"
-				   "sequence"))
-               (:file "os"
-                      :depends-on ("control"
-                                   "string"))
-               (:file "probability"
-                      :depends-on ("control"
-                                   "numeric"))
-               (:file "random"
-                      :depends-on ("control"))
-               (:file "sequence"
-                      :depends-on ("control"))
-               (:file "string"
-                      :depends-on ("control"
-                                   "numeric"
-                                   "sequence"))
-               (:file "time-series"
-                      :depends-on ("control"
-                                   "numeric"
-                                   "sequence"))
-               (:file "truth"
-                      :depends-on ("control"))
-               (:file "utilities"
-                      :depends-on ("behave"
-				   "control"
-                                   "numeric"
-				   "os"
-                                   "sequence"
-                                   "string"
-                                   "time-series"
-                                   "truth"))))
+(defmacro should (test &rest arguments)
+  `(assert (funcall ,test ,@arguments)))
+
+(defmacro should-not (test &rest arguments)
+  `(assert (not (funcall ,test ,@arguments))))
+
+(defmacro should-be-null (&rest arguments)
+  `(should #'null ,@arguments))
+
+(defmacro should= (&rest arguments)
+  `(should #'= ,@arguments))
+
+(defmacro should-eq (&rest arguments)
+  `(should #'eq ,@arguments))
+
+(defmacro should-equal (&rest arguments)
+  `(should #'equal ,@arguments))
+
+(defmacro should-string= (&rest arguments)
+  `(should #'string= ,@arguments))

@@ -38,6 +38,7 @@
     :common-lisp
     #+cmu :extensions
     #+sbcl :sb-ext
+    :cgore-behave
     :cgore-control
     :cgore-numeric
     :cgore-os
@@ -52,7 +53,8 @@
 (in-package :cgore-utilities)
 
 (defvar *cgore-utilities-packages*
-  '(:cgore-control
+  '(:cgore-behave
+    :cgore-control
     :cgore-numeric
     :cgore-os
     :cgore-sequence
