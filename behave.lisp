@@ -37,11 +37,7 @@
   (:use :common-lisp)
   (:export :should
 	   :should-not
-	   :should-be-null
-	   :should=
-	   :should-eq
-	   :should-equal
-	   :should-string=))
+	   :should-be-null))
 (in-package :cgore-behave)
 
 (defmacro should (test &rest arguments)
@@ -53,14 +49,38 @@
 (defmacro should-be-null (&rest arguments)
   `(should #'null ,@arguments))
 
-(defmacro should= (&rest arguments)
-  `(should #'= ,@arguments))
+(defun should-macro-constructor (should-prefix test-function)
+  (assert (symbolp should-prefix))
+  (assert (symbolp test-function))
+  (let ((macro-name (intern (concatenate 'string
+					 (symbol-name should-prefix)
+					 (symbol-name test-function)))))
+    (eval `(progn (defmacro ,macro-name (&rest arguments)
+		    `(should #',',test-function ,@arguments))
+		  (export ',macro-name)))))
 
-(defmacro should-eq (&rest arguments)
-  `(should #'eq ,@arguments))
+(loop for test-function in '(=
+			     /=
+			     <
+			     >
+			     <=
+			     >=)
+   do (should-macro-constructor 'should test-function))
 
-(defmacro should-equal (&rest arguments)
-  `(should #'equal ,@arguments))
-
-(defmacro should-string= (&rest arguments)
-  `(should #'string= ,@arguments))
+(loop for test-function in '(eq
+			     eql
+			     equal
+			     equalp
+			     string=
+			     string/=
+			     string<
+			     string>
+			     string<=
+			     string>=
+			     string-equal
+			     string-not-equal
+			     string-lessp
+			     string-greaterp
+			     string-not-greaterp
+			     string-not-lessp)
+     do (should-macro-constructor 'should- test-function))
