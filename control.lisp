@@ -184,7 +184,7 @@
 	  (setf x (* it 3))
 	  (return-from foo)
 	  (setf x 1234))
-  (assert (= x (* 1 2 2 3))))
+  (should= x (* 1 2 2 3)))
 			 
 (defmacro a?block (tag anaphor &rest args)
   "A?BLOCK is a variant of ABLOCK that allows you to specify the anaphor."
@@ -221,9 +221,9 @@
 (let ((a nil)
       (b nil)
       (c 3))
-  (assert (= c (acond (a :foo)
-		      (b :bar)
-		      (c it)))))
+  (should= c (acond (a :foo)
+		    (b :bar)
+		    (c it))))
 
 (defmacro a?cond (anaphor &rest clauses)
   "A?COND is a variant of ACOND that allows you to specify the anaphor."
@@ -512,7 +512,7 @@ swapped with each other."
   (should-eq larger 2))
 
 (defun unimplemented ()
-  (assert nil))
+  (error "This is not yet implemented."))
 
 ;;; TODO: It would be nice if this returned the last evaluated element of
 ;;;       the body instead of the conditional.
