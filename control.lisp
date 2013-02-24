@@ -184,7 +184,8 @@
 	  (setf x (* it 3))
 	  (return-from foo)
 	  (setf x 1234))
-  (should= x (* 1 2 2 3)))
+  (should= x (* 1 2 2 3))
+  (should/= x 1234))
 			 
 (defmacro a?block (tag anaphor &rest args)
   "A?BLOCK is a variant of ABLOCK that allows you to specify the anaphor."
@@ -204,7 +205,8 @@
 	  (setf x (* bar 3))
 	  (return-from foo)
 	  (setf x 1234))
-  (should= x (* 1 2 2 3)))
+  (should= x (* 1 2 2 3))
+  (should/= x 1234))
 			 
 (defmacro acond (&rest clauses)
   "ACOND is an anaphoric COND, from Paul Graham's ``On Lisp'' page 191.
@@ -250,6 +252,10 @@
 
 (should= 24 (awhen 12 (* 2 it)))
 (should-be-null (awhen nil (* 2 it)))
+(let* ((it :foo)
+       (result (awhen :bar it)))
+  (should-not-eq result :foo)
+  (should-eq result :bar))
 
 (defmacro a?when (anaphor test-form &body body)
   "This is an anaphoric WHEN that allows for the specification of the anaphor."
@@ -257,6 +263,10 @@
 
 (should= 24 (a?when foo 12 (* 2 foo)))
 (should-be-null (a?when foo nil (* 2 foo)))
+(let* ((baz :foo)
+       (result (a?when baz :bar baz)))
+  (should-not-eq result :foo)
+  (should-eq result :bar))
 
 (defmacro awhile (expression &body body)
   "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191."
@@ -342,6 +352,14 @@ and Common Lisp, with a syntax like Pascal.''"
           (and (apply predicate arguments)
                (apply conjoinment arguments))))))
 
+(flet ((%2? (i)
+	 (zerop (mod i 2)))
+       (%3? (i)
+	 (zerop (mod i 3))))
+  (loop for i from 1 to 100
+     do (should-eq (and (%2? i) (%3? i))
+		   (funcall (conjoin #'%2? #'%3?) i))))
+
 (defun curry (function &rest arguments)
   "This function takes in a function and some of its arguments, and returns a
 function that expects the rest of the required arguments.  This is from Paul
@@ -352,6 +370,12 @@ and Common Lisp, with a syntax like Pascal.''"
               (symbolp function)))
   #'(lambda (&rest more-arguments)
       (apply function (append arguments more-arguments))))
+
+#|
+(loop for i from 1 to 100
+     do (should= (funcall (curry #'sin #'cos #'tan) i)
+		 (sin (cos (tan i)))))
+|#
 
 #-cmu
 (defmacro deletef (item sequence &rest rest)
@@ -376,18 +400,14 @@ and Common Lisp, with a syntax like Pascal.''"
           (or (apply predicate arguments)
               (apply disjoinment arguments))))))
 
-(defmacro do-until (conditional &rest body)
-  "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
-construct in the C programming language."
-  `(do-while (not ,conditional)
-     ,@body))
 
-(defmacro do-while (conditional &rest body)
-  "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
-  programming language."
-  `(progn ,@body
-          (while ,conditional
-                 ,@body)))
+(flet ((%2? (i)
+	 (zerop (mod i 2)))
+       (%3? (i)
+	 (zerop (mod i 3))))
+  (loop for i from 1 to 100
+     do (should-eq (or (%2? i) (%3? i))
+		   (funcall (disjoin #'%2? #'%3?) i))))
 
 (defgeneric duplicate (item))
 
@@ -477,6 +497,12 @@ Scheme and Common Lisp, with a syntax like Pascal.''"
   #'(lambda (&rest more-arguments)
       (apply function (append more-arguments arguments))))
 
+#|
+(loop for i from 1 to 100
+     do (should= (funcall (curry #'sin #'cos #'tan) i)
+		 (tan (cos (sin i)))))
+|#
+
 (defmacro swap (x y)
   "A simple SWAP macro.  The values of the first form and the second form are
 swapped with each other."
@@ -497,8 +523,8 @@ swapped with each other."
 (let ((smaller 1)
       (larger 2))
   (swap-unless #'< smaller larger)
-  (should-eq smaller 1)
-  (should-eq larger 2))
+  (should= smaller 1)
+  (should= larger 2))
 
 (defmacro swap-when (predicate x y)
   "This macro calls SWAP only when the predicate evaluates to true."
@@ -508,8 +534,8 @@ swapped with each other."
 (let ((smaller 2)
       (larger 1))
   (swap-when #'> smaller larger)
-  (should-eq smaller 1)
-  (should-eq larger 2))
+  (should= smaller 1)
+  (should= larger 2))
 
 (defun unimplemented ()
   (error "This is not yet implemented."))
@@ -527,12 +553,35 @@ swapped with each other."
     (incf x))
   (should= x 10))
 
+(defmacro do-while (conditional &rest body)
+  "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
+  programming language."
+  `(progn ,@body
+          (while ,conditional
+                 ,@body)))
+
+(let ((i 100))
+  (do-while (<= 0 i) (decf i))
+  (should= i -1))
+
+(defmacro do-until (conditional &rest body)
+  "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
+construct in the C programming language."
+  `(do-while (not ,conditional)
+     ,@body))
+
+(let ((i 100))
+  (do-until (<= i 0) (decf i))
+  (should= i 0))
+
 (defmacro until (conditional &rest body)
   "An UNTIL loop construct.  It operates in the negative sense as WHILE."
   `(while (not ,conditional)
      ,@body))
 
+#|
 (let ((x 0))
   (until (<= 10 x)
     (incf x))
   (should= x 10))
+|#
