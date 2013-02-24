@@ -59,6 +59,16 @@
 		    `(should #',',test-function ,@arguments))
 		  (export ',macro-name)))))
 
+(defun should-not-macro-constructor (should-not-prefix test-function)
+  (assert (symbolp should-not-prefix))
+  (assert (symbolp test-function))
+  (let ((macro-name (intern (concatenate 'string
+					 (symbol-name should-not-prefix)
+					 (symbol-name test-function)))))
+    (eval `(progn (defmacro ,macro-name (&rest arguments)
+		    `(should-not #',',test-function ,@arguments))
+		  (export ',macro-name)))))
+
 (loop for test-function in '(=
 			     /=
 			     <
@@ -83,4 +93,5 @@
 			     string-greaterp
 			     string-not-greaterp
 			     string-not-lessp)
-     do (should-macro-constructor 'should- test-function))
+     do (should-macro-constructor 'should- test-function)
+        (should-not-macro-constructor 'should-not- test-function))
