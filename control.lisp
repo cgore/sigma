@@ -371,11 +371,9 @@ and Common Lisp, with a syntax like Pascal.''"
   #'(lambda (&rest more-arguments)
       (apply function (append arguments more-arguments))))
 
-#|
 (loop for i from 1 to 100
-     do (should= (funcall (curry #'sin #'cos #'tan) i)
-		 (sin (cos (tan i)))))
-|#
+     do (should= (funcall (curry #'+ 1 2) i)
+		 (+ 1 2 i)))
 
 #-cmu
 (defmacro deletef (item sequence &rest rest)
@@ -497,11 +495,9 @@ Scheme and Common Lisp, with a syntax like Pascal.''"
   #'(lambda (&rest more-arguments)
       (apply function (append more-arguments arguments))))
 
-#|
 (loop for i from 1 to 100
-     do (should= (funcall (curry #'sin #'cos #'tan) i)
-		 (tan (cos (sin i)))))
-|#
+     do (should= (funcall (rcurry #'- 1 2) i)
+		 (- i 1 2)))
 
 (defmacro swap (x y)
   "A simple SWAP macro.  The values of the first form and the second form are
@@ -579,9 +575,7 @@ construct in the C programming language."
   `(while (not ,conditional)
      ,@body))
 
-#|
 (let ((x 0))
   (until (<= 10 x)
     (incf x))
   (should= x 10))
-|#
