@@ -82,21 +82,23 @@
   `(let ((it ,conditional))
      (if it ,t-action ,nil-action)))
 
-(should-eq 'foo (aif 'foo it))
-(should-eq 'no (aif nil 'yes 'no))
-(should-equal '(nil) (aif nil 'yes `(,it)))
-(should-eq 'inner (aif 'outer (aif 'inner it)))
-(should= 30 (aif (* 2 3) (* 5 it)))
+(behavior 'aif
+	  (should-eq 'foo (aif 'foo it))
+	  (should-eq 'no (aif nil 'yes 'no))
+	  (should-equal '(nil) (aif nil 'yes `(,it)))
+	  (should-eq 'inner (aif 'outer (aif 'inner it)))
+	  (should= 30 (aif (* 2 3) (* 5 it))))
 
 (defmacro a?if (anaphor conditional t-action &optional nil-action)
   "A?IF This is a variant of AIF that allows for specification of the anaphor."
   `(let ((,anaphor ,conditional))
      (if ,anaphor ,t-action ,nil-action)))
 
-(should-eq 'value (a?if foo 'value foo))
-(should-eq 'no (a?if foo nil 'yes 'no))
-(should-equal '(nil) (a?if foo nil 'yes `(,foo)))
-(should-equal '(outer inner) (a?if foo 'outer (a?if bar 'inner `(,foo ,bar))))
+(behavior 'a?if
+	  (should-eq 'value (a?if foo 'value foo))
+	  (should-eq 'no (a?if foo nil 'yes 'no))
+	  (should-equal '(nil) (a?if foo nil 'yes `(,foo)))
+	  (should-equal '(outer inner) (a?if foo 'outer (a?if bar 'inner `(,foo ,bar)))))
 
 (defmacro aand (&rest arguments)
   "AAND is an anaphoric AND, from Paul Graham's ``On Lisp'' page 191.
@@ -106,23 +108,24 @@
         (t `(aif ,(first arguments)
                   (aand ,@(rest arguments))))))
 
-(should-eq nil (aand nil))
-(should-eq nil (aand nil nil nil))
-(should-eq nil (aand 1 2 3 nil 4 5 6))
-(should= 1 (aand 1))
-(should= 2 (aand 1 (* 2 it)))
-(should= 4 (aand 1
-		 (* 2 it)
-		 (* 2 it)))
-(should= 16 (aand 1
-		  (* 2 it)
-		  (* 2 it)
-		  (* 2 it)
-		  (* 2 it)))
-(should= 2 (aand 100
-		 (* 200 it)
-		 (aand 2 it)))
-(should= 6 (aand 1 2 3 (aand 4 5 6)))
+(behavior 'aand
+	  (should-eq nil (aand nil))
+	  (should-eq nil (aand nil nil nil))
+	  (should-eq nil (aand 1 2 3 nil 4 5 6))
+	  (should= 1 (aand 1))
+	  (should= 2 (aand 1 (* 2 it)))
+	  (should= 4 (aand 1
+			   (* 2 it)
+			   (* 2 it)))
+	  (should= 16 (aand 1
+			    (* 2 it)
+			    (* 2 it)
+			    (* 2 it)
+			    (* 2 it)))
+	  (should= 2 (aand 100
+			   (* 200 it)
+			   (aand 2 it)))
+	  (should= 6 (aand 1 2 3 (aand 4 5 6))))
 
 (defmacro a?and (anaphor &rest arguments)
   "This is an anaphoric AND that allows for the specification of the anaphor."
@@ -131,14 +134,15 @@
         (t `(a?if ,anaphor ,(first arguments)
                   (a?and ,anaphor ,@(rest arguments))))))
 
-(should-be-null (a?and foo nil))
-(should-be-null (a?and foo nil nil nil))
-(should-be-null (a?and foo 1 2 3 nil 4 5 6))
-(should= 1 (a?and foo 1))
-(should= 2 (a?and foo 1 (* 2 foo)))
-(should= 6 (a?and foo 1 2 3 (a?and foo 4 5 6)))
-(should-equal '(outer inner)
-	      (a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar))))
+(behavior 'a?and
+	  (should-be-null (a?and foo nil))
+	  (should-be-null (a?and foo nil nil nil))
+	  (should-be-null (a?and foo 1 2 3 nil 4 5 6))
+	  (should= 1 (a?and foo 1))
+	  (should= 2 (a?and foo 1 (* 2 foo)))
+	  (should= 6 (a?and foo 1 2 3 (a?and foo 4 5 6)))
+	  (should-equal '(outer inner)
+			(a?and foo 1 2 3 'outer (a?and bar 4 5 6 'inner `(,foo ,bar)))))
 
 (defmacro alambda (parms &body body)
   "ALAMBDA is an anaphoric LAMBDA, from Paul Graham's ``On Lisp'' page 193.
@@ -146,24 +150,26 @@
   `(labels ((self ,parms ,@body))
            #'self))
 
-(should= (* 10 9 8 7 6 5 4 3 2 1)
-	 (funcall (alambda (x) ; Simple recursive factorial example.
-			   (if (<= x 0)
-			       1
-			       (* x (self (1- x)))))
-		  10))
+(behavior 'alambda
+	  (should= (* 10 9 8 7 6 5 4 3 2 1)
+		   (funcall (alambda (x) ; Simple recursive factorial example.
+			      (if (<= x 0)
+				  1
+				  (* x (self (1- x)))))
+			    10)))
 
 (defmacro a?lambda (anaphor parms &body body)
   "A?LAMBDA is a variant of ALAMBDA that allows you to specify the anaphor."
   `(labels ((,anaphor ,parms ,@body))
            #',anaphor))
 
-(should= (* 10 9 8 7 6 5 4 3 2 1)
-	 (funcall (a?lambda foo (x) ; Simple recursive factorial example.
-			    (if (<= x 0)
-				1
-				(* x (foo (1- x)))))
-		  10))
+(behavior 'a?lambda
+	  (should= (* 10 9 8 7 6 5 4 3 2 1)
+		   (funcall (a?lambda foo (x) ; Simple recursive factorial example.
+			      (if (<= x 0)
+				  1
+				  (* x (foo (1- x)))))
+			    10)))
 
 (defmacro ablock (tag &rest args)
   "ABLOCK is an anaphoric BLOCK, from Paul Graham's ``On Lisp'' page 193.
@@ -177,15 +183,16 @@
                                         ,(self (cdr args))))))
                     args)))
 
-(let ((x 1))
-  (ablock foo
-	  (setf x (* x 2))
-	  (setf x (* it 2))
-	  (setf x (* it 3))
-	  (return-from foo)
-	  (setf x 1234))
-  (should= x (* 1 2 2 3))
-  (should/= x 1234))
+(behavior 'ablock
+	  (let ((x 1))
+	    (ablock foo
+		    (setf x (* x 2))
+		    (setf x (* it 2))
+		    (setf x (* it 3))
+		    (return-from foo)
+		    (setf x 1234))
+	    (should= x (* 1 2 2 3))
+	    (should/= x 1234)))
 			 
 (defmacro a?block (tag anaphor &rest args)
   "A?BLOCK is a variant of ABLOCK that allows you to specify the anaphor."
@@ -198,15 +205,16 @@
                                         ,(self (cdr args))))))
                     args)))
 
-(let ((x 1))
-  (a?block foo bar
-	  (setf x (* x 2))
-	  (setf x (* bar 2))
-	  (setf x (* bar 3))
-	  (return-from foo)
-	  (setf x 1234))
-  (should= x (* 1 2 2 3))
-  (should/= x 1234))
+(behavior 'a?block
+	  (let ((x 1))
+	    (a?block foo bar
+		     (setf x (* x 2))
+		     (setf x (* bar 2))
+		     (setf x (* bar 3))
+		     (return-from foo)
+		     (setf x 1234))
+	    (should= x (* 1 2 2 3))
+	    (should/= x 1234)))
 			 
 (defmacro acond (&rest clauses)
   "ACOND is an anaphoric COND, from Paul Graham's ``On Lisp'' page 191.
@@ -220,12 +228,13 @@
               (let ((it ,sym)) ,@(cdr cl1))
               (acond ,@(cdr clauses)))))))
 
-(let ((a nil)
-      (b nil)
-      (c 3))
-  (should= c (acond (a :foo)
-		    (b :bar)
-		    (c it))))
+(behavior 'acond
+	  (let ((a nil)
+		(b nil)
+		(c 3))
+	    (should= c (acond (a :foo)
+			      (b :bar)
+			      (c it)))))
 
 (defmacro a?cond (anaphor &rest clauses)
   "A?COND is a variant of ACOND that allows you to specify the anaphor."
@@ -238,35 +247,38 @@
               (let ((,anaphor ,sym)) ,@(cdr cl1))
               (a?cond ,anaphor ,@(cdr clauses)))))))
 
-(let ((a nil)
-      (b nil)
-      (c 3))
-  (should= c (a?cond baz
-		     (a :foo)
-		     (b :bar)
-		     (c baz))))
+(behavior 'a?cond
+	  (let ((a nil)
+		(b nil)
+		(c 3))
+	    (should= c (a?cond baz
+			       (a :foo)
+			       (b :bar)
+			       (c baz)))))
 
 (defmacro awhen (test-form &body body)
   "This is anaphoric WHEN, from Paul Graham's ``On Lisp'' page 191."
   `(aif ,test-form (progn ,@body)))
 
-(should= 24 (awhen 12 (* 2 it)))
-(should-be-null (awhen nil (* 2 it)))
-(let* ((it :foo)
-       (result (awhen :bar it)))
-  (should-not-eq result :foo)
-  (should-eq result :bar))
+(behavior 'awhen
+	  (should= 24 (awhen 12 (* 2 it)))
+	  (should-be-null (awhen nil (* 2 it)))
+	  (let* ((it :foo)
+		 (result (awhen :bar it)))
+	    (should-not-eq result :foo)
+	    (should-eq result :bar)))
 
 (defmacro a?when (anaphor test-form &body body)
   "This is an anaphoric WHEN that allows for the specification of the anaphor."
   `(a?if ,anaphor ,test-form (progn ,@body)))
 
-(should= 24 (a?when foo 12 (* 2 foo)))
-(should-be-null (a?when foo nil (* 2 foo)))
-(let* ((baz :foo)
-       (result (a?when baz :bar baz)))
-  (should-not-eq result :foo)
-  (should-eq result :bar))
+(behavior 'a?when
+	  (should= 24 (a?when foo 12 (* 2 foo)))
+	  (should-be-null (a?when foo nil (* 2 foo)))
+	  (let* ((baz :foo)
+		 (result (a?when baz :bar baz)))
+	    (should-not-eq result :foo)
+	    (should-eq result :bar)))
 
 (defmacro awhile (expression &body body)
   "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191."
@@ -274,15 +286,16 @@
        ((not it))
      ,@body))
 
-(let ((i 0))
-  (should-be-null (awhile (< i 10) (incf i)))
-  (should= i 10))
-(let ((forward '(1 2 3 4 5))
-      (backward nil))
-  (should-be-null (awhile (pop forward)
-		      (push it backward)))
-  (should-be-null forward)
-  (should-equal '(5 4 3 2 1) backward))
+(behavior 'awhile
+	  (let ((i 0))
+	    (should-be-null (awhile (< i 10) (incf i)))
+	    (should= i 10))
+	  (let ((forward '(1 2 3 4 5))
+		(backward nil))
+	    (should-be-null (awhile (pop forward)
+			      (push it backward)))
+	    (should-be-null forward)
+	    (should-equal '(5 4 3 2 1) backward)))
 
 (defmacro a?while (anaphor expression &body body)
   "This is an anaphoric WHILE that allows for the specification of the anaphor."
@@ -290,15 +303,16 @@
        ((not ,anaphor))
      ,@body))
 
-(let ((i 0))
-  (should-be-null (a?while foo (< i 10) (incf i)))
-  (should= i 10))
-(let ((forward '(1 2 3 4 5))
-      (backward nil))
-  (should-be-null (a?while number (pop forward)
-			   (push number backward)))
-  (should-be-null forward)
-  (should-equal '(5 4 3 2 1) backward))
+(behavior 'a?while
+	  (let ((i 0))
+	    (should-be-null (a?while foo (< i 10) (incf i)))
+	    (should= i 10))
+	  (let ((forward '(1 2 3 4 5))
+		(backward nil))
+	    (should-be-null (a?while number (pop forward)
+			      (push number backward)))
+	    (should-be-null forward)
+	    (should-equal '(5 4 3 2 1) backward)))
 
 (defun rcompose (&rest functions)
   "A version of COMPOSE in reverse order."
@@ -313,11 +327,12 @@
                 rest
                 :initial-value (apply function-1 arguments)))))
 
-(let ((numbers '(1 2 3 4 5 6 7 8 9)))
-  (should-equal (mapcar (lambda (number)
-			  (sin (cos number)))
-			numbers)
-		(mapcar (rcompose #'cos #'sin) numbers)))
+(behavior 'rcompose
+	  (let ((numbers '(1 2 3 4 5 6 7 8 9)))
+	    (should-equal (mapcar (lambda (number)
+				    (sin (cos number)))
+				  numbers)
+			  (mapcar (rcompose #'cos #'sin) numbers))))
 
 (defun compose (&rest functions)
   "This function composes a single function from a list of several functions
@@ -328,11 +343,12 @@ programming language which he describes as a ``cross between Scheme and Common
 Lisp, with a syntax like Pascal.''"
   (apply #'rcompose (reverse functions)))
 
-(let ((numbers '(1 2 3 4 5 6 7 8 9)))
-  (should-equal (mapcar (lambda (number)
-			  (sin (cos number)))
-			numbers)
-		(mapcar (compose #'sin #'cos) numbers)))
+(behavior 'compose
+	  (let ((numbers '(1 2 3 4 5 6 7 8 9)))
+	    (should-equal (mapcar (lambda (number)
+				    (sin (cos number)))
+				  numbers)
+			  (mapcar (compose #'sin #'cos) numbers))))
 
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
@@ -352,13 +368,14 @@ and Common Lisp, with a syntax like Pascal.''"
           (and (apply predicate arguments)
                (apply conjoinment arguments))))))
 
-(flet ((%2? (i)
-	 (zerop (mod i 2)))
-       (%3? (i)
-	 (zerop (mod i 3))))
-  (loop for i from 1 to 100
-     do (should-eq (and (%2? i) (%3? i))
-		   (funcall (conjoin #'%2? #'%3?) i))))
+(behavior 'conjoin
+	  (flet ((%2? (i)
+		   (zerop (mod i 2)))
+		 (%3? (i)
+		   (zerop (mod i 3))))
+	    (loop for i from 1 to 100
+	       do (should-eq (and (%2? i) (%3? i))
+			     (funcall (conjoin #'%2? #'%3?) i)))))
 
 (defun curry (function &rest arguments)
   "This function takes in a function and some of its arguments, and returns a
@@ -371,9 +388,10 @@ and Common Lisp, with a syntax like Pascal.''"
   #'(lambda (&rest more-arguments)
       (apply function (append arguments more-arguments))))
 
-(loop for i from 1 to 100
-     do (should= (funcall (curry #'+ 1 2) i)
-		 (+ 1 2 i)))
+(behavior 'curry
+	  (loop for i from 1 to 100
+	     do (should= (funcall (curry #'+ 1 2) i)
+			 (+ 1 2 i))))
 
 #-cmu
 (defmacro deletef (item sequence &rest rest)
@@ -398,14 +416,14 @@ and Common Lisp, with a syntax like Pascal.''"
           (or (apply predicate arguments)
               (apply disjoinment arguments))))))
 
-
-(flet ((%2? (i)
-	 (zerop (mod i 2)))
-       (%3? (i)
-	 (zerop (mod i 3))))
-  (loop for i from 1 to 100
-     do (should-eq (or (%2? i) (%3? i))
-		   (funcall (disjoin #'%2? #'%3?) i))))
+(behavior 'disjoin
+	  (flet ((%2? (i)
+		   (zerop (mod i 2)))
+		 (%3? (i)
+		   (zerop (mod i 3))))
+	    (loop for i from 1 to 100
+	       do (should-eq (or (%2? i) (%3? i))
+			     (funcall (disjoin #'%2? #'%3?) i)))))
 
 (defgeneric duplicate (item))
 
@@ -495,9 +513,10 @@ Scheme and Common Lisp, with a syntax like Pascal.''"
   #'(lambda (&rest more-arguments)
       (apply function (append more-arguments arguments))))
 
-(loop for i from 1 to 100
-     do (should= (funcall (rcurry #'- 1 2) i)
-		 (- i 1 2)))
+(behavior 'rcurry
+	  (loop for i from 1 to 100
+	     do (should= (funcall (rcurry #'- 1 2) i)
+			 (- i 1 2))))
 
 (defmacro swap (x y)
   "A simple SWAP macro.  The values of the first form and the second form are
@@ -505,33 +524,36 @@ swapped with each other."
   `(psetf ,x ,y
           ,y ,x))
 
-(let ((x 15)
-      (y 37))
-  (swap x y)
-  (should= y 15)
-  (should= x 37))
+(behavior 'swap
+	  (let ((x 15)
+		(y 37))
+	    (swap x y)
+	    (should= y 15)
+	    (should= x 37)))
 
 (defmacro swap-unless (predicate x y)
   "This macro calls SWAP unless the predicate evaluates to true."
   `(unless (funcall ,predicate ,x ,y)
      (swap ,x ,y)))
 
-(let ((smaller 1)
-      (larger 2))
-  (swap-unless #'< smaller larger)
-  (should= smaller 1)
-  (should= larger 2))
+(behavior 'swap-unless
+	  (let ((smaller 1)
+		(larger 2))
+	    (swap-unless #'< smaller larger)
+	    (should= smaller 1)
+	    (should= larger 2)))
 
 (defmacro swap-when (predicate x y)
   "This macro calls SWAP only when the predicate evaluates to true."
   `(when (funcall ,predicate ,x ,y)
      (swap ,x ,y)))
 
-(let ((smaller 2)
-      (larger 1))
-  (swap-when #'> smaller larger)
-  (should= smaller 1)
-  (should= larger 2))
+(behavior 'swap-when
+	  (let ((smaller 2)
+		(larger 1))
+	    (swap-when #'> smaller larger)
+	    (should= smaller 1)
+	    (should= larger 2)))
 
 (defun unimplemented ()
   (error "This is not yet implemented."))
@@ -544,10 +566,11 @@ swapped with each other."
      ((not ,conditional))
      ,@body))
 
-(let ((x 0))
-  (while (< x 10)
-    (incf x))
-  (should= x 10))
+(behavior 'while
+	  (let ((x 0))
+	    (while (< x 10)
+	      (incf x))
+	    (should= x 10)))
 
 (defmacro do-while (conditional &rest body)
   "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
@@ -556,9 +579,10 @@ swapped with each other."
           (while ,conditional
                  ,@body)))
 
-(let ((i 100))
-  (do-while (<= 0 i) (decf i))
-  (should= i -1))
+(behavior 'do-while
+	  (let ((i 100))
+	    (do-while (<= 0 i) (decf i))
+	    (should= i -1)))
 
 (defmacro do-until (conditional &rest body)
   "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
@@ -566,16 +590,18 @@ construct in the C programming language."
   `(do-while (not ,conditional)
      ,@body))
 
-(let ((i 100))
-  (do-until (<= i 0) (decf i))
-  (should= i 0))
+(behavior 'do-until
+	  (let ((i 100))
+	    (do-until (<= i 0) (decf i))
+	    (should= i 0)))
 
 (defmacro until (conditional &rest body)
   "An UNTIL loop construct.  It operates in the negative sense as WHILE."
   `(while (not ,conditional)
      ,@body))
 
-(let ((x 0))
-  (until (<= 10 x)
-    (incf x))
-  (should= x 10))
+(behavior 'until
+	  (let ((x 0))
+	    (until (<= 10 x)
+		   (incf x))
+	    (should= x 10)))

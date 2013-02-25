@@ -35,10 +35,15 @@
 (defpackage :cgore-behave
   (:nicknames :behave)
   (:use :common-lisp)
-  (:export :should
+  (:export :behavior
+	   :should
 	   :should-not
 	   :should-be-null))
 (in-package :cgore-behave)
+
+(defmacro behavior (thing &body body)
+  (declare (ignore thing)) ; We will use this for something useful later.
+  `(progn ,@body))
 
 (defmacro should (test &rest arguments)
   `(assert (funcall ,test ,@arguments)))
