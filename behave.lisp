@@ -36,13 +36,54 @@
   (:nicknames :behave)
   (:use :common-lisp)
   (:export :behavior
+	   :spec
 	   :should
 	   :should-not
-	   :should-be-null))
+	   :should-be-null
+	   :should-be-a))
 (in-package :cgore-behave)
 
 (defmacro behavior (thing &body body)
-  (declare (ignore thing)) ; We will use this for something useful later.
+  "The BEHAVIOR macro is used to specify a block of expected behavior for a
+THING.  It specifies an example group, similar to the 'describe' blocks in
+Ruby's RSpec.  It takes a single argument, the THING we are trying to describe,
+and then a body of code to evaluate that is evaluated in an implicit PROGN.  It
+is to be used around a set of examples, or around a set of assertions directly.
+
+A contrived example:
+
+(behavior 'float
+	  (spec \"is an Abelian group\"
+		(let ((a (random 10.0))
+		      (b (random 10.0))
+		      (c (random 10.0))
+		      (e 1.0))
+		  (spec \"closure\"
+			(should-be-a 'float (* a b)))
+		  (spec \"associativity\"
+			(should= (* (* a b) c)
+				 (* a (* b c))))
+		  (spec \"identity element\"
+			(should= a (* e a)))
+		  (spec \"inverse element\"
+			(let ((1/a (/ 1 a)))
+			  (should= (* 1/a a)
+				   (* a 1/a)
+				   1.0)))
+		  (spec \"commutitativity\"
+			(should= (* a b) (* b a))))))"
+  ;; Currently we don't actually use the THING specification for anything and
+  ;; just throw it away.  Eventually we'll use it for logging or something.
+  (declare (ignore thing))
+  `(progn ,@body))
+
+(defmacro spec (description &body body)
+  "The SPEC macro is used to indicate a specification for a desired behavior.
+It will normally serve as a grouping for assertions or nested SPECs.  For an
+example, see the documentation of BEHAVIOR."
+  ;; Currently we don't actually use the DESCRIPTION string for anything and
+  ;; just throw it away.  Eventually we'll use it for logging or something.
+  (declare (ignore description))
   `(progn ,@body))
 
 (defmacro should (test &rest arguments)
@@ -53,6 +94,18 @@
 
 (defmacro should-be-null (&rest arguments)
   `(should #'null ,@arguments))
+
+(defmacro should-be-a (type &rest things)
+  "The SHOULD-BE-A macro specifies that one or more THINGS should be of the type
+specified by TYPE.
+
+(should-be-a 'integer 1) ; passes
+(should-be-a 'float 1) ; passes
+(should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; passes
+(should-be-a 'integer 1.0) ; fails"
+  (mapcar (lambda (thing)
+	    (assert (typep thing type)))
+	  things))
 
 (defun should-macro-constructor (should-prefix test-function)
   (assert (symbolp should-prefix))
