@@ -8,3 +8,8 @@
 
 # Ignore SBCL compiled code.
 *.fasl
+
+# Ignore some LaTeX stuff.
+doc/*.aux
+doc/*.log
+doc/*.toc
