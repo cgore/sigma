@@ -485,6 +485,10 @@ For example, you might do something like:
            ',clauses))
 
 (defun operator-to-function (operator)
+  "The OPERATOR-TO-FUNCTION function takes in any symbol and makes an
+evaluatable function out of it.  The principle purpose for this is so that we
+can treat macros and other non-function things like a function, for using them
+with MAPCAR or similar."
   (lambda (&rest rest)
     (eval `(,operator ,@rest))))
 
@@ -501,6 +505,13 @@ with it doing the obvious thing, whereas you cannot do
 in any Common Lisp I have used."
   `(setf ,variable
          (funcall ,operator ,variable ,@arguments)))
+
+(behavior 'opf
+  (let ((x 0))
+    (opf #'+ x 10)
+    (should= x 10)
+    (opf #'- x 10)
+    (should= x 0)))
 
 (defun rcurry (function &rest arguments)
   "This function takes in a function and some of its ending arguments, and
