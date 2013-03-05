@@ -35,6 +35,7 @@
 (defpackage :cgore-string
   (:nicknames :string)
   (:use :common-lisp
+	:cgore-behave
 	:cgore-control
 	:cgore-numeric
 	:cgore-sequence)
@@ -109,7 +110,8 @@
    This produces the string as from the ~A directive to FORMAT.  Also see TO-STRING."
   (format nil "~A" argument))
 
-(assert (string= "12" (stringify 12)))
+(behavior 'stringify
+	  (should-string= "12" (stringify 12)))
 
 (defun to-string (s)
   "The TO-STRING function converts common types of things into a string.
@@ -119,21 +121,24 @@
         ((stringp s) s)
         (t (format nil "~A" s))))
 
-(assert (equal (to-string nil) ""))
-(assert (equal (to-string :foo) "foo"))
-(assert (equal (to-string "hello") "hello"))
-(assert (equal (to-string "Hello, world!") "Hello, world!"))
+(behavior 'to-string
+	  (should-equal (to-string nil) "")
+	  (should-equal (to-string :foo) "foo")
+	  (should-equal (to-string "hello") "hello")
+	  (should-equal (to-string "Hello, world!") "Hello, world!"))
 
 (defun strcat (&rest rest)
   "The STRCAT function takes in a list of things concatenates their string versions."
   (apply #'concatenate 'string (mapcar #'to-string rest)))
 
-(assert (string= "foobar" (strcat "foo" "bar")))
-(assert (string= "foo123bar" (strcat "foo" 123 "bar")))
-(assert (string= "" (strcat)))
-(assert (string= "foo" (strcat "foo")))
-(assert (string= "1234" (strcat 1 2 3 4)))
-(assert (string= "1" (strcat 1)))
+(behavior 'strcat
+	  (should-string= "foobar" (strcat "foo" "bar"))
+	  (should-string= "foobarbaz" (strcat "foo" "bar" "baz"))
+	  (should-string= "foo123bar" (strcat "foo" 123 "bar"))
+	  (should-string= "" (strcat))
+	  (should-string= "foo" (strcat "foo"))
+	  (should-string= "1234" (strcat 1 2 3 4))
+	  (should-string= "1" (strcat 1)))
 
 (defun strmult (count &rest strings)
   (apply #'strcat (loop for i from 1 to count collect (apply #'strcat strings))))
