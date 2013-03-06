@@ -41,7 +41,9 @@ The \texttt{String} package contains useful tools for working with strings.
 
 \lispFunctionSubsection{Character-Range}
 
-The \texttt{character-range} function returns a list of characters from the \lispVar{start} to the \lispVar{end} character.  Note that this is returning a list, not a string.
+The \texttt{character-range} function returns a list of characters from the
+\lispVar{start} to the \lispVar{end} character.  Note that this is returning a
+list, not a string.
 
 \lispSyntax
 
@@ -59,10 +61,44 @@ The \texttt{character-range} function returns a list of characters from the \lis
 \lispExamples
 
 \lispExample
-  {(character-range \#\textbackslash a \#\textbackslash z)}
+  {(character-range \#\textbackslash a \#\textbackslash e)}
+  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d \#\textbackslash e)}
+
+\lispExample
+  {(character-range \#\textbackslash e \#\textbackslash a)}
   {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d \#\textbackslash e)}
 
 \lispFunctionSubsection{Character-Ranges}
+
+The \texttt{character-ranges} function is a convenience wrapper for
+\texttt{character-range} function, concatenating several calls and making the
+resultant list contain only unique instances.
+
+\lispSyntax
+
+\lispExample
+  {(character-ranges \lispVar{start${}_1$} \lispVar{end${}_1$} $\ldots$}
+  {'(\lispVar{character${}_1$} $\ldots$)}
+
+\lispArgs
+
+\begin{description}
+  \item[\lispVar{Start${}_n$}] The character to start the nth range with, inclusive.
+  \item[\lispVar{End${}_n$}] The character to end the nth range with, inclusive.
+\end{description}
+
+\lispExamples
+
+\lispExample
+  {(character-ranges \#\textbackslash a \#\textbackslash c
+                     \#\textbackslash x \#\textbackslash z)}
+  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c
+     \#\textbackslash x \#\textbackslash y \#\textbackslash z)}
+
+\lispExample
+  {(character-ranges \#\textbackslash a \#\textbackslash c
+                     \#\textbackslash a \#\textbackslash c)}
+  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c)}
 
 \lispFunctionSubsection{Escape-Tildes}
 

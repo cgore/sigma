@@ -55,9 +55,8 @@
 \newcommand{\lispCode}[1]{\texttt{#1}}
 \newcommand{\lispCodeArrow}{$\Longrightarrow$}
 \newcommand{\lispExample}[2]{
-  \begin{tabular}{lcr}
-    \texttt{#1} & $\Longrightarrow$ & \texttt{#2}
-  \end{tabular}
+  \noindent
+  \texttt{#1} $\Longrightarrow$ \texttt{#2}
 }
 \newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
 
