@@ -53,25 +53,42 @@
 
 (defun character-range (start end)
   "The CHARACTER-RANGE function returns a list of the characters from START to END."
-  (loop for i from (char-code start) to (char-code end) collect (code-char i)))
+  (let* ((endpoints (sort (list start end) #'char-lessp))
+	 (start (first endpoints))
+	 (end (second endpoints)))
+    (loop for i from (char-code start) to (char-code end) collect (code-char i))))
 
 (behavior 'character-range
   (should-equal (character-range #\a #\z)
 		'(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o
                   #\p #\q #\r #\s #\t #\u #\v #\w #\x #\y #\z))
+  (should-equal (character-range #\a #\z)
+		(character-range #\z #\a))
   (should-equal (character-range #\a #\a)
 		'(#\a)))
 
-
 (defun character-ranges (&rest rest)
-  (cond ((<= (length rest) 1)
-         rest)
-        ((= 2 (length rest))
-         (character-range (car rest) (cadr rest)))
-        ((< 2 (length rest))
-         (concatenate 'list
-                      (character-range (car rest) (cadr rest))
-                      (apply #'character-ranges (cddr rest))))))
+  (sort (remove-duplicates (cond ((<= (length rest) 1)
+				  rest)
+				 ((= 2 (length rest))
+				  (character-range (car rest) (cadr rest)))
+				 ((< 2 (length rest))
+				  (concatenate 'list
+					       (character-range (car rest) (cadr rest))
+					       (apply #'character-ranges (cddr rest))))))
+	#'char-lessp))
+
+(behavior 'character-ranges
+  (should-equal (character-ranges #\a #\z
+				  #\1 #\9)
+		(sort (concatenate 'list
+				   (character-range #\a #\z)
+				   (character-range #\1 #\9))
+		      #'char-lessp))
+  (should-equal (character-ranges #\a #\z #\q #\t)
+		(character-range #\a #\z))
+  (should-equal (character-ranges #\a #\z)
+		(character-ranges #\z #\a)))
 
 (defun escape-tildes (string)
   (let ((input (vector-to-list string))
