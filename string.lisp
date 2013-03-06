@@ -52,7 +52,16 @@
 (in-package :cgore-string)
 
 (defun character-range (start end)
+  "The CHARACTER-RANGE function returns a list of the characters from START to END."
   (loop for i from (char-code start) to (char-code end) collect (code-char i)))
+
+(behavior 'character-range
+  (should-equal (character-range #\a #\z)
+		'(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o
+                  #\p #\q #\r #\s #\t #\u #\v #\w #\x #\y #\z))
+  (should-equal (character-range #\a #\a)
+		'(#\a)))
+
 
 (defun character-ranges (&rest rest)
   (cond ((<= (length rest) 1)
