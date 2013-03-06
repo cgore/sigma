@@ -1,0 +1,83 @@
+%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Soli Deo Gloria,
+%%%% All rights reserved.
+%%%%
+%%%% 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
+%%%% Web: http://cgore.com
+%%%% Email: cgore@cgore.com
+%%%%
+%%%% Redistribution and use in source and binary forms, with or without
+%%%% modification, are permitted provided that the following conditions are met:
+%%%%
+%%%%     * Redistributions of source code must retain the above copyright
+%%%%       notice, this list of conditions and the following disclaimer.
+%%%%
+%%%%     * Redistributions in binary form must reproduce the above copyright
+%%%%       notice, this list of conditions and the following disclaimer in the
+%%%%       documentation and/or other materials provided with the distribution.
+%%%%
+%%%%     * Neither the name of Christopher Mark Gore nor the names of other
+%%%%       contributors may be used to endorse or promote products derived from
+%%%%       this software without specific prior written permission.
+%%%%
+%%%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+%%%% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+%%%% IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+%%%% ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+%%%% LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+%%%% CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+%%%% SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+%%%% INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+%%%% CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+%%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%%%% POSSIBILITY OF SUCH DAMAGE.
+
+
+\lispPackageChapter{String}
+
+The \texttt{String} package contains useful tools for working with strings.
+
+\section{Functions}
+
+\lispFunctionSubsection{Character-Range}
+
+The \texttt{character-range} function returns a list of characters from the \lispVar{start} to the \lispVar{end} character.  Note that this is returning a list, not a string.
+
+\lispSyntax
+
+\lispExample
+  {(character-range \lispVar{start} \lispVar{end})}
+  {'(\lispVar{start} $\ldots$ \lispVar{end})}
+
+\lispArgs
+
+\begin{description}
+  \item[\lispVar{Start}] The character to start the range with, inclusive.
+  \item[\lispVar{End}] The character to end the range with, inclusive.
+\end{description}
+
+\lispExamples
+
+\lispExample
+  {(character-range \#\textbackslash a \#\textbackslash z)}
+  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d \#\textbackslash e)}
+
+\lispFunctionSubsection{Character-Ranges}
+
+\lispFunctionSubsection{Escape-Tildes}
+
+\lispFunctionSubsection{Replace-Char}
+
+\lispFunctionSubsection{StrCat}
+
+\lispFunctionSubsection{StrMult}
+
+\lispFunctionSubsection{String-Join}
+
+\lispFunctionSubsection{Stringify}
+
+\lispFunctionSubsection{To-String}
+
+\section{Methods}
+
+\lispMethodsSubsection{Split}

@@ -1,9 +1,45 @@
+%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Soli Deo Gloria,
+%%%% All rights reserved.
+%%%%
+%%%% 8729 Lower Marine Road, Saint Jacob, Illinois 62281 USA.
+%%%% Web: http://cgore.com
+%%%% Email: cgore@cgore.com
+%%%%
+%%%% Redistribution and use in source and binary forms, with or without
+%%%% modification, are permitted provided that the following conditions are met:
+%%%%
+%%%%     * Redistributions of source code must retain the above copyright
+%%%%       notice, this list of conditions and the following disclaimer.
+%%%%
+%%%%     * Redistributions in binary form must reproduce the above copyright
+%%%%       notice, this list of conditions and the following disclaimer in the
+%%%%       documentation and/or other materials provided with the distribution.
+%%%%
+%%%%     * Neither the name of Christopher Mark Gore nor the names of other
+%%%%       contributors may be used to endorse or promote products derived from
+%%%%       this software without specific prior written permission.
+%%%%
+%%%% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+%%%% AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+%%%% IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+%%%% ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+%%%% LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+%%%% CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+%%%% SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+%%%% INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+%%%% CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+%%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+%%%% POSSIBILITY OF SUCH DAMAGE.
+
+
 \documentclass{book}
 
 \usepackage{ifthen}
 \usepackage{calc}
 
 \newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+
 \newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
 \newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
 \newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
@@ -11,6 +47,19 @@
 \newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
 \newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
 \newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+
+\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
+\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
+\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+
+\newcommand{\lispCode}[1]{\texttt{#1}}
+\newcommand{\lispCodeArrow}{$\Longrightarrow$}
+\newcommand{\lispExample}[2]{
+  \begin{tabular}{lcr}
+    \texttt{#1} & $\Longrightarrow$ & \texttt{#2}
+  \end{tabular}
+}
+\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
 
 \title{\texttt{CGore-Utilities}:\\
   A Library for \textsc{Ansi} Common Lisp}
@@ -361,31 +410,7 @@
 
 \lispGenericSubsection{Worst}
 
-\lispPackageChapter{String}
-
-\section{Functions}
-
-\lispFunctionSubsection{Character-Range}
-
-\lispFunctionSubsection{Character-Ranges}
-
-\lispFunctionSubsection{Escape-Tildes}
-
-\lispFunctionSubsection{Replace-Char}
-
-\lispFunctionSubsection{StrCat}
-
-\lispFunctionSubsection{StrMult}
-
-\lispFunctionSubsection{String-Join}
-
-\lispFunctionSubsection{Stringify}
-
-\lispFunctionSubsection{To-String}
-
-\section{Methods}
-
-\lispMethodsSubsection{Split}
+\input{string.latex}
 
 \lispPackageChapter{Time-Series}
 
