@@ -36,6 +36,7 @@
 (defpackage :cgore-numeric
   (:nicknames :numeric)
   (:use :common-lisp
+	:cgore-behave
         :cgore-control
 	:cgore-sequence)
   (:export :bit?
@@ -78,8 +79,21 @@
 
 
 (defmacro divf (variable &rest divisors)
-  `(opf #'/ ,variable ,@divisors))
+  "DIVF is analogous to INCF or DECF, just with division.  It divides-and-stores to a variable."
+  `(if (< 0 (length ,divisors))
+       (opf #'/ ,variable ,@divisors)
+       ,variable))
 
+(behavior 'divf
+  (let ((x 100))
+    (divf x 10)
+    (should= x 10))
+  (let ((x 120))
+    (divf x 3 4 5)
+    (should= x 2))
+  (let ((x 123)) ; This behavior is slightly different than just the division function.
+    (divf x)
+    (should= x 123))
 
 (defun fractional-part (number)
   "This is the fractional part formula most familiar to computer scientists.
