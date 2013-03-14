@@ -80,9 +80,9 @@
 
 (defmacro divf (variable &rest divisors)
   "DIVF is analogous to INCF or DECF, just with division.  It divides-and-stores to a variable."
-  `(if (< 0 (length ,divisors))
-       (opf #'/ ,variable ,@divisors)
-       ,variable))
+  `(if (null ',divisors)
+       ,variable
+       (opf #'/ ,variable ,@divisors)))
 
 (behavior 'divf
   (let ((x 100))
@@ -93,7 +93,7 @@
     (should= x 2))
   (let ((x 123)) ; This behavior is slightly different than just the division function.
     (divf x)
-    (should= x 123))
+    (should= x 123)))
 
 (defun fractional-part (number)
   "This is the fractional part formula most familiar to computer scientists.
