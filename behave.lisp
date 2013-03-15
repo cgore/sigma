@@ -40,7 +40,9 @@
 	   :should
 	   :should-not
 	   :should-be-null
-	   :should-be-a))
+	   :should-be-a
+	   :should-be-true
+	   :should-be-false))
 (in-package :cgore-behave)
 
 (defmacro behavior (thing &body body)
@@ -153,3 +155,9 @@ specified by TYPE.
 			     string-not-lessp)
      do (should-macro-constructor 'should- test-function)
         (should-not-macro-constructor 'should-not- test-function))
+
+(defmacro should-be-true (&body body)
+  `(should #'identity (progn ,@body)))
+
+(defmacro should-be-false (&body body)
+  `(should #'not (progn ,@body)))
