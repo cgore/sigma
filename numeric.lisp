@@ -97,16 +97,25 @@
 
 (defun fractional-part (number)
   "This is the fractional part formula most familiar to computer scientists.
-It possesses the useful feature that frac(x)+int(x)=x, but may be negative."
+It possesses the useful feature that frac(x)+int(x)=x, but may be negative.
+Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (assert (numberp number))
   (if (minusp number)
-    (- number (floor number) 1)
+    (- number (ceiling number))
     (- number (floor number))))
+
+(behavior 'fractional-part
+  (should= 0.5 (fractional-part 10.5))
+  (should= 0 (fractional-part 10))
+  (should= -0.5 (fractional-part -10.5))
+  (should= 0 (fractional-part -10))
+  (should= 0.0 (fractional-part -10.0)))
 
 
 (defun fractional-value (number)
   "This is the fractional value formula most familiar to most mathematicians.
-Note that the result of this is always positive, forming a sawtooth."
+Note that the result of this is always positive, forming a sawtooth.
+Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (assert (numberp number))
   (- number (floor number)))
 
