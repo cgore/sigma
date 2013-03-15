@@ -38,7 +38,7 @@ Now we are in SBCL.
 
  (require :asdf) ; Require ASDF
  (require :cgore-utilities) ; Require the utilities.
- (utilities:use-all-cgore-utilties) ; This will pollute COMMON-LISP-USER
+ (utilities:use-all-utilties) ; This will pollute COMMON-LISP-USER
  (sum (loop for i from 1 to 100 collect i)) ; Returns 5050 and makes Euler sad.
 
 Have fun!
