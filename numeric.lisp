@@ -53,10 +53,10 @@
 	   :positive-integer
 	   :positive-integer?
 	   :product
+	   :sawtooth-wave
 	   :sum
 	   :unsigned-integer?))
 (in-package :cgore-numeric)
-
 
 (defun bit? (b)
   (typep b 'bit))
@@ -114,11 +114,20 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
 
 (defun fractional-value (number)
   "This is the fractional value formula most familiar to most mathematicians.
-Note that the result of this is always positive, forming a sawtooth.
+Note that the result of this is always positive, forming a sawtooth.  This is
+known as SawtoothWave in Mathematica.
 Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (assert (numberp number))
   (- number (floor number)))
 
+(function-alias 'fractional-value 'sawtooth-wave)
+
+(behavior 'fractional-value
+  (should= 0.5 (fractional-value 10.5))
+  (should= 0 (fractional-value 10))
+  (should= 0.5 (fractional-value -10.5))
+  (should= 0 (fractional-value -10))
+  (should= 0.0 (fractional-value -10.0)))
 
 (defmacro multf (variable &rest multiplicands)
   `(opf #'* ,variable ,@multiplicands))
