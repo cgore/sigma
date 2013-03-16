@@ -32,7 +32,6 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-
 (defpackage :cgore-numeric
   (:nicknames :numeric)
   (:use :common-lisp
@@ -61,7 +60,6 @@
 (defun bit? (b)
   (typep b 'bit))
 
-
 #|
 (ext:without-package-locks
   (defmacro incf (variable &rest addends)
@@ -69,14 +67,12 @@
        (opf #'+ ,variable 1)
        (opf #'+ ,variable ,@addends))))
 
-
 (ext:without-package-locks
   (defmacro decf (variable &rest subtrahends)
     `(if (null ,addends)
        (opf #'- ,variable 1)
        (opf #'- ,variable ,@subtrahends))))
 |#
-
 
 (defmacro divf (variable &rest divisors)
   "DIVF is analogous to INCF or DECF, just with division.  It divides-and-stores to a variable."
@@ -111,7 +107,6 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should= 0 (fractional-part -10))
   (should= 0.0 (fractional-part -10.0)))
 
-
 (defun fractional-value (number)
   "This is the fractional value formula most familiar to most mathematicians.
 Note that the result of this is always positive, forming a sawtooth.  This is
@@ -132,56 +127,66 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
 (defmacro multf (variable &rest multiplicands)
   `(opf #'* ,variable ,@multiplicands))
 
-
 (defun nonnegative? (x)
   (not (minusp x)))
-
 
 (deftype nonnegative-float ()
   '(float 0.0 *))
 
-
 (deftype nonnegative-integer ()
   '(integer 0 *))
 
+(deftype unsigned-integer ()
+  'nonnegative-integer)
 
 (defun nonnegative-integer? (nonnegative-integer)
   (typep nonnegative-integer 'nonnegative-integer))
 
+(behavior 'nonnegative-integer?
+  (should #'nonnegative-integer? 12)
+  (should #'nonnegative-integer? 0)
+  (should-not #'nonnegative-integer? 12.7)
+  (should-not #'nonnegative-integer? -12))
+
+(defun unsigned-integer? (unsigned-integer)
+  (typep unsigned-integer 'unsigned-integer))
+
+(behavior 'unsigned-integer?
+  (should #'unsigned-integer? 12)
+  (should #'unsigned-integer? 0)
+  (should-not #'unsigned-integer? 12.7)
+  (should-not #'unsigned-integer? -12))
 
 (deftype positive-float ()
   '(float (0.0) *))
 
-
 (deftype positive-integer ()
   '(integer (0) *))
-
 
 (defun positive-integer? (positive-integer)
   (typep positive-integer 'positive-integer))
 
+(behavior 'positive-integer?
+  (should #'positive-integer? 12)
+  (should-not #'positive-integer? 0)
+  (should-not #'positive-integer? 12.7)
+  (should-not #'positive-integer? -12))
 
 (defun product (sequence &key (key 'identity) (start 0) (end nil))
   (assert (sequence? sequence))
   (reduce #'* sequence :key key :start start :end end :initial-value 1))
 
-
 (defun sum (sequence &key (key 'identity) (start 0) (end nil))
   (assert (sequence? sequence))
   (reduce #'+ sequence :key key :start start :end end :initial-value 0))
 
-(let ((1-to-100 (loop for i from 1 to 100 collect i)))
-  (assert (= 5050 (sum 1-to-100)))
-  (assert (= 3775 (sum 1-to-100 :start 50)))
-  (assert (= 265  (sum 1-to-100 :start 50 :end 55)))
-  (assert (= 55   (sum 1-to-100 :end 10)))
-  (assert (= 110  (sum 1-to-100 :end 10 :key (lambda (i) (* i 2))))))
-
-
-(defun unsigned-integer? (x)
-  (and (integerp x)
-       (not (minusp x))))
-
+(behavior 'sum
+  (let ((1-to-100 (loop for i from 1 to 100 collect i)))
+    (should= 5050 (sum 1-to-100))
+    (should= 3775 (sum 1-to-100 :start 50))
+    (should= 265  (sum 1-to-100 :start 50 :end 55))
+    (should= 55   (sum 1-to-100 :end 10))
+    (should= 110  (sum 1-to-100 :end 10 :key (lambda (i) (* i 2))))))
 
 (defun integer-range (x &optional y z)
   "This function generates lists of integer ranges of the form [start, stop].
@@ -224,23 +229,24 @@ Negative numbers are allowed, and operate in a logical manner.
                   (< i stop)))
          (reverse range))))))
 
-(assert (equal (integer-range 5)
-               '(0 1 2 3 4 5)))
-(assert (equal (integer-range 5 10)
-               '(5 6 7 8 9 10)))
-(assert (equal (integer-range 5 10 2)
-               '(5 7 9)))
-(assert (equal (integer-range -5)
-               '(0 -1 -2 -3 -4 -5)))
-(assert (equal (integer-range -5 0)
-               '(-5 -4 -3 -2 -1 0)))
-(assert (equal (integer-range 10 5)
-               '(10 9 8 7 6 5)))
-(assert (equal (integer-range 10 5 1)
-               nil))
-(assert (equal (integer-range 5 10 -1)
-               nil))
-(assert (equal (integer-range -5 5)
-               '(-5 -4 -3 -2 -1 0 1 2 3 4 5)))
-(assert (equal (integer-range -5 5 2)
-               '(-5 -3 -1 1 3 5)))
+(behavior 'integer-range
+  (should-equal (integer-range 5)
+		'(0 1 2 3 4 5))
+  (should-equal (integer-range 5 10)
+		'(5 6 7 8 9 10))
+  (should-equal (integer-range 5 10 2)
+		'(5 7 9))
+  (should-equal (integer-range -5)
+		'(0 -1 -2 -3 -4 -5))
+  (should-equal (integer-range -5 0)
+		'(-5 -4 -3 -2 -1 0))
+  (should-equal (integer-range 10 5)
+		'(10 9 8 7 6 5))
+  (should-equal (integer-range 10 5 1)
+		nil)
+  (should-equal (integer-range 5 10 -1)
+		nil)
+  (should-equal (integer-range -5 5)
+		'(-5 -4 -3 -2 -1 0 1 2 3 4 5))
+  (should-equal (integer-range -5 5 2)
+		'(-5 -3 -1 1 3 5)))
