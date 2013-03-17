@@ -37,43 +37,44 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "2.5.4"
+  :version "2.6.0"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
-  :components ((:file "behave")
-	       (:file "control"
-		      :depends-on ("behave"))
-               (:file "numeric"
-                      :depends-on ("behave"
-				   "control"
-				   "sequence"))
-               (:file "os"
-                      :depends-on ("control"
-                                   "string"))
-               (:file "probability"
-                      :depends-on ("control"
-                                   "numeric"))
-               (:file "random"
-                      :depends-on ("control"))
-               (:file "sequence"
-                      :depends-on ("control"))
-               (:file "string"
-                      :depends-on ("behave"
-				   "control"
-                                   "numeric"
-                                   "sequence"))
-               (:file "time-series"
-                      :depends-on ("control"
-                                   "numeric"
-                                   "sequence"))
-               (:file "truth"
-                      :depends-on ("control"))
-               (:file "utilities"
-                      :depends-on ("behave"
-				   "control"
-                                   "numeric"
-				   "os"
-                                   "sequence"
-                                   "string"
-                                   "time-series"
-                                   "truth"))))
+  :components ((:module "src"
+			:components ((:file "behave")
+				     (:file "control"
+					    :depends-on ("behave"))
+				     (:file "numeric"
+					    :depends-on ("behave"
+							 "control"
+							 "sequence"))
+				     (:file "os"
+					    :depends-on ("control"
+							 "string"))
+				     (:file "probability"
+					    :depends-on ("control"
+							 "numeric"))
+				     (:file "random"
+					    :depends-on ("control"))
+				     (:file "sequence"
+					    :depends-on ("control"))
+				     (:file "string"
+					    :depends-on ("behave"
+							 "control"
+							 "numeric"
+							 "sequence"))
+				     (:file "time-series"
+					    :depends-on ("control"
+							 "numeric"
+							 "sequence"))
+				     (:file "truth"
+					    :depends-on ("control"))
+				     (:file "utilities"
+					    :depends-on ("behave"
+							 "control"
+							 "numeric"
+							 "os"
+							 "sequence"
+							 "string"
+							 "time-series"
+							 "truth"))))))
