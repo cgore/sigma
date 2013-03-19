@@ -32,39 +32,34 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :cgore-utilities
-  (:nicknames :utilities :util)
+(defpackage :sigma
   (:use
     :common-lisp
     #+cmu :extensions
     #+sbcl :sb-ext
-    :cgore-behave
-    :cgore-control
-    :cgore-numeric
-    :cgore-os
-    :cgore-sequence
-    :cgore-string
-    :cgore-time-series
-    :cgore-truth)
+    :sigma/behave
+    :sigma/control
+    :sigma/numeric
+    :sigma/os
+    :sigma/sequence
+    :sigma/string
+    :sigma/time-series
+    :sigma/truth)
   (:export
-    :*cgore-utilities-packages*
-    :use-all-cgore-utilities
-    :use-all-utilities))
-(in-package :cgore-utilities)
+    :*sigma-packages*
+    :use-all-sigma))
+(in-package :sigma)
 
-(defvar *cgore-utilities-packages*
-  '(:cgore-behave
-    :cgore-control
-    :cgore-numeric
-    :cgore-os
-    :cgore-sequence
-    :cgore-string
-    :cgore-time-series
-    :cgore-truth
-    :cgore-utilities))
+(defvar *sigma-packages*
+  '(:sigma/behave
+    :sigma/control
+    :sigma/numeric
+    :sigma/os
+    :sigma/sequence
+    :sigma/string
+    :sigma/time-series
+    :sigma/truth
+    :sigma))
 
-(defun use-all-cgore-utilities ()
-  (mapcar #'use-package *cgore-utilities-packages*))
-
-(defun use-all-utilities ()
-  (use-all-cgore-utilities))
+(defun use-all-sigma ()
+  (mapcar #'use-package *sigma-packages*))

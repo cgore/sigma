@@ -1,15 +1,15 @@
-LATEX_FILES=cgore-utilities.latex string.latex
+LATEX_FILES=sigma.latex string.latex
 
-all: cgore-utilities.dvi cgore-utilities.ps cgore-utilities.pdf
+all: sigma.dvi sigma.ps sigma.pdf
 
-cgore-utilities.dvi: ${LATEX_FILES}
-	latex cgore-utilities.latex
+sigma.dvi: ${LATEX_FILES}
+	latex sigma.latex
 
-cgore-utilities.ps: cgore-utilities.dvi
-	dvips -o cgore-utilities.ps cgore-utilities.dvi
+sigma.ps: sigma.dvi
+	dvips -o sigma.ps sigma.dvi
 
-cgore-utilities.pdf: ${LATEX_FILES}
-	pdflatex cgore-utilities.latex
+sigma.pdf: ${LATEX_FILES}
+	pdflatex sigma.latex
 
 clean:
-	rm cgore-utilities.pdf cgore-utilities.ps cgore-utilities.dvi
+	rm sigma.pdf sigma.ps sigma.dvi

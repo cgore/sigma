@@ -33,11 +33,11 @@
 
 (in-package :asdf)
 
-(defsystem "cgore-utilities"
+(defsystem "sigma"
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "2.6.0"
+  :version "3.0.0"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
   :components ((:module "src"
@@ -69,7 +69,7 @@
 							 "sequence"))
 				     (:file "truth"
 					    :depends-on ("control"))
-				     (:file "utilities"
+				     (:file "sigma"
 					    :depends-on ("behave"
 							 "control"
 							 "numeric"

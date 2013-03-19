@@ -33,17 +33,17 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-truth
+(defpackage :sigma/truth
   (:nicknames :truth)
   (:use
     :common-lisp
-    :cgore-control)
+    :sigma/control)
   (:export
     :?
     :[?]
     :toggle
     ))
-(in-package :cgore-truth)
+(in-package :sigma/truth)
 
 
 (defgeneric ? (x))

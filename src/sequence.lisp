@@ -33,9 +33,9 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-sequence
+(defpackage :sigma/sequence
   (:use :common-lisp
-        :cgore-control)
+        :sigma/control)
   (:export :arefable?
 	   :array-values
 	   :best
@@ -61,7 +61,7 @@
 	   :the-last
 	   :vector-to-list
 	   :worst))
-(in-package :cgore-sequence)
+(in-package :sigma/sequence)
 
 
 (defun nth-from-end (n list)

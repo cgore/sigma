@@ -32,9 +32,9 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :cgore-control
+(defpackage :sigma/control
   (:nicknames :control)
-  (:use :common-lisp :cgore-behave)
+  (:use :common-lisp :sigma/behave)
   (:export :aand
 	   :a?and
 	   :ablock
@@ -74,7 +74,7 @@
 	   :unimplemented
 	   :until
 	   :while))
-(in-package :cgore-control)
+(in-package :sigma/control)
 
 (defmacro aif (conditional t-action &optional nil-action)
   "AIF is an anaphoric IF, from Paul Graham's ``On Lisp'' page 190.

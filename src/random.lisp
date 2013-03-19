@@ -33,10 +33,10 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-random
+(defpackage :sigma/random
   (:nicknames :random)
   (:use :common-lisp
-        :cgore-control)
+        :sigma/control)
   (:export
     :coin-toss
     :gauss
@@ -50,7 +50,7 @@
     :randomize-array
     :shuffle
     ))
-(in-package :cgore-random)
+(in-package :sigma/random)
 
 
 ;;; When x and y are two variables from [0, 1), uniformly distributed, then

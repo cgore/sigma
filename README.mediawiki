@@ -22,13 +22,13 @@ First we need to clone the utilities.
 
  % mkdir -p ~/programming/lisp
  % cd ~/programming/lisp
- % git clone git@github.com:cgore/utilities.git
+ % git clone git@github.com:cgore/sigma.git
 
 Now we need to make a directory for our project and symlink to the ASDF definition.  There are other ways to load ASDF libraries, especially if you want to have them available globally; I strongly recommend you read the documentation to ASDF.
 
  % mkdir our-new-project
  % cd our-new-project
- % ln -s ~/programming/lisp/utilities/cgore-utilities.asd
+ % ln -s ~/programming/lisp/sigma/sigma.asd
 
 Now we need to start up our Lisp REPL.  The best way to do this for perfonal use is SLIME from within Emacs, but I will demonstrate using the shell itself here.
 
@@ -37,8 +37,8 @@ Now we need to start up our Lisp REPL.  The best way to do this for perfonal use
 Now we are in SBCL.
 
  (require :asdf) ; Require ASDF
- (require :cgore-utilities) ; Require the utilities.
- (utilities:use-all-utilties) ; This will pollute COMMON-LISP-USER
+ (require :sigma) ; Require the system via ASDF.
+ (sigma:use-all-sigma) ; This will pollute COMMON-LISP-USER
  (sum (loop for i from 1 to 100 collect i)) ; Returns 5050 and makes Euler sad.
 
 Have fun!

@@ -32,12 +32,12 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :cgore-numeric
+(defpackage :sigma/numeric
   (:nicknames :numeric)
   (:use :common-lisp
-	:cgore-behave
-        :cgore-control
-	:cgore-sequence)
+	:sigma/behave
+        :sigma/control
+	:sigma/sequence)
   (:export :bit?
 	   :divf
 	   :fractional-part
@@ -55,7 +55,7 @@
 	   :sawtooth-wave
 	   :sum
 	   :unsigned-integer?))
-(in-package :cgore-numeric)
+(in-package :sigma/numeric)
 
 (defun bit? (b)
   (typep b 'bit))

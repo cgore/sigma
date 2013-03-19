@@ -32,7 +32,7 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :cgore-behave
+(defpackage :sigma/behave
   (:nicknames :behave)
   (:use :common-lisp)
   (:export :behavior
@@ -43,7 +43,7 @@
 	   :should-be-a
 	   :should-be-true
 	   :should-be-false))
-(in-package :cgore-behave)
+(in-package :sigma/behave)
 
 (defmacro behavior (thing &body body)
   "The BEHAVIOR macro is used to specify a block of expected behavior for a

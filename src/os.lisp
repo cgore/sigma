@@ -33,11 +33,11 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-os
+(defpackage :sigma/os
   (:nicknames :os)
   (:use :common-lisp
-        :cgore-control
-        :cgore-string)
+        :sigma/control
+        :sigma/string)
   (:export
     :*perl-path*
     :perl
@@ -48,7 +48,7 @@
     :*ruby-path*
     :*ruby*
     ))
-(in-package :cgore-os)
+(in-package :sigma/os)
 
 
 (defparameter *perl-path* "/usr/bin/perl")

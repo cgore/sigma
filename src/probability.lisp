@@ -33,18 +33,18 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-probability
+(defpackage :sigma/probability
   (:nicknames :probability)
   (:use
     :common-lisp
-    :cgore-control
-    :cgore-numeric)
+    :sigma/control
+    :sigma/numeric)
   (:export
     :decaying-probability?
     :probability
     :probability?
     ))
-(in-package :cgore-probability)
+(in-package :sigma/probability)
 
 
 (deftype probability ()

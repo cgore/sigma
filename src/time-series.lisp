@@ -33,13 +33,13 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 
-(defpackage :cgore-time-series
+(defpackage :sigma/time-series
   (:nicknames :time-series)
   (:use
     :common-lisp
-    :cgore-control
-    :cgore-numeric
-    :cgore-sequence)
+    :sigma/control
+    :sigma/numeric
+    :sigma/sequence)
   (:export
     :array-raster-line
     :distance
@@ -54,7 +54,7 @@
     :tms-dimensions
     :tmsref
     :tms-values))
-(in-package :cgore-time-series)
+(in-package :sigma/time-series)
 
 
 (defun time-series? (time-series &optional (element-type t))

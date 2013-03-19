@@ -32,13 +32,13 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :cgore-string
+(defpackage :sigma/string
   (:nicknames :string)
   (:use :common-lisp
-	:cgore-behave
-	:cgore-control
-	:cgore-numeric
-	:cgore-sequence)
+	:sigma/behave
+	:sigma/control
+	:sigma/numeric
+	:sigma/sequence)
   (:export :character-range
 	   :character-ranges
 	   :escape-tildes
@@ -49,7 +49,7 @@
 	   :split
 	   :strmult
 	   :to-string))
-(in-package :cgore-string)
+(in-package :sigma/string)
 
 (defun character-range (start end)
   "The CHARACTER-RANGE function returns a list of the characters from START to END."

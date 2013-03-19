@@ -60,7 +60,7 @@
 }
 \newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
 
-\title{\texttt{CGore-Utilities}:\\
+\title{$\Sigma$\\
   A Library for \textsc{Ansi} Common Lisp}
 \author{Christopher Mark Gore\\
   cgore@cgore.com\\
