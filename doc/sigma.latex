@@ -64,7 +64,8 @@
   A Library for \textsc{Ansi} Common Lisp}
 \author{Christopher Mark Gore\\
   cgore@cgore.com\\
-  http://www.cgore.com}
+  http://cgore.com/programming/lisp/sigma/\\
+  https://github.com/cgore/sigma}
 \date{\today}
 
 \begin{document}
