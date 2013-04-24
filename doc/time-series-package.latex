@@ -32,67 +32,36 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
+\lispPackageChapter{Time-Series}
 
-\documentclass{book}
+\section{Macros}
 
-\usepackage{ifthen}
-\usepackage{calc}
+\lispMacroSubsection{Snap-Index}
 
-\newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+\section{Functions}
 
-\newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
-\newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
-\newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
-\newcommand{\lispMethodsSubsection}[1]{\subsection{The \texttt{#1} Methods}}
-\newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
-\newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
-\newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+\lispFunctionSubsection{Array-Raster-Line}
 
-\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
-\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
-\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\lispFunctionSubsection{Distance}
 
-\newcommand{\lispCode}[1]{\texttt{#1}}
-\newcommand{\lispCodeArrow}{$\Longrightarrow$}
-\newcommand{\lispExample}[2]{
-  \noindent
-  \texttt{#1} $\Longrightarrow$ \texttt{#2}
-}
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\lispFunctionSubsection{Norm}
 
-\title{$\Sigma$\\
-  A Library for \textsc{Ansi} Common Lisp}
-\author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://www.cgore.com}
-\date{\today}
+\lispFunctionSubsection{Raster-Line}
 
-\begin{document}
+\lispFunctionSubsection{Similar-Points?}
 
-\maketitle
+\lispFunctionSubsection{Time-Series?}
 
-\tableofcontents
+\lispFunctionSubsection{Time-Multiseries?}
 
-\input{copyright.latex}
+\lispFunctionSubsection{TMSref}
 
-\input{behave-package.latex}
+\lispFunctionSubsection{TMS-Dimensions}
 
-\input{control-package.latex}
+\lispFunctionSubsection{TMS-Raster-Line}
 
-\input{numeric-package.latex}
+\lispFunctionSubsection{TMS-Values}
 
-\input{os-package.latex}
+\section{Types}
 
-\input{probability-package.latex}
-
-\input{sequence-package.latex}
-
-\input{string-package.latex}
-
-\input{time-series-package.latex}
-
-\input{truth-package.latex}
-
-\input{sigma-package.latex}
-
-\end{document}
+\lispTypeSubsection{Time-Multiseries}

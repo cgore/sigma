@@ -32,67 +32,82 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
+\lispPackageChapter{Control}
 
-\documentclass{book}
+\section{Macros}
 
-\usepackage{ifthen}
-\usepackage{calc}
+\lispMacroSubsection{AIf}
 
-\newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+\lispMacroSubsection{A?If}
 
-\newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
-\newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
-\newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
-\newcommand{\lispMethodsSubsection}[1]{\subsection{The \texttt{#1} Methods}}
-\newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
-\newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
-\newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+\lispMacroSubsection{AAnd}
 
-\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
-\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
-\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\lispMacroSubsection{A?And}
 
-\newcommand{\lispCode}[1]{\texttt{#1}}
-\newcommand{\lispCodeArrow}{$\Longrightarrow$}
-\newcommand{\lispExample}[2]{
-  \noindent
-  \texttt{#1} $\Longrightarrow$ \texttt{#2}
-}
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\lispMacroSubsection{ALambda}
 
-\title{$\Sigma$\\
-  A Library for \textsc{Ansi} Common Lisp}
-\author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://www.cgore.com}
-\date{\today}
+\lispMacroSubsection{A?Lambda}
 
-\begin{document}
+\lispMacroSubsection{ABlock}
 
-\maketitle
+\lispMacroSubsection{A?Block}
 
-\tableofcontents
+\lispMacroSubsection{ACond}
 
-\input{copyright.latex}
+\lispMacroSubsection{A?Cond}
 
-\input{behave-package.latex}
+\lispMacroSubsection{AWhen}
 
-\input{control-package.latex}
+\lispMacroSubsection{A?When}
 
-\input{numeric-package.latex}
+\lispMacroSubsection{AWhile}
 
-\input{os-package.latex}
+\lispMacroSubsection{A?While}
 
-\input{probability-package.latex}
+\lispMacroSubsection{DeleteF}
 
-\input{sequence-package.latex}
+\lispMacroSubsection{Do-While}
 
-\input{string-package.latex}
+\lispMacroSubsection{Do-Until}
 
-\input{time-series-package.latex}
+\lispMacroSubsection{For}
 
-\input{truth-package.latex}
+\lispMacroSubsection{Forever}
 
-\input{sigma-package.latex}
+\lispMacroSubsection{Multicond}
 
-\end{document}
+\lispMacroSubsection{OpF}
+
+\lispMacroSubsection{Swap}
+
+\lispMacroSubsection{Swap-Unless}
+
+\lispMacroSubsection{Swap-When}
+
+\lispMacroSubsection{Until}
+
+\lispMacroSubsection{While}
+
+\section{Functions}
+
+\lispFunctionSubsection{Compose}
+
+\lispFunctionSubsection{Conjoin}
+
+\lispFunctionSubsection{Curry}
+
+\lispFunctionSubsection{Disjoin}
+
+\lispFunctionSubsection{Function-Alias}
+
+\lispFunctionSubsection{Operator-To-Function}
+
+\lispFunctionSubsection{RCompose}
+
+\lispFunctionSubsection{RCurry}
+
+\lispFunctionSubsection{Unimplemented}
+
+\section{Generics}
+
+\lispGenericSubsection{Duplicate}

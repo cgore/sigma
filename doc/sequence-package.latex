@@ -32,67 +32,60 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
+\lispPackageChapter{Sequence}
 
-\documentclass{book}
+\section{Macros}
 
-\usepackage{ifthen}
-\usepackage{calc}
+\lispMacroSubsection{Arefable?}
 
-\newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+\lispMacroSubsection{NConcF}
 
-\newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
-\newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
-\newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
-\newcommand{\lispMethodsSubsection}[1]{\subsection{The \texttt{#1} Methods}}
-\newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
-\newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
-\newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+\lispMacroSubsection{Nthable?}
 
-\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
-\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
-\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\lispMacroSubsection{Set-NthCdr}
 
-\newcommand{\lispCode}[1]{\texttt{#1}}
-\newcommand{\lispCodeArrow}{$\Longrightarrow$}
-\newcommand{\lispExample}[2]{
-  \noindent
-  \texttt{#1} $\Longrightarrow$ \texttt{#2}
-}
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\section{Functions}
 
-\title{$\Sigma$\\
-  A Library for \textsc{Ansi} Common Lisp}
-\author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://www.cgore.com}
-\date{\today}
+\lispFunctionSubsection{Array-Values}
 
-\begin{document}
+\lispFunctionSubsection{Nth-From-End}
 
-\maketitle
+\lispFunctionSubsection{Sequence?}
 
-\tableofcontents
+\lispFunctionSubsection{Empty-Sequence?}
 
-\input{copyright.latex}
+\lispFunctionSubsection{Join-Symbol-To-All-Following}
 
-\input{behave-package.latex}
+\lispFunctionSubsection{Join-Symbol-To-All-Preceeding}
 
-\input{control-package.latex}
+\lispFunctionSubsection{List-To-Vector}
 
-\input{numeric-package.latex}
+\lispFunctionSubsection{Set-Equal}
 
-\input{os-package.latex}
+\lispFunctionSubsection{Simple-Vector-To-List}
 
-\input{probability-package.latex}
+\lispFunctionSubsection{Sort-Order}
 
-\input{sequence-package.latex}
+\lispFunctionSubsection{The-Last}
 
-\input{string-package.latex}
+\lispFunctionSubsection{Vector-To-List}
 
-\input{time-series-package.latex}
+\section{Generics}
 
-\input{truth-package.latex}
+\lispGenericSubsection{Best}
 
-\input{sigma-package.latex}
+\lispGenericSubsection{Minimum}
 
-\end{document}
+\lispGenericSubsection{Minimum?}
+
+\lispGenericSubsection{Maximum}
+
+\lispGenericSubsection{Maximum?}
+
+\lispGenericSubsection{Sort-On}
+
+\lispGenericSubsection{Slice}
+
+\lispGenericSubsection{Split}
+
+\lispGenericSubsection{Worst}

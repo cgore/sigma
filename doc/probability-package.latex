@@ -32,67 +32,46 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
+\lispPackageChapter{Probability}
 
-\documentclass{book}
+\section{Macros}
 
-\usepackage{ifthen}
-\usepackage{calc}
+\lispMacroSubsection{Decaying-Probabiliity?}
 
-\newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+\section{Functions}
 
-\newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
-\newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
-\newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
-\newcommand{\lispMethodsSubsection}[1]{\subsection{The \texttt{#1} Methods}}
-\newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
-\newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
-\newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+\lispFunctionSubsection{Probability?}
 
-\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
-\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
-\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\section{Types}
 
-\newcommand{\lispCode}[1]{\texttt{#1}}
-\newcommand{\lispCodeArrow}{$\Longrightarrow$}
-\newcommand{\lispExample}[2]{
-  \noindent
-  \texttt{#1} $\Longrightarrow$ \texttt{#2}
-}
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\lispTypeSubsection{Probability}
 
-\title{$\Sigma$\\
-  A Library for \textsc{Ansi} Common Lisp}
-\author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://www.cgore.com}
-\date{\today}
+\lispPackageChapter{Random}
 
-\begin{document}
+\section{Macros}
 
-\maketitle
+\lispMacroSubsection{NShuffle}
 
-\tableofcontents
+\section{Functions}
 
-\input{copyright.latex}
+\lispFunctionSubsection{Gauss}
 
-\input{behave-package.latex}
+\lispFunctionSubsection{Random-Argument}
 
-\input{control-package.latex}
+\lispFunctionSubsection{Coin-Toss}
 
-\input{numeric-package.latex}
+\lispFunctionSubsection{Random-In-Range}
 
-\input{os-package.latex}
+\lispFunctionSubsection{Random-In-Ranges}
 
-\input{probability-package.latex}
+\lispFunctionSubsection{Random-Range}
 
-\input{sequence-package.latex}
+\lispFunctionSubsection{Randomize-Array}
 
-\input{string-package.latex}
+\lispFunctionSubsection{Random-Array}
 
-\input{time-series-package.latex}
+\section{Generics}
 
-\input{truth-package.latex}
+\lispGenericSubsection{Random-Element}
 
-\input{sigma-package.latex}
-
-\end{document}
+\lispGenericSubsection{Shuffle}

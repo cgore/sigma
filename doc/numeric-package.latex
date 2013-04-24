@@ -32,67 +32,43 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
+\lispPackageChapter{Numeric IN OWN FILE}
 
-\documentclass{book}
+\section{Macros}
 
-\usepackage{ifthen}
-\usepackage{calc}
+\lispMacroSubsection{DivF}
 
-\newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+\lispMacroSubsection{MultF}
 
-\newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
-\newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
-\newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
-\newcommand{\lispMethodsSubsection}[1]{\subsection{The \texttt{#1} Methods}}
-\newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
-\newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
-\newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+\section{Functions}
 
-\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
-\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
-\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\lispFunctionSubsection{Bit?}
 
-\newcommand{\lispCode}[1]{\texttt{#1}}
-\newcommand{\lispCodeArrow}{$\Longrightarrow$}
-\newcommand{\lispExample}[2]{
-  \noindent
-  \texttt{#1} $\Longrightarrow$ \texttt{#2}
-}
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\lispFunctionSubsection{Fractional-Part}
 
-\title{$\Sigma$\\
-  A Library for \textsc{Ansi} Common Lisp}
-\author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://www.cgore.com}
-\date{\today}
+\lispFunctionSubsection{Fractional-Value}
 
-\begin{document}
+\lispFunctionSubsection{Integer-Range}
 
-\maketitle
+\lispFunctionSubsection{Nonnegative?}
 
-\tableofcontents
+\lispFunctionSubsection{Nonnegative-Integer?}
 
-\input{copyright.latex}
+\lispFunctionSubsection{Positive-Integer?}
 
-\input{behave-package.latex}
+\lispFunctionSubsection{Product}
 
-\input{control-package.latex}
+\lispFunctionSubsection{Sum}
 
-\input{numeric-package.latex}
+\lispFunctionSubsection{Unsigned-Integer?}
 
-\input{os-package.latex}
+\section{Types}
 
-\input{probability-package.latex}
+\lispTypeSubsection{Nonnegative-Float}
 
-\input{sequence-package.latex}
+\lispTypeSubsection{Nonnegative-Integer}
 
-\input{string-package.latex}
+\lispTypeSubsection{Positive-Float}
 
-\input{time-series-package.latex}
+\lispTypeSubsection{Positive-Integer}
 
-\input{truth-package.latex}
-
-\input{sigma-package.latex}
-
-\end{document}

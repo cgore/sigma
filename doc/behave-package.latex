@@ -32,67 +32,94 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
+\lispPackageChapter{Behave}
 
-\documentclass{book}
+\section{Macros}
 
-\usepackage{ifthen}
-\usepackage{calc}
+\lispMacroSubsection{Behavior}
 
-\newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
+\lispMacroSubsection{Spec}
 
-\newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
-\newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
-\newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
-\newcommand{\lispMethodsSubsection}[1]{\subsection{The \texttt{#1} Methods}}
-\newcommand{\lispTypeSubsection}[1]{\subsection{The \texttt{#1} Type}}
-\newcommand{\lispParameterSubsection}[1]{\subsection{The \texttt{#1} Parameter}}
-\newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
+\lispMacroSubsection{Should}
 
-\newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
-\newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
-\newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\lispMacroSubsection{Should-Not}
 
-\newcommand{\lispCode}[1]{\texttt{#1}}
-\newcommand{\lispCodeArrow}{$\Longrightarrow$}
-\newcommand{\lispExample}[2]{
-  \noindent
-  \texttt{#1} $\Longrightarrow$ \texttt{#2}
-}
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\lispMacroSubsection{Should-Be-Null}
 
-\title{$\Sigma$\\
-  A Library for \textsc{Ansi} Common Lisp}
-\author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://www.cgore.com}
-\date{\today}
+\lispMacroSubsection{Should-Be-A}
 
-\begin{document}
+\lispMacroSubsection{Should=}
 
-\maketitle
+\lispMacroSubsection{Should/=}
 
-\tableofcontents
+\lispMacroSubsection{Should<}
 
-\input{copyright.latex}
+\lispMacroSubsection{Should>}
 
-\input{behave-package.latex}
+\lispMacroSubsection{Should<=}
 
-\input{control-package.latex}
+\lispMacroSubsection{Should>=}
 
-\input{numeric-package.latex}
+\lispMacroSubsection{Should-Eq}
 
-\input{os-package.latex}
+\lispMacroSubsection{Should-Not-Eq}
 
-\input{probability-package.latex}
+\lispMacroSubsection{Should-Eql}
 
-\input{sequence-package.latex}
+\lispMacroSubsection{Should-Not-Eql}
 
-\input{string-package.latex}
+\lispMacroSubsection{Should-Equal}
 
-\input{time-series-package.latex}
+\lispMacroSubsection{Should-Not-Equal}
 
-\input{truth-package.latex}
+\lispMacroSubsection{Should-EqualP}
 
-\input{sigma-package.latex}
+\lispMacroSubsection{Should-Not-EqualP}
 
-\end{document}
+\lispMacroSubsection{Should-String=}
+
+\lispMacroSubsection{Should-Not-String=}
+
+\lispMacroSubsection{Should-String/=}
+
+\lispMacroSubsection{Should-Not-String/=}
+
+\lispMacroSubsection{Should-String<}
+
+\lispMacroSubsection{Should-Not-String<}
+
+\lispMacroSubsection{Should-String>}
+
+\lispMacroSubsection{Should-Not-String>}
+
+\lispMacroSubsection{Should-String<=}
+
+\lispMacroSubsection{Should-Not-String<=}
+
+\lispMacroSubsection{Should-String>=}
+
+\lispMacroSubsection{Should-Not-String>=}
+
+\lispMacroSubsection{Should-String-Equal}
+
+\lispMacroSubsection{Should-Not-String-Equal}
+
+\lispMacroSubsection{Should-String-Not-Equal}
+
+\lispMacroSubsection{Should-Not-String-Not-Equal}
+
+\lispMacroSubsection{Should-String-LessP}
+
+\lispMacroSubsection{Should-Not-String-LessP}
+
+\lispMacroSubsection{Should-String-GreaterP}
+
+\lispMacroSubsection{Should-Not-String-GreaterP}
+
+\lispMacroSubsection{Should-String-Not-GreaterP}
+
+\lispMacroSubsection{Should-Not-String-Not-GreaterP}
+
+\lispMacroSubsection{Should-String-Not-LessP}
+
+\lispMacroSubsection{Should-Not-String-Not-LessP}
