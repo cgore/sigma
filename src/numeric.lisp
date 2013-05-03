@@ -40,6 +40,7 @@
 	:sigma/sequence)
   (:export :bit?
 	   :divf
+	   :factorial
 	   :fractional-part
 	   :fractional-value
 	   :integer-range
@@ -250,3 +251,9 @@ Negative numbers are allowed, and operate in a logical manner.
 		'(-5 -4 -3 -2 -1 0 1 2 3 4 5))
   (should-equal (integer-range -5 5 2)
 		'(-5 -3 -1 1 3 5)))
+
+(defun factorial (n)
+  "The FACTORIAL function computes n! for positive integers.  NB, this isn't
+intelligent, and uses a loop instead of better approaches."
+  (assert (positive-integer? n))
+  (product (loop for i from 1 to n collect i)))

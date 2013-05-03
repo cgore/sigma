@@ -32,7 +32,7 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Numeric IN OWN FILE}
+\lispPackageChapter{Numeric}
 
 \section{Macros}
 
@@ -43,6 +43,11 @@
 \section{Functions}
 
 \lispFunctionSubsection{Bit?}
+
+\lispFunctionSubsection{Factorial}
+
+The \lispVar{Factorial} function computes $n!$ for positive integers.  NB, this
+isn't intelligent, and uses a loop instead of better approaches.
 
 \lispFunctionSubsection{Fractional-Part}
 
