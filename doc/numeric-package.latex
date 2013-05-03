@@ -44,6 +44,12 @@
 
 \lispFunctionSubsection{Bit?}
 
+\lispFunctionSubsection{Choose}
+
+The \lispVar{Choose} function computes the binomial coefficient for $n$ and $k$,
+typically spoken as \textit{n choose k}, and usually written mathematically as
+$n \choose k$.
+
 \lispFunctionSubsection{Factorial}
 
 The \lispVar{Factorial} function computes $n!$ for positive integers.  NB, this

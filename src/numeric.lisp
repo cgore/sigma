@@ -39,6 +39,7 @@
         :sigma/control
 	:sigma/sequence)
   (:export :bit?
+	   :choose
 	   :divf
 	   :factorial
 	   :fractional-part
@@ -257,3 +258,15 @@ Negative numbers are allowed, and operate in a logical manner.
 intelligent, and uses a loop instead of better approaches."
   (assert (positive-integer? n))
   (product (loop for i from 1 to n collect i)))
+
+(defun choose (n k)
+  "The CHOOSE function computes the binomial coefficient for n and k, also known
+as 'n choose k'."
+  (assert (positive-integer? n))
+  (assert (positive-integer? k))
+  (assert (positive-integer? (- n k)))
+  (/ (factorial n)
+     (* (factorial (- n k))
+	(factorial k))))
+
+(assert (= 66 (choose 12 2)))
