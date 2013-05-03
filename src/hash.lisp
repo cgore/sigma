@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -32,36 +32,26 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(defpackage :sigma
-  (:use
-    :common-lisp
-    #+cmu :extensions
-    #+sbcl :sb-ext
-    :sigma/behave
-    :sigma/control
-    :sigma/hash
-    :sigma/numeric
-    :sigma/os
-    :sigma/sequence
-    :sigma/string
-    :sigma/time-series
-    :sigma/truth)
-  (:export
-    :*sigma-packages*
-    :use-all-sigma))
-(in-package :sigma)
+(defpackage :sigma/hash
+  (:nicknames :hash)
+  (:use :common-lisp
+	:sigma/behave)
+  (:export :inchash
+	   :dechash))
+(in-package :sigma/hash)
 
-(defvar *sigma-packages*
-  '(:sigma/behave
-    :sigma/control
-    :sigma/hash
-    :sigma/numeric
-    :sigma/os
-    :sigma/sequence
-    :sigma/string
-    :sigma/time-series
-    :sigma/truth
-    :sigma))
+(defun inchash (key hash)
+  "The INCHASH function will increment the value in key of the hash,
+initializing it to 1 if it isn't currently defined."
+  (assert (typep hash 'hash-table))
+  (if (null (gethash key hash))
+      (setf (gethash key hash) 1)
+      (incf (gethash key hash))))
 
-(defun use-all-sigma ()
-  (mapcar #'use-package *sigma-packages*))
+(defun dechash (key hash)
+  "The DECHASH function will decrement the value in key of the hash,
+initializing it to -1 if it isn't currently defined."
+  (assert (typep hash 'hash-table))
+  (if (null (gethash key hash))
+      (setf (gethash key hash) -1)
+      (decf (gethash key hash))))

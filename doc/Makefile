@@ -1,7 +1,8 @@
 LATEX_FILES=sigma.latex copyright.latex behave-package.latex			\
-	 control-package.latex numeric-package.latex os-package.latex		\
-	 probability-package.latex sequence-package.latex string-package.latex	\
-	 time-series-package.latex truth-package.latex sigma-package.latex
+	 control-package.latex hash-package.latex numeric-package.latex		\
+	 os-package.latex probability-package.latex sequence-package.latex	\
+	 string-package.latex time-series-package.latex truth-package.latex	\
+	 sigma-package.latex
 
 all: sigma.dvi sigma.ps sigma.pdf
 
