@@ -89,9 +89,15 @@ example, see the documentation of BEHAVIOR."
   `(progn ,@body))
 
 (defmacro should (test &rest arguments)
+  "The SHOULD macro is the basic building block for most of the behavior
+checking.  It asserts that TEST returns truthfully for the arguments.  Typically
+you will want to use one of the macros defined on top of SHOULD instead of using
+it directly, such as SHOULD=."
   `(assert (funcall ,test ,@arguments)))
 
 (defmacro should-not (test &rest arguments)
+  "The SHOULD-NOT macro is identical to the SHOULD macro, except that it inverts
+the result of the call with NOT."
   `(assert (not (funcall ,test ,@arguments))))
 
 (defmacro should-be-null (&rest arguments)
