@@ -60,12 +60,11 @@
 }
 \newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
 
-\title{$\Sigma$\\
+\title{{\Huge $\Sigma$}\\
   A Library for \textsc{Ansi} Common Lisp}
 \author{Christopher Mark Gore\\
-  cgore@cgore.com\\
-  http://cgore.com/programming/lisp/sigma/\\
-  https://github.com/cgore/sigma}
+  \texttt{cgore@cgore.com}\\
+  \texttt{http://cgore.com}}
 \date{\today}
 
 \begin{document}
@@ -75,6 +74,8 @@
 \tableofcontents
 
 \input{copyright.latex}
+
+\input{introduction.latex}
 
 \input{behave-package.latex}
 
