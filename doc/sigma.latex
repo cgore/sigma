@@ -35,11 +35,14 @@
 
 \documentclass{book}
 
-\usepackage{ifthen}
 \usepackage{calc}
+\usepackage{ifthen}
+\usepackage{datetime}
+
+\newdateformat{cgoredate}
+{\dayofweekname{\day}{\month}{\year},~\monthname~\ordinaldate{\day},~\textsc{ad}~\THEYEAR}
 
 \newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
-
 \newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
 \newcommand{\lispMacroSubsection}[1]{\subsection{The \texttt{#1} Macro}}
 \newcommand{\lispGenericSubsection}[1]{\subsection{The \texttt{#1} Generic}}
@@ -65,7 +68,7 @@
 \author{Christopher Mark Gore\\
   \texttt{cgore@cgore.com}\\
   \texttt{http://cgore.com}}
-\date{\today}
+\date{\cgoredate\today}
 
 \begin{document}
 

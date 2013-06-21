@@ -34,15 +34,107 @@
 
 \lispPackageChapter{Behave}
 
+The \texttt{behave} package contains some useful code for confirming behavior of
+code, supporting a very basic form of \textit{behavior-driven development}, BDD.
+The basic flow is to define the \textit{behavior} of something, with multiple
+\textit{specs} specified within that behavior specification, each consisting of
+various assertions, such as \texttt{should=}, \texttt{should-equal},
+\texttt{should-not-equal}, and many others.  If the behavior of the thing
+doesn't match the specified behavior, then there is some error.
+
 \section{Macros}
 
 \lispMacroSubsection{Behavior}
 
+The \texttt{behavior} macro is used to specify a block of expected behavior for
+a \texttt{thing}.  It specifies an example group, loosly similar to the
+\texttt{describe} blocks in Ruby's RSpec.  It takes a single argument, the
+\texttt{thing} we are trying to describe, and then a body of code to evaluate
+that is evaluated in an implicit \texttt{progn}.  It is to be used around a set
+of examples, or around a set of assertions directly.
+
+\lispSyntax
+
+\texttt{(behavior \lispVar{thing} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{verbatim}
+(behavior 'float
+          (spec "is an Abelian group"
+                (let ((a (random 10.0))
+                      (b (random 10.0))
+                      (c (random 10.0))
+                      (e 1.0))
+                  (spec "closure"
+                        (should-be-a 'float (* a b)))
+                  (spec "associativity"
+                        (should= (* (* a b) c)
+                                 (* a (* b c))))
+                  (spec "identity element"
+                        (should= a (* e a)))
+                  (spec "inverse element"
+                        (let ((1/a (/ 1 a)))
+                          (should= (* 1/a a)
+                                   (* a 1/a)
+                                   1.0)))
+                  (spec "commutitativity"
+                        (should= (* a b) (* b a))))))
+\end{verbatim}
+
 \lispMacroSubsection{Spec}
+
+The \texttt{spec} macro is used to indicate a specification for a desired
+behavior.  It will normally serve as a grouping for assertions or nested
+\texttt{spec}s.
+
+\lispSyntax
+
+\texttt{(spec \lispVar{description} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{verbatim}
+(spec "should pass some tests"
+      (should= 12 (foo 3.5))
+      (should= 14 (foo 4.22)))
+\end{verbatim}
+
 
 \lispMacroSubsection{Should}
 
+The \texttt{should} macro is the basic building block for most of the behavior
+checking.  It asserts that \texttt{test} returns truthfully for the arguments.
+Typically you will want to use one of the macros defined on top of
+\texttt{should} instead of using it directly, such as \texttt{should=}.
+
+\lispSyntax
+
+\texttt{(should \lispVar{test} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should #'= 12 (* 3 4))
+(should #'< 4 (* 2 3))
+(should #'< 4 5 6 7)
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not}
+
+The \texttt{should-not} macro is identical to the \texttt{should} macro, except
+that it inverts the result of the call with \texttt{not}.
+
+\lispSyntax
+
+\texttt{(should-not \lispVar{test} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not #'< 12 4)
+(should-not #'= 12 44)
+\end{verbatim}
 
 \lispMacroSubsection{Should-Be-Null}
 
