@@ -101,6 +101,7 @@ the result of the call with NOT."
   `(assert (not (funcall ,test ,@arguments))))
 
 (defmacro should-be-null (&rest arguments)
+  "The SHOULD-BE-NULL macro is a short-hand method for (SHOULD #'NULL ...)"
   `(should #'null ,@arguments))
 
 (defmacro should-be-a (type &rest things)
@@ -163,7 +164,9 @@ specified by TYPE.
         (should-not-macro-constructor 'should-not- test-function))
 
 (defmacro should-be-true (&body body)
+  "The SHOULD-BE-TRUE macro is a short-hand method for (SHOULD #'IDENTITY ...)."
   `(should #'identity (progn ,@body)))
 
 (defmacro should-be-false (&body body)
+  "The SHOULD-BE-FALSE macro is a short-hand method for (SHOULD #'NOT ...)."
   `(should #'not (progn ,@body)))

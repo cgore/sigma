@@ -132,17 +132,106 @@ that it inverts the result of the call with \texttt{not}.
 \lispExamples
 
 \begin{verbatim}
-(should-not #'< 12 4)
-(should-not #'= 12 44)
+(should-not #'< 12 4) ; Passes
+(should-not #'= 12 44) ; Passes
 \end{verbatim}
 
 \lispMacroSubsection{Should-Be-Null}
 
+The \texttt{should-be-null} macro is a short-hand method for
+ \texttt{(should \#'null \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-be-null \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-be-null ())
+(should-be-null nil)
+(should-be-null (not 12))
+(should-be-null (and t t nil))
+\end{verbatim}
+
+\lispMacroSubsection{Should-Be-True}
+
+The \texttt{should-be-true} macro is a short-hand method for
+\texttt{(should \#'identity \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-be-true \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-be-true t)
+(should-be-true (not nil))
+(should-be-true (or nil nil 12))
+\end{verbatim}
+
+\lispMacroSubsection{Should-Be-False}
+
+The \texttt{should-be-false} macro is a short-hand method for
+\texttt{(should \#'not \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-be-false \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-be-false nil)
+(should-be-false (not t))
+(should-be-false (< 44 2))
+\end{verbatim}
+
 \lispMacroSubsection{Should-Be-A}
+
+The \texttt{should-be-a} macro specifies that one or more \texttt{things} should
+be of the type specified by \texttt{type}.
+
+\begin{verbatim}
+(should-be-a 'integer 1) ; passes
+(should-be-a 'float 1) ; passes
+(should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; passes
+(should-be-a 'integer 1.0) ; fails
+\end{verbatim}
 
 \lispMacroSubsection{Should=}
 
+The \texttt{should=} macro is a short-hand method for
+\texttt{(should \#'= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should= 12 12)
+(should= 12 12.0) ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should/=}
+
+The \texttt{should/=} macro is a short-hand method for
+\texttt{(should \#'/= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should/= 12 13) ; Passes
+(should/= 12 12) ; Fails
+(should/= 12 12.0) ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should<}
 
