@@ -223,7 +223,7 @@ The \texttt{should/=} macro is a short-hand method for
 
 \lispSyntax
 
-\texttt{(should= \&rest \lispVar{arguments})}
+\texttt{(should/= \&rest \lispVar{arguments})}
 
 \lispExamples
 
@@ -235,11 +235,72 @@ The \texttt{should/=} macro is a short-hand method for
 
 \lispMacroSubsection{Should<}
 
+The \texttt{should<} macro is a short-hand method for
+\texttt{(should \#'< \ldots)}.
+
+\lispSyntax
+
+\texttt{(should< \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should< 12 13) ; Passes
+(should< 13 12) ; Fails
+(should< 12 12) ; Fails
+\end{verbatim}
+
 \lispMacroSubsection{Should>}
+
+The \texttt{should<} macro is a short-hand method for
+\texttt{(should \#'> \ldots)}.
+
+\lispSyntax
+
+\texttt{(should> \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should> 12 13) ; Fails
+(should> 13 12) ; Passes
+(should> 12 12) ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should<=}
 
+The \texttt{should<=} macro is a short-hand method for
+\texttt{(should \#'<= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should<= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should<= 12 13) ; Passes
+(should<= 13 12) ; Fails
+(should<= 12 12) ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should>=}
+
+
+The \texttt{should>=} macro is a short-hand method for
+\texttt{(should \#'>= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should>= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should>= 12 13) ; Fails
+(should>= 13 12) ; Passes
+(should>= 12 12) ; Passes
+\end{verbatim}
 
 \lispMacroSubsection{Should-Eq}
 
