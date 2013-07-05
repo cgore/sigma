@@ -142,7 +142,8 @@ specified by TYPE.
 			     >
 			     <=
 			     >=)
-   do (should-macro-constructor 'should test-function))
+   do (should-macro-constructor 'should test-function)
+      (should-not-macro-constructor 'should-not test-function))
 
 (loop for test-function in '(eq
 			     eql
