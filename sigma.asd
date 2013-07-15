@@ -37,7 +37,7 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "3.1.4"
+  :version "3.1.5"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "BSD-style"
   :components ((:module "src"
@@ -57,7 +57,8 @@
 					    :depends-on ("control"
 							 "numeric"))
 				     (:file "random"
-					    :depends-on ("control"))
+					    :depends-on ("control"
+							 "sequence"))
 				     (:file "sequence"
 					    :depends-on ("control"))
 				     (:file "string"
@@ -77,6 +78,7 @@
 							 "hash"
 							 "numeric"
 							 "os"
+							 "random"
 							 "sequence"
 							 "string"
 							 "time-series"

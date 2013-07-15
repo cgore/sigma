@@ -36,7 +36,8 @@
 (defpackage :sigma/random
   (:nicknames :random)
   (:use :common-lisp
-        :sigma/control)
+        :sigma/control
+	:sigma/sequence)
   (:export
     :coin-toss
     :gauss

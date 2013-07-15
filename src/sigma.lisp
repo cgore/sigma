@@ -42,6 +42,7 @@
     :sigma/hash
     :sigma/numeric
     :sigma/os
+    :sigma/random
     :sigma/sequence
     :sigma/string
     :sigma/time-series
@@ -57,6 +58,7 @@
     :sigma/hash
     :sigma/numeric
     :sigma/os
+    :sigma/random
     :sigma/sequence
     :sigma/string
     :sigma/time-series
