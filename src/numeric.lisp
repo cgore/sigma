@@ -38,7 +38,12 @@
 	:sigma/behave
         :sigma/control
 	:sigma/sequence)
-  (:export :bit?
+  (:export :%
+	   :%+
+	   :%-
+	   :%n
+	   :%d
+	   :bit?
 	   :choose
 	   :divf
 	   :factorial
@@ -48,14 +53,21 @@
 	   :multf
 	   :nonnegative?
 	   :nonnegative-float
+	   :nonnegative-float?
 	   :nonnegative-integer
 	   :nonnegative-integer?
+	   :nonpositive?
+	   :nonpositive-float
+	   :nonpositive-float?
+	   :nonpositive-integer
+	   :nonpositive-integer?
 	   :positive-float
 	   :positive-integer
 	   :positive-integer?
 	   :product
 	   :sawtooth-wave
 	   :sum
+	   :unsigned-integer
 	   :unsigned-integer?))
 (in-package :sigma/numeric)
 
@@ -135,11 +147,11 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
 (deftype nonnegative-float ()
   '(float 0.0 *))
 
+(defun nonnegative-float? (nonnegative-float)
+  (typep nonnegative-float 'nonnegative-float))
+
 (deftype nonnegative-integer ()
   '(integer 0 *))
-
-(deftype unsigned-integer ()
-  'nonnegative-integer)
 
 (defun nonnegative-integer? (nonnegative-integer)
   (typep nonnegative-integer 'nonnegative-integer))
@@ -150,17 +162,32 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should-not #'nonnegative-integer? 12.7)
   (should-not #'nonnegative-integer? -12))
 
+(deftype unsigned-integer ()
+  'nonnegative-integer)
+
 (defun unsigned-integer? (unsigned-integer)
   (typep unsigned-integer 'unsigned-integer))
 
-(behavior 'unsigned-integer?
-  (should #'unsigned-integer? 12)
-  (should #'unsigned-integer? 0)
-  (should-not #'unsigned-integer? 12.7)
-  (should-not #'unsigned-integer? -12))
+(defun nonpositive? (x)
+  (not (plusp x)))
+
+(deftype nonpositive-float ()
+  '(float * 0.0))
+
+(defun nonpositive-float? (nonpositive-float)
+  (typep nonpositive-float 'nonpositive-float))
+
+(deftype nonpositive-integer ()
+  '(integer * 0))
+
+(defun nonpositive-integer? (nonpositive-integer)
+  (typep nonpositive-integer 'nonpositive-integer))
 
 (deftype positive-float ()
   '(float (0.0) *))
+
+(defun positive-float? (positive-float)
+  (typep positive-float 'positive-float))
 
 (deftype positive-integer ()
   '(integer (0) *))
@@ -173,6 +200,81 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should-not #'positive-integer? 0)
   (should-not #'positive-integer? 12.7)
   (should-not #'positive-integer? -12))
+
+(defun %+ (numerator divisor)
+  "The %+ function calculates the positive modulo (also called the remainder or
+residue) of the division of the NUMERATOR and the DIVISOR, NUMERATOR/DIVISOR.
+This is similar to the built-in MOD function but with one key difference: this
+function always returns the positive modulo, as is convention in number theory,
+whereas the MOD built-in returns instead the modulo with the same sign as the
+DIVISOR."
+  (- numerator
+     (* divisor
+	(signum divisor)
+	(floor (/ numerator
+		  (abs divisor))))))
+
+(defun % (numerator divisor)
+  "The % function calculates the modulo (also called the remainder or residue)
+of the division of the NUMERATOR and the DIVISOR, NUMERATOR/DIVISOR.  This is
+similar to the built-in MOD function but with one key difference: this function
+always returns the positive modulo, as is convention in number theory, whereas
+the MOD built-in returns instead the modulo with the same sign as the DIVISOR."
+  (%+ numerator divisor))
+
+#|
+(behavour '%+
+	  (should>= 0 (%+  12  22))
+	  (should>= 0 (%+ -12  22))
+	  (should>= 0 (%+  12 -22))
+	  (should>= 0 (%+ -12 -22)))
+|#
+
+#|
+(defun %- (numerator divisor)
+  "The %- function calculates the negative modulo (also called the remainder or
+residue) of the division of the NUMERATOR and the DIVISOR, NUMERATOR/DIVISOR.
+This is similar to the built-in MOD function but with one key difference: this
+function always returns the negative modulo, whereas the MOD built-in returns
+instead the modulo with the same sign as the DIVISOR."
+  (let ((r (mod numerator divisor)))
+    ;; There are two moduli, one positive and the other negative.  Referring to
+    ;; the positive modulo as r1 and the negative modulo as r2, then the
+    ;; following relationship holds: r1 = r2 + d.  We can therefore see that
+    ;; r2 = r1 - d.
+    (if (nonpositive? r)
+	r
+	(- r divisor))))
+|#
+
+#|
+(behavour '%-
+	  (should<= 0 (%-  12  22))
+	  (should<= 0 (%- -12  22))
+	  (should<= 0 (%-  12 -22))
+	  (should<= 0 (%- -12 -22)))
+|#
+
+(defun %n (numerator divisor)
+  "The %N function calculated the numerator-signed modulo (also called the
+remainder or residue) of the division of the NUMERATOR and the DIVISOR,
+NUMERATOR/DIVISOR.  This is similar to the built-in MOD function but with one
+key difference: this function always returns the modulo with the same sign as
+the NUMERATOR, as is the approach used in ANSI C99 and other some other
+languages, whereas the MOD built-in returns instead the modulo with the same
+sign as the DIVISOR."
+  (- numerator
+     (* divisor
+	(truncate (/ numerator divisor)))))
+
+(defun %d (numerator divisor)
+  "The %D function calculates the divisor-signed modulo (also called the
+remainder or residue) of the division of the NUMERATOR and the DIVISOR,
+NUMERATOR/DIVISOR.  This is therefore identical to the built-in MOD function and
+not strictly necessary, but included for completeness."
+  (- numerator
+     (* divisor
+	(floor (/ numerator divisor)))))
 
 (defun product (sequence &key (key 'identity) (start 0) (end nil))
   (assert (sequence? sequence))
