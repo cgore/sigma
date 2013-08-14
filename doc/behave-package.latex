@@ -32,15 +32,16 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Behave}
+\lispPackageChapter{Sigma/Behave}
 
-The \texttt{behave} package contains some useful code for confirming behavior of
-code, supporting a very basic form of \textit{behavior-driven development}, BDD.
-The basic flow is to define the \textit{behavior} of something, with multiple
-\textit{specs} specified within that behavior specification, each consisting of
-various assertions, such as \texttt{should=}, \texttt{should-equal},
-\texttt{should-not-equal}, and many others.  If the behavior of the thing
-doesn't match the specified behavior, then there is some error.
+The \texttt{sigma/behave} package contains some useful code for confirming
+behavior of code, supporting a very basic form of \textit{behavior-driven
+ development}, BDD.  The basic flow is to define the \textit{behavior} of
+something, with multiple \textit{specs} specified within that behavior
+specification, each consisting of various assertions, such as \texttt{should=},
+\texttt{should-equal}, \texttt{should-not-equal}, and many others.  If the
+behavior of the thing doesn't match the specified behavior, then there is some
+error.
 
 \section{Macros}
 
@@ -115,9 +116,9 @@ Typically you will want to use one of the macros defined on top of
 \lispExamples
 
 \begin{verbatim}
-(should #'= 12 (* 3 4))
-(should #'< 4 (* 2 3))
-(should #'< 4 5 6 7)
+(should #'= 12 (* 3 4)) ; Passes
+(should #'< 4 (* 2 3))  ; Passes
+(should #'< 4 5 6 7)    ; Passes
 \end{verbatim}
 
 \lispMacroSubsection{Should-Not}
@@ -132,7 +133,7 @@ that it inverts the result of the call with \texttt{not}.
 \lispExamples
 
 \begin{verbatim}
-(should-not #'< 12 4) ; Passes
+(should-not #'< 12 4)  ; Passes
 (should-not #'= 12 44) ; Passes
 \end{verbatim}
 
@@ -148,16 +149,16 @@ The \texttt{should-be-null} macro is a short-hand method for
 \lispExamples
 
 \begin{verbatim}
-(should-be-null ())
-(should-be-null nil)
-(should-be-null (not 12))
-(should-be-null (and t t nil))
+(should-be-null ())            ; Passes
+(should-be-null nil)           ; Passes
+(should-be-null (not 12))      ; Passes
+(should-be-null (and t t nil)) ; Passes
 \end{verbatim}
 
 \lispMacroSubsection{Should-Be-True}
 
 The \texttt{should-be-true} macro is a short-hand method for
-\texttt{(should \#'identity \ldots)}.
+\texttt{(should~\#'identity~\ldots)}.
 
 \lispSyntax
 
@@ -166,9 +167,9 @@ The \texttt{should-be-true} macro is a short-hand method for
 \lispExamples
 
 \begin{verbatim}
-(should-be-true t)
-(should-be-true (not nil))
-(should-be-true (or nil nil 12))
+(should-be-true t)               ; Passes
+(should-be-true (not nil))       ; Passes
+(should-be-true (or nil nil 12)) ; Passes
 \end{verbatim}
 
 \lispMacroSubsection{Should-Be-False}
@@ -194,10 +195,10 @@ The \texttt{should-be-a} macro specifies that one or more \texttt{things} should
 be of the type specified by \texttt{type}.
 
 \begin{verbatim}
-(should-be-a 'integer 1) ; passes
-(should-be-a 'float 1) ; passes
-(should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; passes
-(should-be-a 'integer 1.0) ; fails
+(should-be-a 'integer 1)                 ; Passes
+(should-be-a 'float 1)                   ; Passes
+(should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; Passes
+(should-be-a 'integer 1.0)               ; Fails
 \end{verbatim}
 
 \lispMacroSubsection{Should=}
@@ -212,7 +213,7 @@ The \texttt{should=} macro is a short-hand method for
 \lispExamples
 
 \begin{verbatim}
-(should= 12 12)
+(should= 12 12)   ; Passes
 (should= 12 12.0) ; Passes
 \end{verbatim}
 
@@ -228,9 +229,9 @@ The \texttt{should-not=} macro is a short-hand method for
 \lispExamples
 
 \begin{verbatim}
-(should-not= 12 12) ; Fails
+(should-not= 12 12)   ; Fails
 (should-not= 12 12.0) ; Fails
-(should-not= 12 14) ; Passes
+(should-not= 12 14)   ; Passes
 \end{verbatim}
 
 \lispMacroSubsection{Should/=}
@@ -610,40 +611,350 @@ The \texttt{should-not-string/=} macro is a short-hand method for
 
 \lispMacroSubsection{Should-String<}
 
+The \texttt{should-string<} macro is a short-hand method for
+\texttt{(should \#'string< \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string< \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string< "foo" "f")      ; Fails
+(should-string< "foo" "foo")    ; Fails
+(should-string< "foo" "FOOBAR") ; Fails
+(should-string< "foo" "foobar") ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String<}
+
+The \texttt{should-not-string<} macro is a short-hand method for
+\texttt{(should-not \#'string< \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string< \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string< "foo" "f")      ; Passes
+(should-not-string< "foo" "foo")    ; Passes
+(should-not-string< "foo" "foobar") ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should-String>}
 
+The \texttt{should-string>} macro is a short-hand method for
+\texttt{(should \#'string> \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string> \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string> "foo" "f")      ; Passes
+(should-string> "foo" "foo")    ; Fails
+(should-string> "foo" "FOO")    ; Passes
+(should-string> "foo" "foobar") ; Fails
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String>}
+
+The \texttt{should-not-string>} macro is a short-hand method for
+\texttt{(should-not \#'string> \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string> \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string> "foo" "f")      ; Fails
+(should-not-string> "foo" "foo")    ; Passes
+(should-not-string> "foo" "foobar") ; Passes
+\end{verbatim}
 
 \lispMacroSubsection{Should-String<=}
 
+The \texttt{should-string<=} macro is a short-hand method for
+\texttt{(should \#'string<= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string<= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string<= "foo" "f")      ; Fails
+(should-string<= "foo" "foo")    ; Passes
+(should-string<= "foo" "foobar") ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String<=}
+
+The \texttt{should-not-string<=} macro is a short-hand method for
+\texttt{(should-not~\#'string<=~\ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string<= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string<= "foo" "f")      ; Passes
+(should-not-string<= "foo" "foo")    ; Fails
+(should-not-string<= "foo" "foobar") ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should-String>=}
 
+The \texttt{should-string>=} macro is a short-hand method for
+\texttt{(should \#'string>= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string>= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string>= "foo" "f")      ; Passes
+(should-string>= "foo" "foo")    ; Passes
+(should-string>= "foo" "foobar") ; Fails
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String>=}
+
+The \texttt{should-not-string>=} macro is a short-hand method for
+\texttt{(should-not \#'string>= \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string>= \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string>= "foo" "f")      ; Fails
+(should-not-string>= "foo" "foo")    ; Fails
+(should-not-string>= "foo" "foobar") ; Passes
+\end{verbatim}
 
 \lispMacroSubsection{Should-String-Equal}
 
+The \texttt{should-string-equal} macro is a short-hand method for
+\texttt{(should \#'string-equal~\ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-equal \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-equal "foo" "foo")    ; Passes
+(should-string-equal "FOO" "foo")    ; Passes
+(should-string-equal "foo" "foobar") ; Fails
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String-Equal}
+
+The \texttt{should-not-string-equal} macro is a short-hand method for
+\texttt{(should-not \#'string-equal \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string-equal \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string-equal "foo" "foo")    ; Fails
+(should-not-string-equal "FOO" "foo")    ; Fails
+(should-not-string-equal "foo" "foobar") ; Passes
+\end{verbatim}
 
 \lispMacroSubsection{Should-String-Not-Equal}
 
+The \texttt{should-string-not-equal} macro is a short-hand method for
+\texttt{(should \#'string-not-equal \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-not-equal \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-not-equal "foo" "foo")    ; Fails
+(should-string-not-equal "FOO" "foo")    ; Fails
+(should-string-not-equal "foo" "foobar") ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String-Not-Equal}
+
+The \texttt{should-not-string-not-equal} macro is a short-hand method for
+\texttt{(should-not \#'string-not-equal \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string-not-equal \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string-not-equal "foo" "foo")    ; Passes
+(should-not-string-not-equal "FOO" "foo")    ; Passes
+(should-not-string-not-equal "foo" "foobar") ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should-String-LessP}
 
+The \texttt{should-string-lessp} macro is a short-hand method for
+\texttt{(should \#'string-lessp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-lessp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-lessp "foo" "f")      ; Fails
+(should-string-lessp "foo" "foo")    ; Fails
+(should-string-lessp "foo" "FOOBAR") ; Passes
+(should-string-lessp "foo" "foobar") ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String-LessP}
+
+The \texttt{should-not-string-lessp} macro is a short-hand method for
+\texttt{(should-not \#'string-lessp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string-lessp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string-lessp "foo" "f")      ; Passes
+(should-not-string-lessp "foo" "foo")    ; Passes
+(should-not-string-lessp "foo" "FOOBAR") ; Fails
+(should-not-string-lessp "foo" "foobar") ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should-String-GreaterP}
 
+The \texttt{should-string-greaterp} macro is a short-hand method for
+\texttt{(should \#'string-greaterp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-greaterp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-greaterp "foo" "f")      ; Passes
+(should-string-greaterp "foo" "foo")    ; Fails
+(should-string-greaterp "foo" "FOO")    ; Fails
+(should-string-greaterp "foo" "foobar") ; Fails
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String-GreaterP}
+
+The \texttt{should-not-string-greaterp} macro is a short-hand method for
+\texttt{(should-not \#'string-greaterp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string-greaterp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string-greaterp "foo" "f")      ; Fails
+(should-not-string-greaterp "foo" "foo")    ; Passes
+(should-not-string-greaterp "foo" "FOO")    ; Passes
+(should-not-string-greaterp "foo" "foobar") ; Passes
+\end{verbatim}
 
 \lispMacroSubsection{Should-String-Not-GreaterP}
 
+The \texttt{should-string-not-greaterp} macro is a short-hand method for
+\texttt{(should \#'string-not-greaterp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-not-greaterp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-not-greaterp "foo" "f")      ; Fails
+(should-string-not-greaterp "foo" "foo")    ; Passes
+(should-string-not-greaterp "foo" "FOO")    ; Passes
+(should-string-not-greaterp "foo" "foobar") ; Passes
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String-Not-GreaterP}
+
+The \texttt{should-string-greaterp} macro is a short-hand method for
+\texttt{(should \#'string-greaterp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-greaterp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-greaterp "foo" "f")      ; Passes
+(should-string-greaterp "foo" "foo")    ; Fails
+(should-string-greaterp "foo" "FOO")    ; Fails
+(should-string-greaterp "foo" "foobar") ; Fails
+\end{verbatim}
 
 \lispMacroSubsection{Should-String-Not-LessP}
 
+The \texttt{should-string-not-lessp} macro is a short-hand method for
+\texttt{(should \#'string-not-lessp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-string-not-lessp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-string-not-lessp "foo" "f")      ; Passes
+(should-string-not-lessp "foo" "foo")    ; Passes
+(should-string-not-lessp "foo" "FOOBAR") ; Fails
+(should-string-not-lessp "foo" "foobar") ; Fails
+\end{verbatim}
+
 \lispMacroSubsection{Should-Not-String-Not-LessP}
+
+The \texttt{should-not-string-not-lessp} macro is a short-hand method for
+\texttt{(should-not \#'string-not-lessp \ldots)}.
+
+\lispSyntax
+
+\texttt{(should-not-string-not-lessp \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{verbatim}
+(should-not-string-not-lessp "foo" "f")      ; Fails
+(should-not-string-not-lessp "foo" "foo")    ; Fails
+(should-not-string-not-lessp "foo" "FOOBAR") ; Passes
+(should-not-string-not-lessp "foo" "foobar") ; Passes
+\end{verbatim}
