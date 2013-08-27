@@ -118,7 +118,7 @@ argument, reassigning \texttt{it} with each argument.
 
 The \texttt{a?and} macro is a variant of \texttt{aand} that allows for the
 specification of the anaphor to use, instead of being restricted to just
-\texttt{it}, the fefault with \texttt{aand}.  This is most often useful when you
+\texttt{it}, the default with \texttt{aand}.  This is most often useful when you
 need to nest calls to anaphoric macros.
 
 \lispExamples
@@ -132,7 +132,34 @@ need to nest calls to anaphoric macros.
 
 \lispMacroSubsection{ALambda}
 
+The \texttt{alambda} macro is an anaphoric variant of the built-in
+\texttt{lambda}.  This is based on \cite[p.~193]{on-lisp}.  It works in a
+similar manner to \texttt{aif} and \texttt{aand}, except it defines
+\texttt{self} instead of \texttt{it} as the default anaphor.  This is useful so
+that you can write recursive lambdas.
+
+
+\begin{verbatim}
+(funcall (alambda (x) ; Simple recursive factorial example.
+           (if (<= x 0)
+               1
+               (* x (self (1- x)))))
+         10))) ; Calculates 10!, inefficently.
+\end{verbatim}
+
 \lispMacroSubsection{A?Lambda}
+
+
+The \texttt{a?lambda} macro is an variant of \texttt{alambda} that allows you to
+specify the anaphor to use.
+
+\begin{verbatim}
+(funcall (a?lambda ! (x) ; Simple recursive factorial example.
+           (if (<= x 0)
+               1
+               (* x (! (1- x)))))
+         10))) ; Calculates 10!, inefficently.
+\end{verbatim}
 
 \lispMacroSubsection{ABlock}
 
