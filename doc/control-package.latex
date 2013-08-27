@@ -32,11 +32,49 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Control}
+\lispPackageChapter{Sigma/Control}
+
+The \texttt{sigma/control} package contains code for basic program control
+systems.  These are mostly basic macros to add more complicated looping,
+conditionals, or similar.  These are typically extensions to Common Lisp that
+are inspired by other programming languages.  Thanks to the power of Common Lisp
+and its macro system, we can typically implement most features of any other
+language with little trouble.
 
 \section{Macros}
 
 \lispMacroSubsection{AIf}
+
+The \texttt{aif} macro is an anaphoric variation of the built-in \texttt{if}
+control structure.  This is based on \cite[p.~190]{on-lisp}.  The basic idea is
+to provide an anaphor (such as pronouns in English) for the conditional so that
+it can easily be referred to within the body of the conditional expression.  The
+most natural pronoun in the English language for a thing is ``it'', so that is
+what is used.  If you need or want to use a different anaphor, use
+\texttt{a?if}.  The most common use of \texttt{aif} is for when you want to do
+some additional computation with some time-consuming calculation, but only if it
+returned successfully.
+
+\lispSyntax
+
+\texttt{(aif \lispVar{conditional} \lispVar{t-action} \&optional \lispVar{nil-action})}
+
+\lispExamples
+
+\begin{verbatim}
+(aif (big-long-calculation)
+     (foo it)
+     (format t "The big-long-calculation failed!~%"))
+\end{verbatim}
+
+This is similar to the following, but with less typing:
+
+\begin{verbatim}
+(let ((it (big-long-calculation)))
+  (if it
+      (foo it)
+      (format t "The big-long-calculation failed!~%")))
+\end{verbatim}
 
 \lispMacroSubsection{A?If}
 

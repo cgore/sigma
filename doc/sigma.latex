@@ -102,4 +102,6 @@
 
 \input{sigma-package.latex}
 
+\input{bibliography.latex}
+
 \end{document}
