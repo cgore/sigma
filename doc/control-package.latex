@@ -78,9 +78,57 @@ This is similar to the following, but with less typing:
 
 \lispMacroSubsection{A?If}
 
+The \texttt{a?if} macro is a variation of \texttt{aif} that allows for the
+specification of the anaphor to use, instead of being restricted to just
+\texttt{it}, the fefault with \texttt{aif}.  This is most often useful when you
+need to nest calls to anaphoric macros.
+
+\lispSyntax
+
+\texttt{(a?if \lispVar{anaphor} \lispVar{conditional} \lispVar{t-action} \&optional \lispVar{nil-action})}
+
+\lispExamples
+
+\begin{verbatim}
+(a?if foo 'outer
+  (a?if bar 'inner
+    `(,foo ,bar))) ; Returns '(outer inner)
+\end{verbatim}
+
 \lispMacroSubsection{AAnd}
 
+The \texttt{aand} macro is an anaphoric variation of the built-in \texttt{and}.
+This is based on \cite[p.~191]{on-lisp}.  It works in a similar manner to
+\texttt{aif}, defining \texttt{it} as the current argument for use in the next
+argument, reassigning \texttt{it} with each argument.
+
+\lispSyntax
+
+\texttt{(aand \&rest arguments)}
+
+\lispExamples
+
+\begin{verbatim}
+(aand 2         ; Sets 'it' to 2.
+      (* 3 it)  ; Sets 'it' to 6.
+      (* 4 it)) ; Returns 24.
+\end{verbatim}
+
 \lispMacroSubsection{A?And}
+
+The \texttt{a?and} macro is a variant of \texttt{aand} that allows for the
+specification of the anaphor to use, instead of being restricted to just
+\texttt{it}, the fefault with \texttt{aand}.  This is most often useful when you
+need to nest calls to anaphoric macros.
+
+\lispExamples
+
+\begin{verbatim}
+(a?and foo 12 (* 2 foo) (* 3 foo)) ; Returns 72.
+
+(a?and foo 1 2 3 'outer
+  (a?and bar 4 5 6 'inner `(,foo ,bar))) ; Returns '(outer inner)
+\end{verbatim}
 
 \lispMacroSubsection{ALambda}
 
