@@ -151,7 +151,7 @@ that you can write recursive lambdas.
 
 
 The \texttt{a?lambda} macro is an variant of \texttt{alambda} that allows you to
-specify the anaphor to use.
+specify the anaphor to use, instead of just the default of \texttt{it}.
 
 \begin{verbatim}
 (funcall (a?lambda ! (x) ; Simple recursive factorial example.
@@ -163,11 +163,74 @@ specify the anaphor to use.
 
 \lispMacroSubsection{ABlock}
 
+The \texttt{ablock} macro is an anaphoric variant of the built-in
+\texttt{block}.  This is based on \cite[p.~193]{on-lisp}.  It works in a similar
+manner to \texttt{aand}, defining the anaphor \texttt{it} for each argument to
+the block.
+
+\lispExamples
+
+\begin{verbatim}
+(let (w x y z)
+   (ablock b
+           (setf w 7)
+           (setf x (* 2 it)) ; Twice w, 14.
+           (setf y (* 3 it)) ; Thrice x, 42.
+           (return-from b)   ; Leave the block.
+           (setf z 123))     ; Never happens.
+   (list w x y z))           ; Returns '(7 14 42 nil)
+\end{verbatim}
+
 \lispMacroSubsection{A?Block}
+
+The \texttt{a?block} macro is an anaphoric variant of \texttt{ablock} that
+allows you to specify the anaphor to use, instead of just the default of
+\texttt{it}.
+
+\lispExamples
+
+\begin{verbatim}
+(let (w x y z)
+   (a?block b foo
+            (setf w 7)
+            (setf x (* 2 foo)) ; Twice w, 14.
+            (setf y (* 3 foo)) ; Thrice x, 42.
+            (return-from b)    ; Leave the block.
+            (setf z 123))      ; Never happens.
+   (list w x y z))             ; Returns '(7 14 42 nil)
+\end{verbatim}
 
 \lispMacroSubsection{ACond}
 
+The \texttt{acond} macro is an anaphoric variant of the built-in
+\texttt{cond}.  This is based on \cite[p.~191]{on-lisp}.  It works in a similar
+manner to \texttt{aand}, defining the anaphor \texttt{it} for each argument to
+the conditional.
+
+\lispExamples
+
+\begin{verbatim}
+(let (a b (c 3))
+  (acond (a it)         ; No.
+         (b it)         ; No.
+         (c (* 4 it)))) ; Yes, returns 12 = 4*3, the value of c.
+\end{verbatim}
+
 \lispMacroSubsection{A?Cond}
+
+The \texttt{a?cond} macro is an anaphoric variant of \texttt{acond} that
+allows you to specify the anaphor to use, instead of just the default of
+\texttt{it}.
+
+\lispExamples
+
+\begin{verbatim}
+(let (a b (c 3))
+  (a?cond foo
+          (a foo)         ; No.
+          (b foo)         ; No.
+          (c (* 4 foo)))) ; Yes, returns 12 = 4*3, the value of c.
+\end{verbatim}
 
 \lispMacroSubsection{AWhen}
 

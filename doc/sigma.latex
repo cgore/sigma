@@ -66,9 +66,10 @@
 \title{{\Huge $\Sigma$}\\
   A Library for \textsc{Ansi} Common Lisp}
 \author{Christopher Mark Gore\\
-  \texttt{cgore@cgore.com}\\
-  \texttt{http://cgore.com}}
-\date{\cgoredate\today}
+  \texttt{http://www.cgore.com}\\
+  \texttt{cgore@cgore.com}}
+\date{\textsc{Incomplete Draft}\\
+  \cgoredate\today}
 
 \begin{document}
 
