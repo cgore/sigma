@@ -76,6 +76,14 @@ This is similar to the following, but with less typing:
       (format t "The big-long-calculation failed!~%")))
 \end{verbatim}
 
+Or say you need to get a user name from a database call, which might be slow.
+
+\begin{verbatim}
+(aif (get-user-name)
+     (format -t "Hello, ~A!~%" it)
+     (format -t "You aren't logged in, go away!~%"))
+\end{verbatim}
+
 \lispMacroSubsection{A?If}
 
 The \texttt{a?if} macro is a variation of \texttt{aif} that allows for the
@@ -234,11 +242,76 @@ allows you to specify the anaphor to use, instead of just the default of
 
 \lispMacroSubsection{AWhen}
 
+The \texttt{awhen} macro is an anaphoric variant of \texttt{when} built-in.
+This is based on \cite[p.~191]{on-lisp}.  It works in a similar manner to
+\texttt{aif}, defining \texttt{it} as the default anaphor.  This is useful when
+the conditional is the result of a complicated computation, so you don't have to
+compute it twice or wrap the computation in a let block yourself.
+
+\lispSyntax
+
+\texttt{(awhen \lispVar{conditional} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{verbatim}
+(awhen (get-user-name)
+  (do-something-with-name it)
+  (do-more-stuff)
+  (format -t "Hello, ~A!~%" it))
+\end{verbatim}
+
 \lispMacroSubsection{A?When}
+
+The \texttt{a?when} macro is similar to the \texttt{awhen}, except that it
+allows you to specify the anaphor to use, instead of just the default of
+\texttt{it}.
+
+\lispSyntax
+
+\texttt{(a?when \lispVar{conditional} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{verbatim}
+(a?when user (get-user-name)
+  (do-something-with-name user)
+  (do-more-stuff)
+  (format -t "Hello, ~A!~%" user))
+\end{verbatim}
 
 \lispMacroSubsection{AWhile}
 
+The \texttt{awhile} macro is an anaphoric variant of \texttt{while}.  This is
+based on \cite[p.~191]{on-lisp}.  This is useful if you need to consume input
+repeatedly for all input.
+
+\lispSyntax
+
+\texttt{(awhile \lispVar{expression} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{verbatim}
+(awhile (get-input)
+  (do-something it)) ; Operate on input for all input.
+\end{verbatim}
+
 \lispMacroSubsection{A?While}
+
+The \texttt{a?while} macro is a variant of \texttt{awhile} that allows you to
+specify the anaphor to use, instead of just the default \texttt{it}.
+
+\lispSyntax
+
+\texttt{(awhile \lispVar{anaphor} \lispVar{expression} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{verbatim}
+(awhile input (get-input)
+  (do-something input)) ; Operate on input for all input.
+\end{verbatim}
 
 \lispMacroSubsection{DeleteF}
 
