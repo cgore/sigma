@@ -38,16 +38,14 @@
   (:use :common-lisp
         :sigma/control
         :sigma/string)
-  (:export
-    :*perl-path*
-    :perl
-    :*python-path*
-    :python
-    :read-file
-    :read-lines
-    :*ruby-path*
-    :*ruby*
-    ))
+  (:export :*perl-path*
+           :perl
+           :*python-path*
+           :python
+           :read-file
+           :read-lines
+           :*ruby-path*
+           :*ruby*))
 (in-package :sigma/os)
 
 

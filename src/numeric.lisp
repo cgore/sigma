@@ -35,28 +35,28 @@
 (defpackage :sigma/numeric
   (:nicknames :numeric)
   (:use :common-lisp
-	:sigma/behave
+        :sigma/behave
         :sigma/control
-	:sigma/sequence)
+        :sigma/sequence)
   (:export :bit?
-	   :choose
-	   :divf
-	   :factorial
-	   :fractional-part
-	   :fractional-value
-	   :integer-range
-	   :multf
-	   :nonnegative?
-	   :nonnegative-float
-	   :nonnegative-integer
-	   :nonnegative-integer?
-	   :positive-float
-	   :positive-integer
-	   :positive-integer?
-	   :product
-	   :sawtooth-wave
-	   :sum
-	   :unsigned-integer?))
+           :choose
+           :divf
+           :factorial
+           :fractional-part
+           :fractional-value
+           :integer-range
+           :multf
+           :nonnegative?
+           :nonnegative-float
+           :nonnegative-integer
+           :nonnegative-integer?
+           :positive-float
+           :positive-integer
+           :positive-integer?
+           :product
+           :sawtooth-wave
+           :sum
+           :unsigned-integer?))
 (in-package :sigma/numeric)
 
 (defun bit? (b)
@@ -77,7 +77,8 @@
 |#
 
 (defmacro divf (variable &rest divisors)
-  "DIVF is analogous to INCF or DECF, just with division.  It divides-and-stores to a variable."
+  "DIVF is analogous to INCF or DECF, just with division.  It divides-and-stores
+to a variable."
   `(if (null ',divisors)
        ,variable
        (opf #'/ ,variable ,@divisors)))
@@ -89,7 +90,7 @@
   (let ((x 120))
     (divf x 3 4 5)
     (should= x 2))
-  (let ((x 123)) ; This behavior is slightly different than just the division function.
+  (let ((x 123)) ; This behavior is slightly different than the / function.
     (divf x)
     (should= x 123)))
 
@@ -233,25 +234,25 @@ Negative numbers are allowed, and operate in a logical manner.
 
 (behavior 'integer-range
   (should-equal (integer-range 5)
-		'(0 1 2 3 4 5))
+                '(0 1 2 3 4 5))
   (should-equal (integer-range 5 10)
-		'(5 6 7 8 9 10))
+                '(5 6 7 8 9 10))
   (should-equal (integer-range 5 10 2)
-		'(5 7 9))
+                '(5 7 9))
   (should-equal (integer-range -5)
-		'(0 -1 -2 -3 -4 -5))
+                '(0 -1 -2 -3 -4 -5))
   (should-equal (integer-range -5 0)
-		'(-5 -4 -3 -2 -1 0))
+                '(-5 -4 -3 -2 -1 0))
   (should-equal (integer-range 10 5)
-		'(10 9 8 7 6 5))
+                '(10 9 8 7 6 5))
   (should-equal (integer-range 10 5 1)
-		nil)
+                nil)
   (should-equal (integer-range 5 10 -1)
-		nil)
+                nil)
   (should-equal (integer-range -5 5)
-		'(-5 -4 -3 -2 -1 0 1 2 3 4 5))
+                '(-5 -4 -3 -2 -1 0 1 2 3 4 5))
   (should-equal (integer-range -5 5 2)
-		'(-5 -3 -1 1 3 5)))
+                '(-5 -3 -1 1 3 5)))
 
 (defun factorial (n)
   "The FACTORIAL function computes n! for positive integers.  NB, this isn't
@@ -267,6 +268,6 @@ as 'n choose k'."
   (assert (positive-integer? (- n k)))
   (/ (factorial n)
      (* (factorial (- n k))
-	(factorial k))))
+        (factorial k))))
 
 (assert (= 66 (choose 12 2)))

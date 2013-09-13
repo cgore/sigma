@@ -35,15 +35,12 @@
 
 (defpackage :sigma/probability
   (:nicknames :probability)
-  (:use
-    :common-lisp
-    :sigma/control
-    :sigma/numeric)
-  (:export
-    :decaying-probability?
-    :probability
-    :probability?
-    ))
+  (:use :common-lisp
+        :sigma/control
+        :sigma/numeric)
+  (:export :decaying-probability?
+           :probability
+           :probability?))
 (in-package :sigma/probability)
 
 
@@ -64,4 +61,3 @@
      (progn (multf ,probability ,factor)
             t)
      nil))
-

@@ -35,9 +35,9 @@
 (defpackage :sigma/hash
   (:nicknames :hash)
   (:use :common-lisp
-	:sigma/behave)
+        :sigma/behave)
   (:export :inchash
-	   :dechash))
+           :dechash))
 (in-package :sigma/hash)
 
 (defun inchash (key hash)

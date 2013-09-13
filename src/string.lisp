@@ -35,60 +35,63 @@
 (defpackage :sigma/string
   (:nicknames :string)
   (:use :common-lisp
-	:sigma/behave
-	:sigma/control
-	:sigma/numeric
-	:sigma/sequence)
+        :sigma/behave
+        :sigma/control
+        :sigma/numeric
+        :sigma/sequence)
   (:export :character-range
-	   :character-ranges
-	   :escape-tildes
-	   :replace-char
-	   :strcat
-	   :stringify
-	   :string-join
-	   :split
-	   :strmult
-	   :to-string))
+           :character-ranges
+           :escape-tildes
+           :replace-char
+           :strcat
+           :stringify
+           :string-join
+           :split
+           :strmult
+           :to-string))
 (in-package :sigma/string)
 
 (defun character-range (start end)
-  "The CHARACTER-RANGE function returns a list of the characters from START to END."
+  "The CHARACTER-RANGE function returns a list of the characters from START to
+END."
   (let* ((endpoints (sort (list start end) #'char-lessp))
-	 (start (first endpoints))
-	 (end (second endpoints)))
-    (loop for i from (char-code start) to (char-code end) collect (code-char i))))
+         (start (first endpoints))
+         (end (second endpoints)))
+    (loop for i from (char-code start) to (char-code end)
+       collect (code-char i))))
 
 (behavior 'character-range
   (should-equal (character-range #\a #\z)
-		'(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o
+                '(#\a #\b #\c #\d #\e #\f #\g #\h #\i #\j #\k #\l #\m #\n #\o
                   #\p #\q #\r #\s #\t #\u #\v #\w #\x #\y #\z))
   (should-equal (character-range #\a #\z)
-		(character-range #\z #\a))
+                (character-range #\z #\a))
   (should-equal (character-range #\a #\a)
-		'(#\a)))
+                '(#\a)))
 
 (defun character-ranges (&rest rest)
-  (sort (remove-duplicates (cond ((<= (length rest) 1)
-				  rest)
-				 ((= 2 (length rest))
-				  (character-range (car rest) (cadr rest)))
-				 ((< 2 (length rest))
-				  (concatenate 'list
-					       (character-range (car rest) (cadr rest))
-					       (apply #'character-ranges (cddr rest))))))
-	#'char-lessp))
+  (sort (remove-duplicates
+         (cond ((<= (length rest) 1)
+                rest)
+               ((= 2 (length rest))
+                (character-range (car rest) (cadr rest)))
+               ((< 2 (length rest))
+                (concatenate 'list
+                             (character-range (car rest) (cadr rest))
+                             (apply #'character-ranges (cddr rest))))))
+        #'char-lessp))
 
 (behavior 'character-ranges
   (should-equal (character-ranges #\a #\z
-				  #\1 #\9)
-		(sort (concatenate 'list
-				   (character-range #\a #\z)
-				   (character-range #\1 #\9))
-		      #'char-lessp))
+                                  #\1 #\9)
+                (sort (concatenate 'list
+                                   (character-range #\a #\z)
+                                   (character-range #\1 #\9))
+                      #'char-lessp))
   (should-equal (character-ranges #\a #\z #\q #\t)
-		(character-range #\a #\z))
+                (character-range #\a #\z))
   (should-equal (character-ranges #\a #\z)
-		(character-ranges #\z #\a)))
+                (character-ranges #\z #\a)))
 
 (defun escape-tildes (string)
   (let ((input (vector-to-list string))
@@ -132,39 +135,43 @@
                    (rest strings)))))
 
 (defun stringify (argument)
-  "The STRINGIFY function takes in an argument of any type and converts it to a string.
-   This produces the string as from the ~A directive to FORMAT.  Also see TO-STRING."
+  "The STRINGIFY function takes in an argument of any type and converts it to a
+string.  This produces the string as from the ~A directive to FORMAT.  Also see
+TO-STRING."
   (format nil "~A" argument))
 
 (behavior 'stringify
-	  (should-string= "12" (stringify 12)))
+          (should-string= "12" (stringify 12)))
 
 (defun to-string (s)
-  "The TO-STRING function converts common types of things into a string.
-   It handles some special cases more usefully than STRINGIFY for most user-facing output."
+  "The TO-STRING function converts common types of things into a string.  It
+handles some special cases more usefully than STRINGIFY for most user-facing
+output."
   (cond ((null s) "")
         ((symbolp s) (string-downcase (symbol-name s)))
         ((stringp s) s)
         (t (format nil "~A" s))))
 
 (behavior 'to-string
-	  (should-equal (to-string nil) "")
-	  (should-equal (to-string :foo) "foo")
-	  (should-equal (to-string "hello") "hello")
-	  (should-equal (to-string "Hello, world!") "Hello, world!"))
+          (should-equal (to-string nil) "")
+          (should-equal (to-string :foo) "foo")
+          (should-equal (to-string "hello") "hello")
+          (should-equal (to-string "Hello, world!") "Hello, world!"))
 
 (defun strcat (&rest rest)
-  "The STRCAT function takes in a list of things concatenates their string versions."
+  "The STRCAT function takes in a list of things concatenates their string
+versions."
   (apply #'concatenate 'string (mapcar #'to-string rest)))
 
 (behavior 'strcat
-	  (should-string= "foobar" (strcat "foo" "bar"))
-	  (should-string= "foobarbaz" (strcat "foo" "bar" "baz"))
-	  (should-string= "foo123bar" (strcat "foo" 123 "bar"))
-	  (should-string= "" (strcat))
-	  (should-string= "foo" (strcat "foo"))
-	  (should-string= "1234" (strcat 1 2 3 4))
-	  (should-string= "1" (strcat 1)))
+          (should-string= "foobar" (strcat "foo" "bar"))
+          (should-string= "foobarbaz" (strcat "foo" "bar" "baz"))
+          (should-string= "foo123bar" (strcat "foo" 123 "bar"))
+          (should-string= "" (strcat))
+          (should-string= "foo" (strcat "foo"))
+          (should-string= "1234" (strcat 1 2 3 4))
+          (should-string= "1" (strcat 1)))
 
 (defun strmult (count &rest strings)
-  (apply #'strcat (loop for i from 1 to count collect (apply #'strcat strings))))
+  (apply #'strcat (loop for i from 1 to count
+                     collect (apply #'strcat strings))))

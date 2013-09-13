@@ -35,25 +35,23 @@
 
 (defpackage :sigma/time-series
   (:nicknames :time-series)
-  (:use
-    :common-lisp
-    :sigma/control
-    :sigma/numeric
-    :sigma/sequence)
-  (:export
-    :array-raster-line
-    :distance
-    :next-point
-    :norm
-    :raster-line
-    :similar-points?
-    :snap-index
-    :time-multiseries
-    :time-multiseries?
-    :time-series?
-    :tms-dimensions
-    :tmsref
-    :tms-values))
+  (:use :common-lisp
+        :sigma/control
+        :sigma/numeric
+        :sigma/sequence)
+  (:export :array-raster-line
+           :distance
+           :next-point
+           :norm
+           :raster-line
+           :similar-points?
+           :snap-index
+           :time-multiseries
+           :time-multiseries?
+           :time-series?
+           :tms-dimensions
+           :tmsref
+           :tms-values))
 (in-package :sigma/time-series)
 
 

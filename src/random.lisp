@@ -37,20 +37,18 @@
   (:nicknames :random)
   (:use :common-lisp
         :sigma/control
-	:sigma/sequence)
-  (:export
-    :coin-toss
-    :gauss
-    :nshuffle
-    :random-argument
-    :random-array
-    :random-element
-    :random-in-range
-    :random-in-ranges
-    :random-range
-    :randomize-array
-    :shuffle
-    ))
+        :sigma/sequence)
+  (:export :coin-toss
+           :gauss
+           :nshuffle
+           :random-argument
+           :random-array
+           :random-element
+           :random-in-range
+           :random-in-ranges
+           :random-range
+           :randomize-array
+           :shuffle))
 (in-package :sigma/random)
 
 

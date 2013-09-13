@@ -36,13 +36,13 @@
   (:nicknames :behave)
   (:use :common-lisp)
   (:export :behavior
-	   :spec
-	   :should
-	   :should-not
-	   :should-be-null
-	   :should-be-a
-	   :should-be-true
-	   :should-be-false))
+           :spec
+           :should
+           :should-not
+           :should-be-null
+           :should-be-a
+           :should-be-true
+           :should-be-false))
 (in-package :sigma/behave)
 
 (defmacro behavior (thing &body body)
@@ -55,25 +55,25 @@ is to be used around a set of examples, or around a set of assertions directly.
 A contrived example:
 
 (behavior 'float
-	  (spec \"is an Abelian group\"
-		(let ((a (random 10.0))
-		      (b (random 10.0))
-		      (c (random 10.0))
-		      (e 1.0))
-		  (spec \"closure\"
-			(should-be-a 'float (* a b)))
-		  (spec \"associativity\"
-			(should= (* (* a b) c)
-				 (* a (* b c))))
-		  (spec \"identity element\"
-			(should= a (* e a)))
-		  (spec \"inverse element\"
-			(let ((1/a (/ 1 a)))
-			  (should= (* 1/a a)
-				   (* a 1/a)
-				   1.0)))
-		  (spec \"commutitativity\"
-			(should= (* a b) (* b a))))))"
+          (spec \"is an Abelian group\"
+                (let ((a (random 10.0))
+                      (b (random 10.0))
+                      (c (random 10.0))
+                      (e 1.0))
+                  (spec \"closure\"
+                        (should-be-a 'float (* a b)))
+                  (spec \"associativity\"
+                        (should= (* (* a b) c)
+                                 (* a (* b c))))
+                  (spec \"identity element\"
+                        (should= a (* e a)))
+                  (spec \"inverse element\"
+                        (let ((1/a (/ 1 a)))
+                          (should= (* 1/a a)
+                                   (* a 1/a)
+                                   1.0)))
+                  (spec \"commutitativity\"
+                        (should= (* a b) (* b a))))))"
   ;; Currently we don't actually use the THING specification for anything and
   ;; just throw it away.  Eventually we'll use it for logging or something.
   (declare (ignore thing))
@@ -113,54 +113,54 @@ specified by TYPE.
 (should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; passes
 (should-be-a 'integer 1.0) ; fails"
   (mapcar (lambda (thing)
-	    (assert (typep thing type)))
-	  things))
+            (assert (typep thing type)))
+          things))
 
 (defun should-macro-constructor (should-prefix test-function)
   (assert (symbolp should-prefix))
   (assert (symbolp test-function))
   (let ((macro-name (intern (concatenate 'string
-					 (symbol-name should-prefix)
-					 (symbol-name test-function)))))
+                                         (symbol-name should-prefix)
+                                         (symbol-name test-function)))))
     (eval `(progn (defmacro ,macro-name (&rest arguments)
-		    `(should #',',test-function ,@arguments))
-		  (export ',macro-name)))))
+                    `(should #',',test-function ,@arguments))
+                  (export ',macro-name)))))
 
 (defun should-not-macro-constructor (should-not-prefix test-function)
   (assert (symbolp should-not-prefix))
   (assert (symbolp test-function))
   (let ((macro-name (intern (concatenate 'string
-					 (symbol-name should-not-prefix)
-					 (symbol-name test-function)))))
+                                         (symbol-name should-not-prefix)
+                                         (symbol-name test-function)))))
     (eval `(progn (defmacro ,macro-name (&rest arguments)
-		    `(should-not #',',test-function ,@arguments))
-		  (export ',macro-name)))))
+                    `(should-not #',',test-function ,@arguments))
+                  (export ',macro-name)))))
 
 (loop for test-function in '(=
-			     /=
-			     <
-			     >
-			     <=
-			     >=)
+                             /=
+                             <
+                             >
+                             <=
+                             >=)
    do (should-macro-constructor 'should test-function)
       (should-not-macro-constructor 'should-not test-function))
 
 (loop for test-function in '(eq
-			     eql
-			     equal
-			     equalp
-			     string=
-			     string/=
-			     string<
-			     string>
-			     string<=
-			     string>=
-			     string-equal
-			     string-not-equal
-			     string-lessp
-			     string-greaterp
-			     string-not-greaterp
-			     string-not-lessp)
+                             eql
+                             equal
+                             equalp
+                             string=
+                             string/=
+                             string<
+                             string>
+                             string<=
+                             string>=
+                             string-equal
+                             string-not-equal
+                             string-lessp
+                             string-greaterp
+                             string-not-greaterp
+                             string-not-lessp)
      do (should-macro-constructor 'should- test-function)
         (should-not-macro-constructor 'should-not- test-function))
 

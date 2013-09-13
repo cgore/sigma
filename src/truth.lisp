@@ -35,14 +35,11 @@
 
 (defpackage :sigma/truth
   (:nicknames :truth)
-  (:use
-    :common-lisp
-    :sigma/control)
-  (:export
-    :?
-    :[?]
-    :toggle
-    ))
+  (:use :common-lisp
+        :sigma/control)
+  (:export :?
+           :[?]
+           :toggle))
 (in-package :sigma/truth)
 
 
