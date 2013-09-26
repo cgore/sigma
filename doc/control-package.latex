@@ -59,6 +59,17 @@ returned successfully.
 
 \texttt{(aif \lispVar{conditional} \lispVar{t-action} \&optional \lispVar{nil-action})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Conditional}] The boolean conditional to select between the
+  \lispVar{t-action} and the \lispVar{nil-action}.
+\item[\lispVar{T-Action}] The action to evaluate if the \lispVar{conditional}
+  evaluate as true.
+\item[\lispVar{Nil-Action}] The action to evaluate if the \lispVar{conditional}
+  evaluates as nil.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -88,12 +99,26 @@ Or say you need to get a user name from a database call, which might be slow.
 
 The \texttt{a?if} macro is a variation of \texttt{aif} that allows for the
 specification of the anaphor to use, instead of being restricted to just
-\texttt{it}, the fefault with \texttt{aif}.  This is most often useful when you
+\texttt{it}, the default with \texttt{aif}.  This is most often useful when you
 need to nest calls to anaphoric macros.
 
 \lispSyntax
 
-\texttt{(a?if \lispVar{anaphor} \lispVar{conditional} \lispVar{t-action} \&optional \lispVar{nil-action})}
+\texttt{(a?if \lispVar{anaphor} \lispVar{conditional} \lispVar{t-action}
+  \&optional \lispVar{nil-action})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Anaphor}] The result of the \lispVar{conditional} will be stored
+  in the variable specified as the anaphor.
+\item[\lispVar{Conditional}] The boolean conditional to select between the
+  \lispVar{t-action} and the \lispVar{nil-action}.
+\item[\lispVar{T-Action}] The action to evaluate if the \lispVar{conditional}
+  evaluate as true.
+\item[\lispVar{Nil-Action}] The action to evaluate if the \lispVar{conditional}
+  evaluates as nil.
+\end{description}
 
 \lispExamples
 

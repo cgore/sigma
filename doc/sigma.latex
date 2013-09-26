@@ -65,7 +65,7 @@
   \noindent
   \texttt{#1} $\Longrightarrow$ \texttt{#2}
 }
-\newcommand{\lispVar}[1]{\textrm{\textit{#1}}}
+\newcommand{\lispVar}[1]{\texttt{\textit{#1}}}
 
 \title{{\Huge $\Sigma$}\\
   A Library for \textsc{Ansi} Common Lisp}

@@ -62,11 +62,13 @@ list, not a string.
 
 \lispExample
   {(character-range \#\textbackslash a \#\textbackslash e)}
-  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d \#\textbackslash e)}
+  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d
+    \#\textbackslash e)}
 
 \lispExample
   {(character-range \#\textbackslash e \#\textbackslash a)}
-  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d \#\textbackslash e)}
+  {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d
+    \#\textbackslash e)}
 
 \lispFunctionSubsection{Character-Ranges}
 
