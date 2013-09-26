@@ -36,7 +36,7 @@
 \documentclass{book}
 
 \usepackage{calc}
-\usepackage{color}
+\usepackage[usenames,dvipsnames]{color}
 \usepackage{ifthen}
 \usepackage{datetime}
 
@@ -97,6 +97,8 @@
 \input{os-package.latex}
 
 \input{probability-package.latex}
+
+\input{random-package.latex}
 
 \input{sequence-package.latex}
 
