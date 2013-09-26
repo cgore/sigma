@@ -58,6 +58,13 @@ of examples, or around a set of assertions directly.
 
 \texttt{(behavior \lispVar{thing} \&body \lispVar{body})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Thing}] This is what we are describing the behavior of.
+\item[\lispVar{Body}] This is an implicit proc to contain the behavior.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -93,6 +100,13 @@ behavior.  It will normally serve as a grouping for assertions or nested
 
 \texttt{(spec \lispVar{description} \&body \lispVar{body})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Description}] This is a string to describe the specification.
+\item[\lispVar{Body}] This is an implicit proc to contain the specification.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -113,6 +127,13 @@ Typically you will want to use one of the macros defined on top of
 
 \texttt{(should \lispVar{test} \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Test}] This is the test predicate to evaluate.
+\item[\lispVar{Arguments}] These are the arguments to the test predicate.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -130,6 +151,13 @@ that it inverts the result of the call with \texttt{not}.
 
 \texttt{(should-not \lispVar{test} \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Test}] This is the test predicate to evaluate.
+\item[\lispVar{Arguments}] These are the arguments to the test predicate.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -145,6 +173,12 @@ The \texttt{should-be-null} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-be-null \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{null}.
+\end{description}
 
 \lispExamples
 
@@ -164,6 +198,12 @@ The \texttt{should-be-true} macro is a short-hand method for
 
 \texttt{(should-be-true \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{identity}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -181,6 +221,12 @@ The \texttt{should-be-false} macro is a short-hand method for
 
 \texttt{(should-be-false \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{not}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -193,6 +239,17 @@ The \texttt{should-be-false} macro is a short-hand method for
 
 The \texttt{should-be-a} macro specifies that one or more \texttt{things} should
 be of the type specified by \texttt{type}.
+
+\lispSyntax
+
+\texttt{(should-be-a \lispVar{type} \&rest \lispVar{things})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Type}] This is the type to compare with via \texttt{typep}.
+\item[\lispVar{Things}] These are the things to confirm the type of.
+\end{description}
 
 \begin{verbatim}
 (should-be-a 'integer 1)                 ; Passes
@@ -210,6 +267,12 @@ The \texttt{should=} macro is a short-hand method for
 
 \texttt{(should= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -225,6 +288,12 @@ The \texttt{should-not=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{=}.
+\end{description}
 
 \lispExamples
 
@@ -243,6 +312,12 @@ The \texttt{should/=} macro is a short-hand method for
 
 \texttt{(should/= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{/=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -259,6 +334,12 @@ The \texttt{should-not/=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not/= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{/=}.
+\end{description}
 
 \lispExamples
 
@@ -277,6 +358,12 @@ The \texttt{should<} macro is a short-hand method for
 
 \texttt{(should< \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{<}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -293,6 +380,12 @@ The \texttt{should-not<} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not< \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{<}.
+\end{description}
 
 \lispExamples
 
@@ -311,6 +404,12 @@ The \texttt{should<} macro is a short-hand method for
 
 \texttt{(should> \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{>}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -321,12 +420,18 @@ The \texttt{should<} macro is a short-hand method for
 
 \lispMacroSubsection{Should-Not>}
 
-The \texttt{should-not<} macro is a short-hand method for
+The \texttt{should-not>} macro is a short-hand method for
 \texttt{(should-not \#'> \ldots)}.
 
 \lispSyntax
 
 \texttt{(should-not> \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{>}.
+\end{description}
 
 \lispExamples
 
@@ -345,6 +450,12 @@ The \texttt{should<=} macro is a short-hand method for
 
 \texttt{(should<= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{<=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -361,6 +472,12 @@ The \texttt{should-not<=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not<= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{<=}.
+\end{description}
 
 \lispExamples
 
@@ -380,6 +497,12 @@ The \texttt{should>=} macro is a short-hand method for
 
 \texttt{(should>= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{>=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -396,6 +519,12 @@ The \texttt{should-not>=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not>= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{>=}.
+\end{description}
 
 \lispExamples
 
@@ -414,6 +543,12 @@ The \texttt{should-eq} macro is a short-hand method for
 
 \texttt{(should-eq \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{eq}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -430,6 +565,12 @@ The \texttt{should-not-eq} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not-eq \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{eq}.
+\end{description}
 
 \lispExamples
 
@@ -448,6 +589,12 @@ The \texttt{should-eql} macro is a short-hand method for
 
 \texttt{(should-eql \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{eql}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -465,6 +612,12 @@ The \texttt{should-not-eql} macro is a short-hand method for
 
 \texttt{(should-not-eql \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{eql}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -481,6 +634,12 @@ The \texttt{should-equal} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-equal \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{equal}.
+\end{description}
 
 \lispExamples
 
@@ -500,6 +659,12 @@ The \texttt{should-not-equal} macro is a short-hand method for
 
 \texttt{(should-not-equal \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{equal}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -517,6 +682,12 @@ The \texttt{should-equalp} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-equalp \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{equalp}.
+\end{description}
 
 \lispExamples
 
@@ -536,6 +707,12 @@ The \texttt{should-not-equalp} macro is a short-hand method for
 
 \texttt{(should-not-equalp \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{equalp}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -554,6 +731,12 @@ The \texttt{should-string=} macro is a short-hand method for
 
 \texttt{(should-string= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -569,6 +752,12 @@ The \texttt{should-not-string=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not-string= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string=}.
+\end{description}
 
 \lispExamples
 
@@ -586,6 +775,12 @@ The \texttt{should-string/=} macro is a short-hand method for
 
 \texttt{(should-string/= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string/=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -602,6 +797,12 @@ The \texttt{should-not-string/=} macro is a short-hand method for
 
 \texttt{(should-not-string/= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string/=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -617,6 +818,12 @@ The \texttt{should-string<} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string< \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string<}.
+\end{description}
 
 \lispExamples
 
@@ -636,6 +843,12 @@ The \texttt{should-not-string<} macro is a short-hand method for
 
 \texttt{(should-not-string< \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string<}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -652,6 +865,12 @@ The \texttt{should-string>} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string> \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string>}.
+\end{description}
 
 \lispExamples
 
@@ -671,6 +890,12 @@ The \texttt{should-not-string>} macro is a short-hand method for
 
 \texttt{(should-not-string> \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string>}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -687,6 +912,12 @@ The \texttt{should-string<=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string<= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string<=}.
+\end{description}
 
 \lispExamples
 
@@ -705,6 +936,12 @@ The \texttt{should-not-string<=} macro is a short-hand method for
 
 \texttt{(should-not-string<= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string<=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -721,6 +958,12 @@ The \texttt{should-string>=} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string>= \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string>=}.
+\end{description}
 
 \lispExamples
 
@@ -739,6 +982,12 @@ The \texttt{should-not-string>=} macro is a short-hand method for
 
 \texttt{(should-not-string>= \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string>=}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -755,6 +1004,12 @@ The \texttt{should-string-equal} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string-equal \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-equal}.
+\end{description}
 
 \lispExamples
 
@@ -773,6 +1028,12 @@ The \texttt{should-not-string-equal} macro is a short-hand method for
 
 \texttt{(should-not-string-equal \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-equal}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -789,6 +1050,12 @@ The \texttt{should-string-not-equal} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string-not-equal \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-not-equal}.
+\end{description}
 
 \lispExamples
 
@@ -807,6 +1074,12 @@ The \texttt{should-not-string-not-equal} macro is a short-hand method for
 
 \texttt{(should-not-string-not-equal \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-not-equal}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -823,6 +1096,12 @@ The \texttt{should-string-lessp} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string-lessp \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-lessp}.
+\end{description}
 
 \lispExamples
 
@@ -842,6 +1121,12 @@ The \texttt{should-not-string-lessp} macro is a short-hand method for
 
 \texttt{(should-not-string-lessp \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-lessp}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -859,6 +1144,12 @@ The \texttt{should-string-greaterp} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string-greaterp \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-greaterp}.
+\end{description}
 
 \lispExamples
 
@@ -878,6 +1169,12 @@ The \texttt{should-not-string-greaterp} macro is a short-hand method for
 
 \texttt{(should-not-string-greaterp \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-greaterp}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -896,6 +1193,12 @@ The \texttt{should-string-not-greaterp} macro is a short-hand method for
 
 \texttt{(should-string-not-greaterp \&rest \lispVar{arguments})}
 
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-not-greaterp}.
+\end{description}
+
 \lispExamples
 
 \begin{verbatim}
@@ -907,20 +1210,26 @@ The \texttt{should-string-not-greaterp} macro is a short-hand method for
 
 \lispMacroSubsection{Should-Not-String-Not-GreaterP}
 
-The \texttt{should-string-greaterp} macro is a short-hand method for
-\texttt{(should \#'string-greaterp \ldots)}.
+The \texttt{should-not-string-not-greaterp} macro is a short-hand method for
+\texttt{(should-not \#'string-not-greaterp \ldots)}.
 
 \lispSyntax
 
-\texttt{(should-string-greaterp \&rest \lispVar{arguments})}
+\texttt{(should-not-string-not-greaterp \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-not-greaterp}.
+\end{description}
 
 \lispExamples
 
 \begin{verbatim}
-(should-string-greaterp "foo" "f")      ; Passes
-(should-string-greaterp "foo" "foo")    ; Fails
-(should-string-greaterp "foo" "FOO")    ; Fails
-(should-string-greaterp "foo" "foobar") ; Fails
+(should-not-string-not-greaterp "foo" "f")      ; Passes
+(should-not-string-not-greaterp "foo" "foo")    ; Fails
+(should-not-string-not-greaterp "foo" "FOO")    ; Fails
+(should-not-string-not-greaterp "foo" "foobar") ; Fails
 \end{verbatim}
 
 \lispMacroSubsection{Should-String-Not-LessP}
@@ -931,6 +1240,12 @@ The \texttt{should-string-not-lessp} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-string-not-lessp \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-not-lessp}.
+\end{description}
 
 \lispExamples
 
@@ -949,6 +1264,12 @@ The \texttt{should-not-string-not-lessp} macro is a short-hand method for
 \lispSyntax
 
 \texttt{(should-not-string-not-lessp \&rest \lispVar{arguments})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{Arguments}] These are the arguments to \texttt{string-not-lessp}.
+\end{description}
 
 \lispExamples
 
