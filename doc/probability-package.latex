@@ -38,13 +38,19 @@
 
 \lispMacroSubsection{Decaying-Probabiliity?}
 
+\TODO
+
 \section{Functions}
 
 \lispFunctionSubsection{Probability?}
 
+\TODO
+
 \section{Types}
 
 \lispTypeSubsection{Probability}
+
+\TODO
 
 \lispPackageChapter{Random}
 
@@ -52,26 +58,48 @@
 
 \lispMacroSubsection{NShuffle}
 
+\TODO
+
 \section{Functions}
 
 \lispFunctionSubsection{Gauss}
 
+\TODO
+
 \lispFunctionSubsection{Random-Argument}
+
+\TODO
 
 \lispFunctionSubsection{Coin-Toss}
 
+\TODO
+
 \lispFunctionSubsection{Random-In-Range}
+
+\TODO
 
 \lispFunctionSubsection{Random-In-Ranges}
 
+\TODO
+
 \lispFunctionSubsection{Random-Range}
+
+\TODO
 
 \lispFunctionSubsection{Randomize-Array}
 
+\TODO
+
 \lispFunctionSubsection{Random-Array}
+
+\TODO
 
 \section{Generics}
 
 \lispGenericSubsection{Random-Element}
 
+\TODO
+
 \lispGenericSubsection{Shuffle}
+
+\TODO

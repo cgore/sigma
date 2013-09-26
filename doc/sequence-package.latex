@@ -38,54 +38,104 @@
 
 \lispMacroSubsection{Arefable?}
 
+\TODO
+
 \lispMacroSubsection{NConcF}
+
+\TODO
 
 \lispMacroSubsection{Nthable?}
 
+\TODO
+
 \lispMacroSubsection{Set-NthCdr}
+
+\TODO
 
 \section{Functions}
 
 \lispFunctionSubsection{Array-Values}
 
+\TODO
+
 \lispFunctionSubsection{Nth-From-End}
+
+\TODO
 
 \lispFunctionSubsection{Sequence?}
 
+\TODO
+
 \lispFunctionSubsection{Empty-Sequence?}
+
+\TODO
 
 \lispFunctionSubsection{Join-Symbol-To-All-Following}
 
+\TODO
+
 \lispFunctionSubsection{Join-Symbol-To-All-Preceeding}
+
+\TODO
 
 \lispFunctionSubsection{List-To-Vector}
 
+\TODO
+
 \lispFunctionSubsection{Set-Equal}
+
+\TODO
 
 \lispFunctionSubsection{Simple-Vector-To-List}
 
+\TODO
+
 \lispFunctionSubsection{Sort-Order}
+
+\TODO
 
 \lispFunctionSubsection{The-Last}
 
+\TODO
+
 \lispFunctionSubsection{Vector-To-List}
+
+\TODO
 
 \section{Generics}
 
 \lispGenericSubsection{Best}
 
+\TODO
+
 \lispGenericSubsection{Minimum}
+
+\TODO
 
 \lispGenericSubsection{Minimum?}
 
+\TODO
+
 \lispGenericSubsection{Maximum}
+
+\TODO
 
 \lispGenericSubsection{Maximum?}
 
+\TODO
+
 \lispGenericSubsection{Sort-On}
+
+\TODO
 
 \lispGenericSubsection{Slice}
 
+\TODO
+
 \lispGenericSubsection{Split}
 
+\TODO
+
 \lispGenericSubsection{Worst}
+
+\TODO

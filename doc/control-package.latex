@@ -315,48 +315,92 @@ specify the anaphor to use, instead of just the default \texttt{it}.
 
 \lispMacroSubsection{DeleteF}
 
+\TODO
+
 \lispMacroSubsection{Do-While}
+
+\TODO
 
 \lispMacroSubsection{Do-Until}
 
+\TODO
+
 \lispMacroSubsection{For}
+
+\TODO
 
 \lispMacroSubsection{Forever}
 
+\TODO
+
 \lispMacroSubsection{Multicond}
+
+\TODO
 
 \lispMacroSubsection{OpF}
 
+\TODO
+
 \lispMacroSubsection{Swap}
+
+\TODO
 
 \lispMacroSubsection{Swap-Unless}
 
+\TODO
+
 \lispMacroSubsection{Swap-When}
+
+\TODO
 
 \lispMacroSubsection{Until}
 
+\TODO
+
 \lispMacroSubsection{While}
+
+\TODO
 
 \section{Functions}
 
 \lispFunctionSubsection{Compose}
 
+\TODO
+
 \lispFunctionSubsection{Conjoin}
+
+\TODO
 
 \lispFunctionSubsection{Curry}
 
+\TODO
+
 \lispFunctionSubsection{Disjoin}
+
+\TODO
 
 \lispFunctionSubsection{Function-Alias}
 
+\TODO
+
 \lispFunctionSubsection{Operator-To-Function}
+
+\TODO
 
 \lispFunctionSubsection{RCompose}
 
+\TODO
+
 \lispFunctionSubsection{RCurry}
 
+\TODO
+
 \lispFunctionSubsection{Unimplemented}
+
+\TODO
 
 \section{Generics}
 
 \lispGenericSubsection{Duplicate}
+
+\TODO

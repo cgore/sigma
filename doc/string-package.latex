@@ -102,18 +102,34 @@ resultant list contain only unique instances.
 
 \lispFunctionSubsection{Escape-Tildes}
 
+\TODO
+
 \lispFunctionSubsection{Replace-Char}
+
+\TODO
 
 \lispFunctionSubsection{StrCat}
 
+\TODO
+
 \lispFunctionSubsection{StrMult}
+
+\TODO
 
 \lispFunctionSubsection{String-Join}
 
+\TODO
+
 \lispFunctionSubsection{Stringify}
 
+\TODO
+
 \lispFunctionSubsection{To-String}
+
+\TODO
 
 \section{Methods}
 
 \lispMethodsSubsection{Split}
+
+\TODO

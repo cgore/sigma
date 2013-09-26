@@ -246,8 +246,8 @@ The \texttt{should/=} macro is a short-hand method for
 \lispExamples
 
 \begin{verbatim}
-(should/= 12 13) ; Passes
-(should/= 12 12) ; Fails
+(should/= 12 13)   ; Passes
+(should/= 12 12)   ; Fails
 (should/= 12 12.0) ; Fails
 \end{verbatim}
 
@@ -263,8 +263,8 @@ The \texttt{should-not/=} macro is a short-hand method for
 \lispExamples
 
 \begin{verbatim}
-(should-not/= 12 13) ; Fails
-(should-not/= 12 12) ; Passes
+(should-not/= 12 13)   ; Fails
+(should-not/= 12 12)   ; Passes
 (should-not/= 12 12.0) ; Passes
 \end{verbatim}
 

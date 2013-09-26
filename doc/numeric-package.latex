@@ -38,11 +38,17 @@
 
 \lispMacroSubsection{DivF}
 
+\TODO
+
 \lispMacroSubsection{MultF}
+
+\TODO
 
 \section{Functions}
 
 \lispFunctionSubsection{Bit?}
+
+\TODO
 
 \lispFunctionSubsection{Choose}
 
@@ -57,29 +63,54 @@ isn't intelligent, and uses a loop instead of better approaches.
 
 \lispFunctionSubsection{Fractional-Part}
 
+\TODO
+
 \lispFunctionSubsection{Fractional-Value}
+
+\TODO
 
 \lispFunctionSubsection{Integer-Range}
 
+\TODO
+
 \lispFunctionSubsection{Nonnegative?}
+
+\TODO
 
 \lispFunctionSubsection{Nonnegative-Integer?}
 
+\TODO
+
 \lispFunctionSubsection{Positive-Integer?}
+
+\TODO
 
 \lispFunctionSubsection{Product}
 
+\TODO
+
 \lispFunctionSubsection{Sum}
 
+\TODO
+
 \lispFunctionSubsection{Unsigned-Integer?}
+
+\TODO
 
 \section{Types}
 
 \lispTypeSubsection{Nonnegative-Float}
 
+\TODO
+
 \lispTypeSubsection{Nonnegative-Integer}
+
+\TODO
 
 \lispTypeSubsection{Positive-Float}
 
+\TODO
+
 \lispTypeSubsection{Positive-Integer}
 
+\TODO

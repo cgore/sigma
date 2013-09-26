@@ -38,30 +38,56 @@
 
 \lispMacroSubsection{Snap-Index}
 
+\TODO
+
 \section{Functions}
 
 \lispFunctionSubsection{Array-Raster-Line}
 
+\TODO
+
 \lispFunctionSubsection{Distance}
+
+\TODO
 
 \lispFunctionSubsection{Norm}
 
+\TODO
+
 \lispFunctionSubsection{Raster-Line}
+
+\TODO
 
 \lispFunctionSubsection{Similar-Points?}
 
+\TODO
+
 \lispFunctionSubsection{Time-Series?}
+
+\TODO
 
 \lispFunctionSubsection{Time-Multiseries?}
 
+\TODO
+
 \lispFunctionSubsection{TMSref}
+
+\TODO
 
 \lispFunctionSubsection{TMS-Dimensions}
 
+\TODO
+
 \lispFunctionSubsection{TMS-Raster-Line}
 
+\TODO
+
 \lispFunctionSubsection{TMS-Values}
+
+\TODO
 
 \section{Types}
 
 \lispTypeSubsection{Time-Multiseries}
+
+\TODO

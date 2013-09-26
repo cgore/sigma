@@ -38,18 +38,34 @@
 
 \lispFunctionSubsection{Perl}
 
+\TODO
+
 \lispFunctionSubsection{Python}
+
+\TODO
 
 \lispFunctionSubsection{Read-File}
 
+\TODO
+
 \lispFunctionSubsection{Read-Lines}
 
+\TODO
+
 \lispFunctionSubsection{Ruby}
+
+\TODO
 
 \section{Parameters}
 
 \lispParameterSubsection{*Perl-Path*}
 
+\TODO
+
 \lispParameterSubsection{*Python-Path*}
 
+\TODO
+
 \lispParameterSubsection{*Ruby-Path*}
+
+\TODO

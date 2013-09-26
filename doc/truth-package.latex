@@ -38,8 +38,14 @@
 
 \lispFunctionSubsection{[?]}
 
+\TODO
+
 \lispFunctionSubsection{Toggle}
+
+\TODO
 
 \section{Generics}
 
 \lispGenericSubsection{?}
+
+\TODO

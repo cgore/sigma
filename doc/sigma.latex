@@ -36,11 +36,15 @@
 \documentclass{book}
 
 \usepackage{calc}
+\usepackage{color}
 \usepackage{ifthen}
 \usepackage{datetime}
 
 \newdateformat{cgoredate}
 {\dayofweekname{\day}{\month}{\year},~\monthname~\ordinaldate{\day},~\textsc{ad}~\THEYEAR}
+
+\newcommand{\TODO}{{\centering \color{red}
+    \textsc{\ldots TO DO \ldots}\par}}
 
 \newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
 \newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
@@ -68,7 +72,8 @@
 \author{Christopher Mark Gore\\
   \texttt{http://www.cgore.com}\\
   \texttt{cgore@cgore.com}}
-\date{\textsc{Incomplete Draft}\\
+\date{{\color{red}
+    \textsc{Incomplete Draft}}\\
   \cgoredate\today}
 
 \begin{document}
