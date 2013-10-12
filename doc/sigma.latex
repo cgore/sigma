@@ -37,6 +37,7 @@
 
 \usepackage{calc}
 \usepackage[usenames,dvipsnames]{color}
+\usepackage{hyperref}
 \usepackage{ifthen}
 \usepackage{datetime}
 
@@ -45,6 +46,8 @@
 
 \newcommand{\TODO}{{\centering \color{red}
     \textsc{\ldots TO DO \ldots}\par}}
+
+\newcommand{\mailto}[1]{\href{mailto:#1}{#1}}
 
 \newcommand{\lispPackageChapter}[1]{\chapter{The \texttt{#1} Package}}
 \newcommand{\lispFunctionSubsection}[1]{\subsection{The \texttt{#1} Function}}
@@ -70,8 +73,8 @@
 \title{{\Huge $\Sigma$}\\
   A Library for \textsc{Ansi} Common Lisp}
 \author{Christopher Mark Gore\\
-  \texttt{http://www.cgore.com}\\
-  \texttt{cgore@cgore.com}}
+  \url{http://www.cgore.com}\\
+  \mailto{cgore@cgore.com}}
 \date{{\color{red}
     \textsc{Incomplete Draft}}\\
   \cgoredate\today}

@@ -48,21 +48,21 @@ the years, and in 2012 I decided that I should try to make it useful to people
 other than myself.
 
 You can download the library from GitHub at:\\
-\texttt{https://github.com/cgore/sigma}\\
+\url{https://github.com/cgore/sigma}\\
 and I have some other information on it at my own website at:\\
-\texttt{http://cgore.com/programming/lisp/sigma/}
+\url{http://cgore.com/programming/lisp/sigma/}
 
 \section{Getting Lisp}
 
 Before using this library you need a working Lisp.  I use and recommend
 \textsc{Sbcl}, Steel Bank Common Lisp, which is available at:\\
-\texttt{http://www.sbcl.org}\\
+\url{http://www.sbcl.org}\\
 This is derived from \textsc{CMUCL}, Carnegie Mellon University Common Lisp,
 which is still under active development and is: available at:\\
-\texttt{http://www.cons.org/cmucl/}
+\url{http://www.cons.org/cmucl/}
 
 \textsc{SBCL} has information on getting started at:\\
-\texttt{http://www.sbcl.org/getting.html}\\
+\url{http://www.sbcl.org/getting.html}\\
 If you are using Debian or a similar Linux distribution (including Ubuntu), you
 can just run as root:\\
 \texttt{apt-get install sbcl sbcl-doc sbcl-source}
@@ -72,7 +72,7 @@ can just run as root:\\
 After installing, the best way to interact with any Common Lisp is via
 \textsc{Slime}, the Superior Lisp Interaction Mode for \textsc{Emacs}, which is
 available at:\\
-\texttt{http://common-lisp.net/project/slime/}\\
+\url{http://common-lisp.net/project/slime/}\\
 This can be installed on Debian by:\\
 \texttt{apt-get install slime emacs emacs-goodies-el}
 
