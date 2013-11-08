@@ -34,6 +34,12 @@
 
 \lispPackageChapter{Hash}
 
+\section{Macros}
+
+\lispMacroSubsection{SetHash}
+
+The \texttt{SetHash} macro is shortcut for \texttt{setf gethash}.
+
 \section{Functions}
 
 \lispFunctionSubsection{IncHash}

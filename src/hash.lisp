@@ -36,22 +36,27 @@
   (:nicknames :hash)
   (:use :common-lisp
         :sigma/behave)
-  (:export :inchash
+  (:export :sethash
+           :inchash
            :dechash))
 (in-package :sigma/hash)
 
-(defun inchash (key hash)
+(defmacro sethash (key hash-table value)
+  "The SETHASH macro is a shortcut for SETF GETHASH."
+  `(setf (gethash ,key ,hash-table) ,value))
+
+(defun inchash (key hash-table)
   "The INCHASH function will increment the value in key of the hash,
 initializing it to 1 if it isn't currently defined."
-  (assert (typep hash 'hash-table))
-  (if (null (gethash key hash))
-      (setf (gethash key hash) 1)
-      (incf (gethash key hash))))
+  (assert (typep hash-table 'hash-table))
+  (if (null (gethash key hash-table))
+      (setf (gethash key hash-table) 1)
+      (incf (gethash key hash-table))))
 
-(defun dechash (key hash)
+(defun dechash (key hash-table)
   "The DECHASH function will decrement the value in key of the hash,
 initializing it to -1 if it isn't currently defined."
-  (assert (typep hash 'hash-table))
-  (if (null (gethash key hash))
-      (setf (gethash key hash) -1)
-      (decf (gethash key hash))))
+  (assert (typep hash-table 'hash-table))
+  (if (null (gethash key hash-table))
+      (setf (gethash key hash-table) -1)
+      (decf (gethash key hash-table))))
