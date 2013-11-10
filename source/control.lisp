@@ -432,6 +432,7 @@ and Common Lisp, with a syntax like Pascal.''"
                do (should-eq (or (%2? i) (%3? i))
                              (funcall (disjoin #'%2? #'%3?) i)))))
 
+;;; The DUPLICATE generic is designed to provide a deep-copy functionality.
 (defgeneric duplicate (item))
 
 (defmethod duplicate ((list list))
