@@ -37,7 +37,7 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "3.1.6"
+  :version "3.2.0"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "
 Copyright (c) 2005 -- 2013, Christopher Mark Gore,
@@ -61,7 +61,7 @@ modification, are permitted provided that the following conditions are met:
       contributors may be used to endorse or promote products derived from
       this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -73,7 +73,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 "
-  :components ((:module "src"
+  :components ((:module "source"
                         :components ((:file "behave")
                                      (:file "control"
                                             :depends-on ("behave"))

@@ -10,6 +10,6 @@
 *.fasl
 
 # Ignore some LaTeX stuff.
-doc/*.aux
-doc/*.log
-doc/*.toc
+documentation/*.aux
+documentation/*.log
+documentation/*.toc
