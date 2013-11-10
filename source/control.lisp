@@ -400,6 +400,11 @@ and Common Lisp, with a syntax like Pascal.''"
   `(setf ,sequence
          (delete ,item ,sequence ,@rest)))
 
+(behavior 'deletef
+  (let ((l '(a b c d e f g)))
+    (deletef 'd l)
+    (should-equalp l '(a b c e f g))))
+
 (defun disjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
 returns true whenever any of the predicates return true.  This is from Paul
