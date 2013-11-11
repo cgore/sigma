@@ -33,7 +33,6 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 (defpackage :sigma/numeric
-  (:nicknames :numeric)
   (:use :common-lisp
         :sigma/behave
         :sigma/control

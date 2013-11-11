@@ -33,8 +33,8 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 (defpackage :sigma/control
-  (:nicknames :control)
-  (:use :common-lisp :sigma/behave)
+  (:use :common-lisp
+        :sigma/behave)
   (:export :aand
            :a?and
            :ablock

@@ -34,7 +34,6 @@
 
 
 (defpackage :sigma/random
-  (:nicknames :random)
   (:use :common-lisp
         :sigma/control
         :sigma/sequence)

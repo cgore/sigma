@@ -34,7 +34,6 @@
 
 
 (defpackage :sigma/probability
-  (:nicknames :probability)
   (:use :common-lisp
         :sigma/control
         :sigma/numeric)

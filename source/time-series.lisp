@@ -34,7 +34,6 @@
 
 
 (defpackage :sigma/time-series
-  (:nicknames :time-series)
   (:use :common-lisp
         :sigma/control
         :sigma/numeric

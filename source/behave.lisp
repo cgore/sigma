@@ -33,7 +33,6 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 (defpackage :sigma/behave
-  (:nicknames :behave)
   (:use :common-lisp)
   (:export :behavior
            :spec

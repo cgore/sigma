@@ -34,7 +34,6 @@
 
 
 (defpackage :sigma/truth
-  (:nicknames :truth)
   (:use :common-lisp
         :sigma/control)
   (:export :?

@@ -34,7 +34,6 @@
 
 
 (defpackage :sigma/os
-  (:nicknames :os)
   (:use :common-lisp
         :sigma/control
         :sigma/string)

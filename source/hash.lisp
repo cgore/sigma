@@ -33,7 +33,6 @@
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
 (defpackage :sigma/hash
-  (:nicknames :hash)
   (:use :common-lisp
         :sigma/behave)
   (:export :sethash
