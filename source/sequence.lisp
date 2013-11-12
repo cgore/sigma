@@ -378,6 +378,7 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 
 The result is affected by all of the *PRINT-...* variables in the same was as
 the FORMAT builtin function."
+;  (format t "join-symbol-to-all-preceeding ~A ~A~%" symbol list)
   (assert (symbolp symbol))
   (assert (listp list))
   (aif (position symbol list)
@@ -409,9 +410,10 @@ the FORMAT builtin function."
                '(:a :b :c :d :e)))
 (assert (equal (join-symbol-to-all-preceeding :foo '(:bar :foo :baz :foo))
                '(:barfoo :bazfoo)))
-(let ((*print-case* :downcase))
-  (assert (equal (join-symbol-to-all-preceeding :foo '(:bar :foo :baz :foo))
-                 '(:|barfoo| :|bazfoo|))))
+(assert (equal
+         (let ((*print-case* :downcase))
+           (join-symbol-to-all-preceeding :b '(:a :b :c :b)))
+         '(:|ab| :|cb|)))
 
 
 (defun join-symbol-to-all-following (symbol list)
