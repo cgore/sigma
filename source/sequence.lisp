@@ -372,8 +372,12 @@ The slice argument may be any positive rational number."
 (defun join-symbol-to-all-preceeding (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item preceeding it.  For example:
+
 > (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
-=> '(:10% :20% :30%)"
+=> '(:10% :20% :30%)
+
+The result is affected by all of the *PRINT-...* variables in the same was as
+the FORMAT builtin function."
   (assert (symbolp symbol))
   (assert (listp list))
   (aif (position symbol list)
@@ -392,6 +396,9 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 
 (assert (equal (join-symbol-to-all-preceeding :% '(100 :%))
                '(:100%)))
+(let ((*print-base* 8))
+  (assert (equal (join-symbol-to-all-preceeding :% '(64 :%))
+                 '(:100%))))
 (assert (equal (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
                '(:10% :20% :30%)))
 (assert (equal (join-symbol-to-all-preceeding :% '(10 :55%))
@@ -402,13 +409,20 @@ symbol in the list, it joins it to the item preceeding it.  For example:
                '(:a :b :c :d :e)))
 (assert (equal (join-symbol-to-all-preceeding :foo '(:bar :foo :baz :foo))
                '(:barfoo :bazfoo)))
+(let ((*print-case* :downcase))
+  (assert (equal (join-symbol-to-all-preceeding :foo '(:bar :foo :baz :foo))
+                 '(:|barfoo| :|bazfoo|))))
 
 
 (defun join-symbol-to-all-following (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item following it.  For example:
+
 > (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
-=> '(:#10 :#20 :#30)"
+=> '(:#10 :#20 :#30)
+
+The result is affected by all of the *PRINT-...* variables in the same was as
+the FORMAT builtin function."
   (assert (symbolp symbol))
   (assert (listp list))
   (aif (position symbol list)

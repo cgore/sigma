@@ -61,6 +61,8 @@
 \newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
 \newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
 \newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
+\newcommand{\lispAffectedBy}[1]{\subsubsection*{Affected By}}
+
 
 \newcommand{\lispCode}[1]{\texttt{#1}}
 \newcommand{\lispCodeArrow}{$\Longrightarrow$}

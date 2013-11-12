@@ -72,11 +72,61 @@
 
 \lispFunctionSubsection{Join-Symbol-To-All-Following}
 
-\TODO
+This function takes a symbol and a list, and for every occurance of the
+symbol in the list, it joins it to the item following it.  For example:
+
+\lispSyntax
+
+\texttt{(join-symbol-to-all-following \lispVar{symbol} \lispVar{list})}
+
+\lispExamples
+
+\begin{verbatim}
+(join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
+;; Returns '(:#10 :#20 :#30)
+\end{verbatim}
+
+\lispAffectedBy
+
+\texttt{*print-escape*},
+\texttt{*print-radix*},
+\texttt{*print-base*},
+\texttt{*print-circle*},
+\texttt{*print-pretty*},
+\texttt{*print-level*},
+\texttt{*print-length*},
+\texttt{*print-case*},
+\texttt{*print-gensym*},
+\texttt{*print-array*}.
 
 \lispFunctionSubsection{Join-Symbol-To-All-Preceeding}
 
-\TODO
+This function takes a symbol and a list, and for every occurance of the
+symbol in the list, it joins it to the item preceeding it.  For example:
+
+\lispSyntax
+
+\texttt{(join-symbol-to-all-preceeding \lispVar{symbol} \lispVar{list})}
+
+\lispExamples
+
+\begin{verbatim}
+(join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
+;; Returns '(:10% :20% :30%)
+\end{verbatim}
+
+\lispAffectedBy
+
+\texttt{*print-escape*},
+\texttt{*print-radix*},
+\texttt{*print-base*},
+\texttt{*print-circle*},
+\texttt{*print-pretty*},
+\texttt{*print-level*},
+\texttt{*print-length*},
+\texttt{*print-case*},
+\texttt{*print-gensym*},
+\texttt{*print-array*}.
 
 \lispFunctionSubsection{List-To-Vector}
 
