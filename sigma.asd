@@ -42,12 +42,12 @@
 
 (in-package :sigma/system)
 
-(defparameter +version-major+ 3)
-(defparameter +version-minor+ 4)
-(defparameter +version-revision+ 0)
+(defparameter version-major 3)
+(defparameter version-minor 4)
+(defparameter version-revision 1)
 
 (defun version-list ()
-  (list +version-major+ +version-minor+ +version-revision+))
+  (list version-major version-minor version-revision))
 
 (defun version-string ()
   (format nil "~{~A.~A.~A~}" (version-list)))
