@@ -31,13 +31,32 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :asdf)
+(defpackage :sigma/system
+  (:use :common-lisp
+        :asdf)
+  (:export :version-string
+           :version-list
+           :version-major
+           :version-minor
+           :version-revision))
+
+(in-package :sigma/system)
+
+(defparameter +version-major+ 3)
+(defparameter +version-minor+ 4)
+(defparameter +version-revision+ 0)
+
+(defun version-list ()
+  (list +version-major+ +version-minor+ +version-revision+))
+
+(defun version-string ()
+  (format nil "~{~A.~A.~A~}" (version-list)))
 
 (defsystem "sigma"
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "3.3.1"
+  :version #.(version-string)
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "
 Copyright (c) 2005 -- 2014, Christopher Mark Gore,
