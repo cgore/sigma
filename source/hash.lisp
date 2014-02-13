@@ -99,7 +99,7 @@ be specified at once, to work with nested hash tables."
             (if (cadr keys)
                 (gethash-in (cdr keys) value default)
                 (values value t))
-            (values default false)))
+            (values default nil)))
       (gethash keys hash-table default)))
 
 (behavior 'gethash-in
