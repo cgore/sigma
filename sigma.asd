@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2014, Christopher Mark Gore,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 2317 South River Road, Saint Charles, Missouri 63303 USA.
@@ -37,10 +37,10 @@
   :description "This is a set of generic utility functions and macros that I
            use throughout my Common Lisp code pretty much everywhere.  I find
            them useful, and hopefully you do too."
-  :version "3.3.0"
+  :version "3.3.1"
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "
-Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+Copyright (c) 2005 -- 2014, Christopher Mark Gore,
 All rights reserved.
 
 2317 South River Road, Saint Charles, Missouri 63303 USA.
@@ -78,7 +78,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                      (:file "control"
                                             :depends-on ("behave"))
                                      (:file "hash"
-                                            :depends-on ("behave"))
+                                            :depends-on ("behave"
+                                                         "control"))
                                      (:file "numeric"
                                             :depends-on ("behave"
                                                          "control"

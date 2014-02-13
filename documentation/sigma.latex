@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -59,6 +59,7 @@
 \newcommand{\lispVariableSubsection}[1]{\subsection{The \texttt{#1} Variable}}
 
 \newcommand{\lispArgs}[1]{\subsubsection*{Arguments and Values}}
+\newcommand{\lispReturns}[1]{\subsubsection*{Returns}}
 \newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
 \newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
 \newcommand{\lispAffectedBy}[1]{\subsubsection*{Affected By}}

@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -36,18 +36,72 @@
 
 \section{Macros}
 
-\lispMacroSubsection{SetHash}
+\lispMacroSubsection{sethash}
 
-The \texttt{SetHash} macro is shortcut for \texttt{setf gethash}.
+The \texttt{sethash} macro is shortcut for \texttt{setf gethash}.
 
 \section{Functions}
 
-\lispFunctionSubsection{IncHash}
+\lispFunctionSubsection{populate-hash-table}
 
-The \texttt{IncHash} function will increment the value in \lispVar{key} of the
+The \texttt{populate-hash-table} function makes initial construction of hash
+tables a lot easier, just taking in key/value pairs as the arguments to the
+function, and returning a newly-constructed hash table.
+
+\lispExamples
+
+\begin{verbatim}
+(populate-hash-table 'name "Valentinus"
+                     'likes '(birds roses)
+                     'dislikes '(beheadings epilepsy "false idols")
+                     'died 269)
+\end{verbatim}
+
+\lispFunctionSubsection{inchash}
+
+The \texttt{inchash} function will increment the value in \lispVar{key} of the
 \lispVar{hash}, initializing it to $1$ if it isn't currently defined.
 
-\lispFunctionSubsection{DecHash}
+\lispFunctionSubsection{dechash}
 
-The \texttt{DecHash} function will decrement the value in \lispVar{key} of the
+The \texttt{dechash} function will decrement the value in \lispVar{key} of the
 \lispVar{hash}, initializing it to $-1$ if it isn't currently defined.
+
+\lispFunctionSubsection{gethash-in}
+
+The \texttt{gethash-in} function works like \texttt{gethash}, but allows for
+multiple keys to be specified at once, to work with nested hash tables.
+
+\lispSyntax
+
+\texttt{(gethash-in \lispVar{keys} \lispVar{hash-table} \&optional
+  \lispVar{default})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{keys}] A list of objects.
+\item[\lispVar{hash-table}] A hash table.
+\item[\lispVar{default}] An object.  The default is nil.
+\end{description}
+
+\lispReturns
+
+\begin{description}
+\item[\lispVar{value}] An object.
+\item[\lispVar{present?}] A generalized boolean.
+\end{description}
+
+\lispExamples
+
+\begin{verbatim}
+(let ((h (make-hash-table)))
+  (sethash 'a h 12)
+  (gethash-in '(a) h)) ; Returns 12
+
+(let ((h (make-hash-table))
+      (i (make-hash-table)))
+  (sethash 'b i 123)
+  (sethash 'a h i)
+  (gethash-in '(a b) h 123)) ; Returns 123
+\end{verbatim}

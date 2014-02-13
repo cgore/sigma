@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2014, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -34,15 +34,44 @@
 
 (defpackage :sigma/hash
   (:use :common-lisp
-        :sigma/behave)
+        :sigma/behave
+        :sigma/control)
   (:export :sethash
+           :populate-hash-table
            :inchash
-           :dechash))
+           :dechash
+           :gethash-in))
 (in-package :sigma/hash)
 
 (defmacro sethash (key hash-table value)
   "The SETHASH macro is a shortcut for SETF GETHASH."
   `(setf (gethash ,key ,hash-table) ,value))
+
+(defun populate-hash-table (&rest pairs)
+  "The POPULATE-HASH-TABLE function makes initial construction of hash tables a
+lot easier, just taking in key/value pairs as the arguments to the function, and
+returning a newly-constructed hash table."
+  (let ((result (make-hash-table)))
+    (a?while key (pop pairs)
+      (sethash key result (pop pairs)))
+    result))
+
+(behavior 'populate-hash-table
+  (spec "makes hash tables"
+    (let ((h (populate-hash-table 'a 1
+                                  'b 2
+                                  'c 3)))
+      (should= (gethash 'a h) 1)
+      (should= (gethash 'b h) 2)
+      (should= (gethash 'c h) 3)))
+  (spec "handles lists as values"
+    (let ((v (populate-hash-table 'name "Valentinus"
+                                  'likes '(birds roses)
+                                  'dislikes '(beheadings epilepsy "false idols")
+                                  'died 269)))
+      (should= (gethash 'died v) 269)
+      (should-string-equal (gethash 'name v) "Valentinus")
+      (should-equal (gethash 'likes v) '(birds roses)))))
 
 (defun inchash (key hash-table)
   "The INCHASH function will increment the value in key of the hash,
@@ -59,3 +88,32 @@ initializing it to -1 if it isn't currently defined."
   (if (null (gethash key hash-table))
       (setf (gethash key hash-table) -1)
       (decf (gethash key hash-table))))
+
+(defun gethash-in (keys hash-table &optional (default nil))
+  "The GETHASH-IN function works like gethash, but allows for multiple keys to
+be specified at once, to work with nested hash tables."
+  (if (listp keys)
+      (multiple-value-bind (value present?)
+          (gethash (car keys) hash-table default)
+        (if present?
+            (if (cadr keys)
+                (gethash-in (cdr keys) value default)
+                (values value t))
+            (values default false)))
+      (gethash keys hash-table default)))
+
+(behavior 'gethash-in
+  (spec "works for a single-deep hash"
+    (let ((h (make-hash-table)))
+      (sethash 'a h 12)
+      (should= (gethash-in '(a) h) 12)))
+  (spec "works for the degenerate case of just gethash"
+    (let ((h (make-hash-table)))
+      (sethash 'a h 34)
+      (should= (gethash-in 'a h) 34)))
+  (spec "works for a two-deep hash"
+    (let ((h (make-hash-table))
+          (i (make-hash-table)))
+      (sethash 'b i 123)
+      (sethash 'a h i)
+      (should= (gethash-in '(a b) h 123)))))
