@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,7 +32,7 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Sigma/Control}
+\lispPackageChapter{sigma/control}
 
 The \texttt{sigma/control} package contains code for basic program control
 systems.  These are mostly basic macros to add more complicated looping,
@@ -43,7 +43,7 @@ language with little trouble.
 
 \section{Macros}
 
-\lispMacroSubsection{AIf}
+\lispMacroSubsection{aif}
 
 The \texttt{aif} macro is an anaphoric variation of the built-in \texttt{if}
 control structure.  This is based on \cite[p.~190]{on-lisp}.  The basic idea is
@@ -62,11 +62,11 @@ returned successfully.
 \lispArgs
 
 \begin{description}
-\item[\lispVar{Conditional}] The boolean conditional to select between the
+\item[\lispVar{conditional}] The boolean conditional to select between the
   \lispVar{t-action} and the \lispVar{nil-action}.
-\item[\lispVar{T-Action}] The action to evaluate if the \lispVar{conditional}
+\item[\lispVar{t-action}] The action to evaluate if the \lispVar{conditional}
   evaluate as true.
-\item[\lispVar{Nil-Action}] The action to evaluate if the \lispVar{conditional}
+\item[\lispVar{nil-action}] The action to evaluate if the \lispVar{conditional}
   evaluates as nil.
 \end{description}
 
@@ -95,7 +95,7 @@ Or say you need to get a user name from a database call, which might be slow.
      (format -t "You aren't logged in, go away!~%"))
 \end{verbatim}
 
-\lispMacroSubsection{A?If}
+\lispMacroSubsection{a?if}
 
 The \texttt{a?if} macro is a variation of \texttt{aif} that allows for the
 specification of the anaphor to use, instead of being restricted to just
@@ -110,13 +110,13 @@ need to nest calls to anaphoric macros.
 \lispArgs
 
 \begin{description}
-\item[\lispVar{Anaphor}] The result of the \lispVar{conditional} will be stored
+\item[\lispVar{anaphor}] The result of the \lispVar{conditional} will be stored
   in the variable specified as the anaphor.
-\item[\lispVar{Conditional}] The boolean conditional to select between the
+\item[\lispVar{conditional}] The boolean conditional to select between the
   \lispVar{t-action} and the \lispVar{nil-action}.
-\item[\lispVar{T-Action}] The action to evaluate if the \lispVar{conditional}
+\item[\lispVar{t-action}] The action to evaluate if the \lispVar{conditional}
   evaluate as true.
-\item[\lispVar{Nil-Action}] The action to evaluate if the \lispVar{conditional}
+\item[\lispVar{nil-action}] The action to evaluate if the \lispVar{conditional}
   evaluates as nil.
 \end{description}
 
@@ -128,7 +128,7 @@ need to nest calls to anaphoric macros.
     `(,foo ,bar))) ; Returns '(outer inner)
 \end{verbatim}
 
-\lispMacroSubsection{AAnd}
+\lispMacroSubsection{aand}
 
 The \texttt{aand} macro is an anaphoric variation of the built-in \texttt{and}.
 This is based on \cite[p.~191]{on-lisp}.  It works in a similar manner to
@@ -147,7 +147,7 @@ argument, reassigning \texttt{it} with each argument.
       (* 4 it)) ; Returns 24.
 \end{verbatim}
 
-\lispMacroSubsection{A?And}
+\lispMacroSubsection{a?and}
 
 The \texttt{a?and} macro is a variant of \texttt{aand} that allows for the
 specification of the anaphor to use, instead of being restricted to just
@@ -163,7 +163,7 @@ need to nest calls to anaphoric macros.
   (a?and bar 4 5 6 'inner `(,foo ,bar))) ; Returns '(outer inner)
 \end{verbatim}
 
-\lispMacroSubsection{ALambda}
+\lispMacroSubsection{alambda}
 
 The \texttt{alambda} macro is an anaphoric variant of the built-in
 \texttt{lambda}.  This is based on \cite[p.~193]{on-lisp}.  It works in a
@@ -180,7 +180,7 @@ that you can write recursive lambdas.
          10))) ; Calculates 10!, inefficently.
 \end{verbatim}
 
-\lispMacroSubsection{A?Lambda}
+\lispMacroSubsection{a?lambda}
 
 
 The \texttt{a?lambda} macro is an variant of \texttt{alambda} that allows you to
@@ -194,7 +194,7 @@ specify the anaphor to use, instead of just the default of \texttt{it}.
          10))) ; Calculates 10!, inefficently.
 \end{verbatim}
 
-\lispMacroSubsection{ABlock}
+\lispMacroSubsection{ablock}
 
 The \texttt{ablock} macro is an anaphoric variant of the built-in
 \texttt{block}.  This is based on \cite[p.~193]{on-lisp}.  It works in a similar
@@ -214,7 +214,7 @@ the block.
    (list w x y z))           ; Returns '(7 14 42 nil)
 \end{verbatim}
 
-\lispMacroSubsection{A?Block}
+\lispMacroSubsection{a?block}
 
 The \texttt{a?block} macro is an anaphoric variant of \texttt{ablock} that
 allows you to specify the anaphor to use, instead of just the default of
@@ -233,7 +233,7 @@ allows you to specify the anaphor to use, instead of just the default of
    (list w x y z))             ; Returns '(7 14 42 nil)
 \end{verbatim}
 
-\lispMacroSubsection{ACond}
+\lispMacroSubsection{acond}
 
 The \texttt{acond} macro is an anaphoric variant of the built-in
 \texttt{cond}.  This is based on \cite[p.~191]{on-lisp}.  It works in a similar
@@ -249,7 +249,7 @@ the conditional.
          (c (* 4 it)))) ; Yes, returns 12 = 4*3, the value of c.
 \end{verbatim}
 
-\lispMacroSubsection{A?Cond}
+\lispMacroSubsection{a?cond}
 
 The \texttt{a?cond} macro is an anaphoric variant of \texttt{acond} that
 allows you to specify the anaphor to use, instead of just the default of
@@ -265,7 +265,7 @@ allows you to specify the anaphor to use, instead of just the default of
           (c (* 4 foo)))) ; Yes, returns 12 = 4*3, the value of c.
 \end{verbatim}
 
-\lispMacroSubsection{AWhen}
+\lispMacroSubsection{awhen}
 
 The \texttt{awhen} macro is an anaphoric variant of \texttt{when} built-in.
 This is based on \cite[p.~191]{on-lisp}.  It works in a similar manner to
@@ -286,7 +286,7 @@ compute it twice or wrap the computation in a let block yourself.
   (format -t "Hello, ~A!~%" it))
 \end{verbatim}
 
-\lispMacroSubsection{A?When}
+\lispMacroSubsection{a?when}
 
 The \texttt{a?when} macro is similar to the \texttt{awhen}, except that it
 allows you to specify the anaphor to use, instead of just the default of
@@ -305,7 +305,7 @@ allows you to specify the anaphor to use, instead of just the default of
   (format -t "Hello, ~A!~%" user))
 \end{verbatim}
 
-\lispMacroSubsection{AWhile}
+\lispMacroSubsection{awhile}
 
 The \texttt{awhile} macro is an anaphoric variant of \texttt{while}.  This is
 based on \cite[p.~191]{on-lisp}.  This is useful if you need to consume input
@@ -322,7 +322,7 @@ repeatedly for all input.
   (do-something it)) ; Operate on input for all input.
 \end{verbatim}
 
-\lispMacroSubsection{A?While}
+\lispMacroSubsection{a?while}
 
 The \texttt{a?while} macro is a variant of \texttt{awhile} that allows you to
 specify the anaphor to use, instead of just the default \texttt{it}.
@@ -338,94 +338,94 @@ specify the anaphor to use, instead of just the default \texttt{it}.
   (do-something input)) ; Operate on input for all input.
 \end{verbatim}
 
-\lispMacroSubsection{DeleteF}
+\lispMacroSubsection{deletef}
 
 \TODO
 
-\lispMacroSubsection{Do-While}
+\lispMacroSubsection{do-while}
 
 \TODO
 
-\lispMacroSubsection{Do-Until}
+\lispMacroSubsection{do-until}
 
 \TODO
 
-\lispMacroSubsection{For}
+\lispMacroSubsection{for}
 
 \TODO
 
-\lispMacroSubsection{Forever}
+\lispMacroSubsection{forever}
 
 \TODO
 
-\lispMacroSubsection{Multicond}
+\lispMacroSubsection{multicond}
 
 \TODO
 
-\lispMacroSubsection{OpF}
+\lispMacroSubsection{opf}
 
 \TODO
 
-\lispMacroSubsection{Swap}
+\lispMacroSubsection{swap}
 
 \TODO
 
-\lispMacroSubsection{Swap-Unless}
+\lispMacroSubsection{swap-unless}
 
 \TODO
 
-\lispMacroSubsection{Swap-When}
+\lispMacroSubsection{swap-when}
 
 \TODO
 
-\lispMacroSubsection{Until}
+\lispMacroSubsection{until}
 
 \TODO
 
-\lispMacroSubsection{While}
+\lispMacroSubsection{while}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Compose}
+\lispFunctionSubsection{compose}
 
 \TODO
 
-\lispFunctionSubsection{Conjoin}
+\lispFunctionSubsection{conjoin}
 
 \TODO
 
-\lispFunctionSubsection{Curry}
+\lispFunctionSubsection{curry}
 
 \TODO
 
-\lispFunctionSubsection{Disjoin}
+\lispFunctionSubsection{disjoin}
 
 \TODO
 
-\lispFunctionSubsection{Function-Alias}
+\lispFunctionSubsection{function-alias}
 
 \TODO
 
-\lispFunctionSubsection{Operator-To-Function}
+\lispFunctionSubsection{operator-to-function}
 
 \TODO
 
-\lispFunctionSubsection{RCompose}
+\lispFunctionSubsection{rcompose}
 
 \TODO
 
-\lispFunctionSubsection{RCurry}
+\lispFunctionSubsection{rcurry}
 
 \TODO
 
-\lispFunctionSubsection{Unimplemented}
+\lispFunctionSubsection{unimplemented}
 
 \TODO
 
 \section{Generics}
 
-\lispGenericSubsection{Duplicate}
+\lispGenericSubsection{duplicate}
 
 \TODO
