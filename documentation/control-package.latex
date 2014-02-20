@@ -364,7 +364,7 @@ in the C programming language.
 
 \lispSyntax
 
-\texttt{(defmacro do-while \lispVar{conditional} \&rest \lispVar{body})}
+\texttt{(do-while \lispVar{conditional} \&rest \lispVar{body})}
 
 \lispExamples
 
@@ -384,7 +384,7 @@ in the C programming language.
 
 \lispSyntax
 
-\texttt{(defmacro do-until \lispVar{conditional} \&rest \lispVar{body})}
+\texttt{(do-until \lispVar{conditional} \&rest \lispVar{body})}
 
 \lispExamples
 
@@ -398,7 +398,20 @@ in the C programming language.
 
 \lispMacroSubsection{for}
 
-\TODO
+A \texttt{for} macro, much like the \texttt{for} in the C programming language.
+
+\lispSyntax
+
+\texttt{(for \lispVar{initial conditional step-action} \&rest \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(for ((i 0))
+     (< i 10)
+     (incf i)
+  (format t \"~%~A\" i))
+\end{lstlisting}
 
 \lispMacroSubsection{forever}
 
