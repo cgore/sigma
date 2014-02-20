@@ -72,28 +72,28 @@ returned successfully.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (aif (big-long-calculation)
      (foo it)
      (format t "The big-long-calculation failed!~%"))
-\end{verbatim}
+\end{lstlisting}
 
 This is similar to the following, but with less typing:
 
-\begin{verbatim}
+\begin{lstlisting}
 (let ((it (big-long-calculation)))
   (if it
       (foo it)
       (format t "The big-long-calculation failed!~%")))
-\end{verbatim}
+\end{lstlisting}
 
 Or say you need to get a user name from a database call, which might be slow.
 
-\begin{verbatim}
+\begin{lstlisting}
 (aif (get-user-name)
      (format -t "Hello, ~A!~%" it)
      (format -t "You aren't logged in, go away!~%"))
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?if}
 
@@ -122,11 +122,11 @@ need to nest calls to anaphoric macros.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (a?if foo 'outer
   (a?if bar 'inner
     `(,foo ,bar))) ; Returns '(outer inner)
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{aand}
 
@@ -141,11 +141,11 @@ argument, reassigning \texttt{it} with each argument.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (aand 2         ; Sets 'it' to 2.
       (* 3 it)  ; Sets 'it' to 6.
       (* 4 it)) ; Returns 24.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?and}
 
@@ -156,12 +156,12 @@ need to nest calls to anaphoric macros.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (a?and foo 12 (* 2 foo) (* 3 foo)) ; Returns 72.
 
 (a?and foo 1 2 3 'outer
   (a?and bar 4 5 6 'inner `(,foo ,bar))) ; Returns '(outer inner)
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{alambda}
 
@@ -172,13 +172,13 @@ similar manner to \texttt{aif} and \texttt{aand}, except it defines
 that you can write recursive lambdas.
 
 
-\begin{verbatim}
+\begin{lstlisting}
 (funcall (alambda (x) ; Simple recursive factorial example.
            (if (<= x 0)
                1
                (* x (self (1- x)))))
          10))) ; Calculates 10!, inefficently.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?lambda}
 
@@ -186,13 +186,13 @@ that you can write recursive lambdas.
 The \texttt{a?lambda} macro is an variant of \texttt{alambda} that allows you to
 specify the anaphor to use, instead of just the default of \texttt{it}.
 
-\begin{verbatim}
+\begin{lstlisting}
 (funcall (a?lambda ! (x) ; Simple recursive factorial example.
            (if (<= x 0)
                1
                (* x (! (1- x)))))
          10))) ; Calculates 10!, inefficently.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{ablock}
 
@@ -203,7 +203,7 @@ the block.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (let (w x y z)
    (ablock b
            (setf w 7)
@@ -212,7 +212,7 @@ the block.
            (return-from b)   ; Leave the block.
            (setf z 123))     ; Never happens.
    (list w x y z))           ; Returns '(7 14 42 nil)
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?block}
 
@@ -222,7 +222,7 @@ allows you to specify the anaphor to use, instead of just the default of
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (let (w x y z)
    (a?block b foo
             (setf w 7)
@@ -231,7 +231,7 @@ allows you to specify the anaphor to use, instead of just the default of
             (return-from b)    ; Leave the block.
             (setf z 123))      ; Never happens.
    (list w x y z))             ; Returns '(7 14 42 nil)
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{acond}
 
@@ -242,12 +242,12 @@ the conditional.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (let (a b (c 3))
   (acond (a it)         ; No.
          (b it)         ; No.
          (c (* 4 it)))) ; Yes, returns 12 = 4*3, the value of c.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?cond}
 
@@ -257,13 +257,13 @@ allows you to specify the anaphor to use, instead of just the default of
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (let (a b (c 3))
   (a?cond foo
           (a foo)         ; No.
           (b foo)         ; No.
           (c (* 4 foo)))) ; Yes, returns 12 = 4*3, the value of c.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{awhen}
 
@@ -279,12 +279,12 @@ compute it twice or wrap the computation in a let block yourself.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (awhen (get-user-name)
   (do-something-with-name it)
   (do-more-stuff)
   (format -t "Hello, ~A!~%" it))
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?when}
 
@@ -298,12 +298,12 @@ allows you to specify the anaphor to use, instead of just the default of
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (a?when user (get-user-name)
   (do-something-with-name user)
   (do-more-stuff)
   (format -t "Hello, ~A!~%" user))
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{awhile}
 
@@ -317,10 +317,10 @@ repeatedly for all input.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (awhile (get-input)
   (do-something it)) ; Operate on input for all input.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{a?while}
 
@@ -333,14 +333,28 @@ specify the anaphor to use, instead of just the default \texttt{it}.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (awhile input (get-input)
   (do-something input)) ; Operate on input for all input.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{deletef}
 
-\TODO
+The \texttt{deletef} macro deletes \texttt{item} from \texttt{sequence}
+in-place.
+
+\lispSyntax
+
+\texttt{(deletef \lispVar{item} \lispVar{sequence} \&rest \lispVar{rest})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((characters '(good bad ugly)))
+  (deletef 'bad characters)
+  (deletef 'ugly characters)
+  characters) ; Only the good is left.
+\end{lstlisting}
 
 \lispMacroSubsection{do-while}
 

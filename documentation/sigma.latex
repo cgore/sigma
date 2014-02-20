@@ -35,11 +35,15 @@
 
 \documentclass{book}
 
+\usepackage{amsmath}
+\usepackage{bookman}
+\usepackage{amsfonts}
 \usepackage{calc}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{hyperref}
 \usepackage{ifthen}
 \usepackage{datetime}
+\usepackage{listings}
 
 \newdateformat{cgoredate}
 {\dayofweekname{\day}{\month}{\year},~\monthname~\ordinaldate{\day},~\textsc{ad}~\THEYEAR}
@@ -64,6 +68,20 @@
 \newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
 \newcommand{\lispAffectedBy}[1]{\subsubsection*{Affected By}}
 
+\definecolor{commentcolor}{rgb}{0.1,0.1,0.4}
+\definecolor{identifiercolor}{rgb}{0.2,0.2,0.2}
+\definecolor{keywordcolor}{rgb}{0.1,0.3,0.1}
+\definecolor{cexcolor}{rgb}{0.25,0.25,0.4}
+\lstset{
+  basicstyle=\tt\small,
+  language=Lisp,
+  morekeywords={make-instance},
+  escapeinside={\%*}{*)},
+  commentstyle=\itshape\color{commentcolor},
+  identifierstyle=\color{identifiercolor},
+  keywordstyle=\color{keywordcolor}
+}
+\newcommand{\cex}[1]{\textcolor{cexcolor}{\textit{#1}}}
 
 \newcommand{\lispCode}[1]{\texttt{#1}}
 \newcommand{\lispCodeArrow}{$\Longrightarrow$}

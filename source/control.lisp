@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2014, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -397,6 +397,7 @@ and Common Lisp, with a syntax like Pascal.''"
 
 #-cmu
 (defmacro deletef (item sequence &rest rest)
+  "The DELETEF macro deletes ITEM from SEQUENCE in-place."
   `(setf ,sequence
          (delete ,item ,sequence ,@rest)))
 
