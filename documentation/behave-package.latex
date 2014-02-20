@@ -67,7 +67,7 @@ of examples, or around a set of assertions directly.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (behavior 'float
           (spec "is an Abelian group"
                 (let ((a (random 10.0))
@@ -88,7 +88,7 @@ of examples, or around a set of assertions directly.
                                    1.0)))
                   (spec "commutitativity"
                         (should= (* a b) (* b a))))))
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{spec}
 
@@ -109,11 +109,11 @@ behavior.  It will normally serve as a grouping for assertions or nested
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (spec "should pass some tests"
       (should= 12 (foo 3.5))
       (should= 14 (foo 4.22)))
-\end{verbatim}
+\end{lstlisting}
 
 
 \lispMacroSubsection{should}
@@ -136,11 +136,11 @@ Typically you will want to use one of the macros defined on top of
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should #'= 12 (* 3 4)) ; Passes
 (should #'< 4 (* 2 3))  ; Passes
 (should #'< 4 5 6 7)    ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not}
 
@@ -160,10 +160,10 @@ that it inverts the result of the call with \texttt{not}.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not #'< 12 4)  ; Passes
 (should-not #'= 12 44) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-be-null}
 
@@ -182,12 +182,12 @@ The \texttt{should-be-null} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-be-null ())            ; Passes
 (should-be-null nil)           ; Passes
 (should-be-null (not 12))      ; Passes
 (should-be-null (and t t nil)) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-be-true}
 
@@ -206,11 +206,11 @@ The \texttt{should-be-true} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-be-true t)               ; Passes
 (should-be-true (not nil))       ; Passes
 (should-be-true (or nil nil 12)) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-be-false}
 
@@ -229,11 +229,11 @@ The \texttt{should-be-false} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-be-false nil)
 (should-be-false (not t))
 (should-be-false (< 44 2))
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-be-a}
 
@@ -251,12 +251,12 @@ be of the type specified by \texttt{type}.
 \item[\lispVar{things}] These are the things to confirm the type of.
 \end{description}
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-be-a 'integer 1)                 ; Passes
 (should-be-a 'float 1)                   ; Passes
 (should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; Passes
 (should-be-a 'integer 1.0)               ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should=}
 
@@ -275,10 +275,10 @@ The \texttt{should=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should= 12 12)   ; Passes
 (should= 12 12.0) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not=}
 
@@ -297,11 +297,11 @@ The \texttt{should-not=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not= 12 12)   ; Fails
 (should-not= 12 12.0) ; Fails
 (should-not= 12 14)   ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should/=}
 
@@ -320,11 +320,11 @@ The \texttt{should/=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should/= 12 13)   ; Passes
 (should/= 12 12)   ; Fails
 (should/= 12 12.0) ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not/=}
 
@@ -343,11 +343,11 @@ The \texttt{should-not/=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not/= 12 13)   ; Fails
 (should-not/= 12 12)   ; Passes
 (should-not/= 12 12.0) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should<}
 
@@ -366,11 +366,11 @@ The \texttt{should<} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should< 12 13) ; Passes
 (should< 13 12) ; Fails
 (should< 12 12) ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not<}
 
@@ -389,11 +389,11 @@ The \texttt{should-not<} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not< 12 13) ; Passes
 (should-not< 13 12) ; Fails
 (should-not< 12 12) ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should>}
 
@@ -412,11 +412,11 @@ The \texttt{should<} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should> 12 13) ; Fails
 (should> 13 12) ; Passes
 (should> 12 12) ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not>}
 
@@ -435,11 +435,11 @@ The \texttt{should-not>} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not> 12 13) ; Passes
 (should-not> 13 12) ; Fails
 (should-not> 12 12) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should<=}
 
@@ -458,11 +458,11 @@ The \texttt{should<=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should<= 12 13) ; Passes
 (should<= 13 12) ; Fails
 (should<= 12 12) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not<=}
 
@@ -481,11 +481,11 @@ The \texttt{should-not<=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not<= 12 13) ; Fails
 (should-not<= 13 12) ; Passes
 (should-not<= 12 12) ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should>=}
 
@@ -505,11 +505,11 @@ The \texttt{should>=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should>= 12 13) ; Fails
 (should>= 13 12) ; Passes
 (should>= 12 12) ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not>=}
 
@@ -528,11 +528,11 @@ The \texttt{should-not>=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not>= 12 13) ; Passes
 (should-not>= 13 12) ; Fails
 (should-not>= 12 12) ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-eq}
 
@@ -551,11 +551,11 @@ The \texttt{should-eq} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-eq 12 12)       ; Probably passes
 (should-eq 13 12)       ; Fails
 (should-eq "foo" "foo") ; May pass, may fail.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-eq}
 
@@ -574,11 +574,11 @@ The \texttt{should-not-eq} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-eq 12 12)       ; Probably fails
 (should-not-eq 13 12)       ; Passes
 (should-not-eq "foo" "foo") ; May pass, may fail.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-eql}
 
@@ -597,11 +597,11 @@ The \texttt{should-eql} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-eql 12 12)       ; Passes
 (should-eql 13 12)       ; Fails
 (should-eql "foo" "foo") ; May pass, may fail.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-eql}
 
@@ -620,11 +620,11 @@ The \texttt{should-not-eql} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-eql 12 12)       ; Fails
 (should-not-eql 13 12)       ; Passes
 (should-not-eql "foo" "foo") ; May pass, may fail.
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-equal}
 
@@ -643,12 +643,12 @@ The \texttt{should-equal} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-equal 12 12)       ; Passes
 (should-equal 13 12)       ; Fails
 (should-equal "foo" "foo") ; Passes
 (should-equal "FOO" "foo") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-equal}
 
@@ -667,12 +667,12 @@ The \texttt{should-not-equal} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-equal 12 12)       ; Passes
 (should-not-equal 13 12)       ; Fails
 (should-not-equal "foo" "foo") ; Fails
 (should-not-equal "FOO" "foo") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-equalp}
 
@@ -691,12 +691,12 @@ The \texttt{should-equalp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-equalp 12 12)       ; Passes
 (should-equalp 13 12)       ; Fails
 (should-equalp "foo" "foo") ; Passes
 (should-equalp "FOO" "foo") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-equalp}
 
@@ -715,12 +715,12 @@ The \texttt{should-not-equalp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-equalp 12 12)       ; Passes
 (should-not-equalp 13 12)       ; Fails
 (should-not-equalp "foo" "foo") ; Passes
 (should-not-equalp "FOO" "foo") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string=}
 
@@ -739,10 +739,10 @@ The \texttt{should-string=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string= "foo" "foo") ; Passes
 (should-string= "FOO" "foo") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string=}
 
@@ -761,10 +761,10 @@ The \texttt{should-not-string=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string= "foo" "foo") ; Fails
 (should-not-string= "FOO" "foo") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string/=}
 
@@ -783,10 +783,10 @@ The \texttt{should-string/=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string/= "foo" "foo") ; Fails
 (should-string/= "FOO" "foo") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string/=}
 
@@ -805,10 +805,10 @@ The \texttt{should-not-string/=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string/= "foo" "foo") ; Passes
 (should-not-string/= "FOO" "foo") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string<}
 
@@ -827,12 +827,12 @@ The \texttt{should-string<} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string< "foo" "f")      ; Fails
 (should-string< "foo" "foo")    ; Fails
 (should-string< "foo" "FOOBAR") ; Fails
 (should-string< "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string<}
 
@@ -851,11 +851,11 @@ The \texttt{should-not-string<} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string< "foo" "f")      ; Passes
 (should-not-string< "foo" "foo")    ; Passes
 (should-not-string< "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string>}
 
@@ -874,12 +874,12 @@ The \texttt{should-string>} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string> "foo" "f")      ; Passes
 (should-string> "foo" "foo")    ; Fails
 (should-string> "foo" "FOO")    ; Passes
 (should-string> "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string>}
 
@@ -898,11 +898,11 @@ The \texttt{should-not-string>} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string> "foo" "f")      ; Fails
 (should-not-string> "foo" "foo")    ; Passes
 (should-not-string> "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string<=}
 
@@ -921,11 +921,11 @@ The \texttt{should-string<=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string<= "foo" "f")      ; Fails
 (should-string<= "foo" "foo")    ; Passes
 (should-string<= "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string<=}
 
@@ -944,11 +944,11 @@ The \texttt{should-not-string<=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string<= "foo" "f")      ; Passes
 (should-not-string<= "foo" "foo")    ; Fails
 (should-not-string<= "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string>=}
 
@@ -967,11 +967,11 @@ The \texttt{should-string>=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string>= "foo" "f")      ; Passes
 (should-string>= "foo" "foo")    ; Passes
 (should-string>= "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string>=}
 
@@ -990,11 +990,11 @@ The \texttt{should-not-string>=} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string>= "foo" "f")      ; Fails
 (should-not-string>= "foo" "foo")    ; Fails
 (should-not-string>= "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string-equal}
 
@@ -1013,11 +1013,11 @@ The \texttt{should-string-equal} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string-equal "foo" "foo")    ; Passes
 (should-string-equal "FOO" "foo")    ; Passes
 (should-string-equal "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string-equal}
 
@@ -1036,11 +1036,11 @@ The \texttt{should-not-string-equal} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string-equal "foo" "foo")    ; Fails
 (should-not-string-equal "FOO" "foo")    ; Fails
 (should-not-string-equal "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string-not-equal}
 
@@ -1059,11 +1059,11 @@ The \texttt{should-string-not-equal} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string-not-equal "foo" "foo")    ; Fails
 (should-string-not-equal "FOO" "foo")    ; Fails
 (should-string-not-equal "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string-not-equal}
 
@@ -1082,11 +1082,11 @@ The \texttt{should-not-string-not-equal} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string-not-equal "foo" "foo")    ; Passes
 (should-not-string-not-equal "FOO" "foo")    ; Passes
 (should-not-string-not-equal "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string-lessp}
 
@@ -1105,12 +1105,12 @@ The \texttt{should-string-lessp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string-lessp "foo" "f")      ; Fails
 (should-string-lessp "foo" "foo")    ; Fails
 (should-string-lessp "foo" "FOOBAR") ; Passes
 (should-string-lessp "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string-lessp}
 
@@ -1129,12 +1129,12 @@ The \texttt{should-not-string-lessp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string-lessp "foo" "f")      ; Passes
 (should-not-string-lessp "foo" "foo")    ; Passes
 (should-not-string-lessp "foo" "FOOBAR") ; Fails
 (should-not-string-lessp "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string-greaterp}
 
@@ -1153,12 +1153,12 @@ The \texttt{should-string-greaterp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string-greaterp "foo" "f")      ; Passes
 (should-string-greaterp "foo" "foo")    ; Fails
 (should-string-greaterp "foo" "FOO")    ; Fails
 (should-string-greaterp "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string-greaterp}
 
@@ -1177,12 +1177,12 @@ The \texttt{should-not-string-greaterp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string-greaterp "foo" "f")      ; Fails
 (should-not-string-greaterp "foo" "foo")    ; Passes
 (should-not-string-greaterp "foo" "FOO")    ; Passes
 (should-not-string-greaterp "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string-not-greaterp}
 
@@ -1201,12 +1201,12 @@ The \texttt{should-string-not-greaterp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string-not-greaterp "foo" "f")      ; Fails
 (should-string-not-greaterp "foo" "foo")    ; Passes
 (should-string-not-greaterp "foo" "FOO")    ; Passes
 (should-string-not-greaterp "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string-not-greaterp}
 
@@ -1225,12 +1225,12 @@ The \texttt{should-not-string-not-greaterp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string-not-greaterp "foo" "f")      ; Passes
 (should-not-string-not-greaterp "foo" "foo")    ; Fails
 (should-not-string-not-greaterp "foo" "FOO")    ; Fails
 (should-not-string-not-greaterp "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-string-not-lessp}
 
@@ -1249,12 +1249,12 @@ The \texttt{should-string-not-lessp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-string-not-lessp "foo" "f")      ; Passes
 (should-string-not-lessp "foo" "foo")    ; Passes
 (should-string-not-lessp "foo" "FOOBAR") ; Fails
 (should-string-not-lessp "foo" "foobar") ; Fails
-\end{verbatim}
+\end{lstlisting}
 
 \lispMacroSubsection{should-not-string-not-lessp}
 
@@ -1273,9 +1273,9 @@ The \texttt{should-not-string-not-lessp} macro is a short-hand method for
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (should-not-string-not-lessp "foo" "f")      ; Fails
 (should-not-string-not-lessp "foo" "foo")    ; Fails
 (should-not-string-not-lessp "foo" "FOOBAR") ; Passes
 (should-not-string-not-lessp "foo" "foobar") ; Passes
-\end{verbatim}
+\end{lstlisting}
