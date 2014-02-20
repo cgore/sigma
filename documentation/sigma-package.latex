@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,16 +32,16 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Sigma}
+\lispPackageChapter{sigma}
 
 \section{Variables}
 
-\lispVariableSubsection{*Sigma-Packages*}
+\lispVariableSubsection{*sigma-packages*}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Use-All-Sigma}
+\lispFunctionSubsection{use-all-sigma}
 
 \TODO

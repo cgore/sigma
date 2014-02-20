@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,54 +32,54 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Random}
+\lispPackageChapter{sigma/random}
 
 \section{Macros}
 
-\lispMacroSubsection{NShuffle}
+\lispMacroSubsection{nshuffle}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Gauss}
+\lispFunctionSubsection{gauss}
 
 \TODO
 
-\lispFunctionSubsection{Random-Argument}
+\lispFunctionSubsection{random-argument}
 
 \TODO
 
-\lispFunctionSubsection{Coin-Toss}
+\lispFunctionSubsection{coin-toss}
 
 \TODO
 
-\lispFunctionSubsection{Random-In-Range}
+\lispFunctionSubsection{random-in-range}
 
 \TODO
 
-\lispFunctionSubsection{Random-In-Ranges}
+\lispFunctionSubsection{random-in-ranges}
 
 \TODO
 
-\lispFunctionSubsection{Random-Range}
+\lispFunctionSubsection{random-range}
 
 \TODO
 
-\lispFunctionSubsection{Randomize-Array}
+\lispFunctionSubsection{randomize-array}
 
 \TODO
 
-\lispFunctionSubsection{Random-Array}
+\lispFunctionSubsection{random-array}
 
 \TODO
 
 \section{Generics}
 
-\lispGenericSubsection{Random-Element}
+\lispGenericSubsection{random-element}
 
 \TODO
 
-\lispGenericSubsection{Shuffle}
+\lispGenericSubsection{shuffle}
 
 \TODO

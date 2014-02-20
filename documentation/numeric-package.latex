@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,85 +32,85 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Numeric}
+\lispPackageChapter{sigma/numeric}
 
 \section{Macros}
 
-\lispMacroSubsection{DivF}
+\lispMacroSubsection{divf}
 
 \TODO
 
-\lispMacroSubsection{MultF}
+\lispMacroSubsection{multf}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Bit?}
+\lispFunctionSubsection{bit?}
 
 \TODO
 
-\lispFunctionSubsection{Choose}
+\lispFunctionSubsection{choose}
 
-The \lispVar{Choose} function computes the binomial coefficient for $n$ and $k$,
+The \lispVar{choose} function computes the binomial coefficient for $n$ and $k$,
 typically spoken as \textit{n choose k}, and usually written mathematically as
 $n \choose k$.
 
-\lispFunctionSubsection{Factorial}
+\lispFunctionSubsection{factorial}
 
-The \lispVar{Factorial} function computes $n!$ for positive integers.  NB, this
+The \lispVar{factorial} function computes $n!$ for positive integers.  NB, this
 isn't intelligent, and uses a loop instead of better approaches.
 
-\lispFunctionSubsection{Fractional-Part}
+\lispFunctionSubsection{fractional-part}
 
 \TODO
 
-\lispFunctionSubsection{Fractional-Value}
+\lispFunctionSubsection{fractional-value}
 
 \TODO
 
-\lispFunctionSubsection{Integer-Range}
+\lispFunctionSubsection{integer-range}
 
 \TODO
 
-\lispFunctionSubsection{Nonnegative?}
+\lispFunctionSubsection{nonnegative?}
 
 \TODO
 
-\lispFunctionSubsection{Nonnegative-Integer?}
+\lispFunctionSubsection{nonnegative-integer?}
 
 \TODO
 
-\lispFunctionSubsection{Positive-Integer?}
+\lispFunctionSubsection{positive-integer?}
 
 \TODO
 
-\lispFunctionSubsection{Product}
+\lispFunctionSubsection{product}
 
 \TODO
 
-\lispFunctionSubsection{Sum}
+\lispFunctionSubsection{sum}
 
 \TODO
 
-\lispFunctionSubsection{Unsigned-Integer?}
+\lispFunctionSubsection{unsigned-integer?}
 
 \TODO
 
 \section{Types}
 
-\lispTypeSubsection{Nonnegative-Float}
+\lispTypeSubsection{nonnegative-float}
 
 \TODO
 
-\lispTypeSubsection{Nonnegative-Integer}
+\lispTypeSubsection{nonnegative-integer}
 
 \TODO
 
-\lispTypeSubsection{Positive-Float}
+\lispTypeSubsection{positive-float}
 
 \TODO
 
-\lispTypeSubsection{Positive-Integer}
+\lispTypeSubsection{positive-integer}
 
 \TODO

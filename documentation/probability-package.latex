@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,22 +32,23 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Probability}
+\lispPackageChapter{sigma/probability}
 
 \section{Macros}
 
-\lispMacroSubsection{Decaying-Probabiliity?}
+\lispMacroSubsection{decaying-probabiliity?}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Probability?}
+\lispFunctionSubsection{probability?}
 
 \TODO
 
 \section{Types}
 
-\lispTypeSubsection{Probability}
+\lispTypeSubsection{probability}
+
 
 \TODO

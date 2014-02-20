@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,62 +32,62 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Time-Series}
+\lispPackageChapter{time-series}
 
 \section{Macros}
 
-\lispMacroSubsection{Snap-Index}
+\lispMacroSubsection{snap-index}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Array-Raster-Line}
+\lispFunctionSubsection{array-raster-line}
 
 \TODO
 
-\lispFunctionSubsection{Distance}
+\lispFunctionSubsection{distance}
 
 \TODO
 
-\lispFunctionSubsection{Norm}
+\lispFunctionSubsection{norm}
 
 \TODO
 
-\lispFunctionSubsection{Raster-Line}
+\lispFunctionSubsection{raster-line}
 
 \TODO
 
-\lispFunctionSubsection{Similar-Points?}
+\lispFunctionSubsection{similar-points?}
 
 \TODO
 
-\lispFunctionSubsection{Time-Series?}
+\lispFunctionSubsection{time-series?}
 
 \TODO
 
-\lispFunctionSubsection{Time-Multiseries?}
+\lispFunctionSubsection{time-multiseries?}
 
 \TODO
 
-\lispFunctionSubsection{TMSref}
+\lispFunctionSubsection{tmsref}
 
 \TODO
 
-\lispFunctionSubsection{TMS-Dimensions}
+\lispFunctionSubsection{tms-dimensions}
 
 \TODO
 
-\lispFunctionSubsection{TMS-Raster-Line}
+\lispFunctionSubsection{tms-raster-line}
 
 \TODO
 
-\lispFunctionSubsection{TMS-Values}
+\lispFunctionSubsection{tms-values}
 
 \TODO
 
 \section{Types}
 
-\lispTypeSubsection{Time-Multiseries}
+\lispTypeSubsection{time-multiseries}
 
 \TODO

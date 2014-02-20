@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -33,13 +33,13 @@
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
 
-\lispPackageChapter{String}
+\lispPackageChapter{sigma/string}
 
 The \texttt{String} package contains useful tools for working with strings.
 
 \section{Functions}
 
-\lispFunctionSubsection{Character-Range}
+\lispFunctionSubsection{character-range}
 
 The \texttt{character-range} function returns a list of characters from the
 \lispVar{start} to the \lispVar{end} character.  Note that this is returning a
@@ -54,8 +54,8 @@ list, not a string.
 \lispArgs
 
 \begin{description}
-  \item[\lispVar{Start}] The character to start the range with, inclusive.
-  \item[\lispVar{End}] The character to end the range with, inclusive.
+  \item[\lispVar{start}] The character to start the range with, inclusive.
+  \item[\lispVar{end}] The character to end the range with, inclusive.
 \end{description}
 
 \lispExamples
@@ -70,7 +70,7 @@ list, not a string.
   {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c \#\textbackslash d
     \#\textbackslash e)}
 
-\lispFunctionSubsection{Character-Ranges}
+\lispFunctionSubsection{character-ranges}
 
 The \texttt{character-ranges} function is a convenience wrapper for
 \texttt{character-range} function, concatenating several calls and making the
@@ -85,8 +85,8 @@ resultant list contain only unique instances.
 \lispArgs
 
 \begin{description}
-  \item[\lispVar{Start${}_n$}] The character to start the nth range with, inclusive.
-  \item[\lispVar{End${}_n$}] The character to end the nth range with, inclusive.
+  \item[\lispVar{start${}_n$}] The character to start the nth range with, inclusive.
+  \item[\lispVar{end${}_n$}] The character to end the nth range with, inclusive.
 \end{description}
 
 \lispExamples
@@ -102,36 +102,36 @@ resultant list contain only unique instances.
                      \#\textbackslash a \#\textbackslash c)}
   {'(\#\textbackslash a \#\textbackslash b \#\textbackslash c)}
 
-\lispFunctionSubsection{Escape-Tildes}
+\lispFunctionSubsection{escape-tildes}
 
 \TODO
 
-\lispFunctionSubsection{Replace-Char}
+\lispFunctionSubsection{replace-char}
 
 \TODO
 
-\lispFunctionSubsection{StrCat}
+\lispFunctionSubsection{strcat}
 
 \TODO
 
-\lispFunctionSubsection{StrMult}
+\lispFunctionSubsection{strmult}
 
 \TODO
 
-\lispFunctionSubsection{String-Join}
+\lispFunctionSubsection{string-join}
 
 \TODO
 
-\lispFunctionSubsection{Stringify}
+\lispFunctionSubsection{stringify}
 
 \TODO
 
-\lispFunctionSubsection{To-String}
+\lispFunctionSubsection{to-string}
 
 \TODO
 
 \section{Methods}
 
-\lispMethodsSubsection{Split}
+\lispMethodsSubsection{split}
 
 \TODO

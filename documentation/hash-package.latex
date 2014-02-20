@@ -32,7 +32,7 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Hash}
+\lispPackageChapter{sigma/hash}
 
 \section{Macros}
 
@@ -50,12 +50,12 @@ function, and returning a newly-constructed hash table.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (populate-hash-table 'name "Valentinus"
                      'likes '(birds roses)
                      'dislikes '(beheadings epilepsy "false idols")
                      'died 269)
-\end{verbatim}
+\end{lstlisting}
 
 \lispFunctionSubsection{inchash}
 
@@ -94,7 +94,7 @@ multiple keys to be specified at once, to work with nested hash tables.
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (let ((h (make-hash-table)))
   (sethash 'a h 12)
   (gethash-in '(a) h)) ; Returns 12
@@ -104,4 +104,4 @@ multiple keys to be specified at once, to work with nested hash tables.
   (sethash 'b i 123)
   (sethash 'a h i)
   (gethash-in '(a b) h 123)) ; Returns 123
-\end{verbatim}
+\end{lstlisting}

@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,45 +32,45 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{Sequence}
+\lispPackageChapter{sigma/sequence}
 
 \section{Macros}
 
-\lispMacroSubsection{Arefable?}
+\lispMacroSubsection{arefable?}
 
 \TODO
 
-\lispMacroSubsection{NConcF}
+\lispMacroSubsection{nconcf}
 
 \TODO
 
-\lispMacroSubsection{Nthable?}
+\lispMacroSubsection{nthable?}
 
 \TODO
 
-\lispMacroSubsection{Set-NthCdr}
+\lispMacroSubsection{set-nthcdr}
 
 \TODO
 
 \section{Functions}
 
-\lispFunctionSubsection{Array-Values}
+\lispFunctionSubsection{array-values}
 
 \TODO
 
-\lispFunctionSubsection{Nth-From-End}
+\lispFunctionSubsection{nth-from-end}
 
 \TODO
 
-\lispFunctionSubsection{Sequence?}
+\lispFunctionSubsection{sequence?}
 
 \TODO
 
-\lispFunctionSubsection{Empty-Sequence?}
+\lispFunctionSubsection{empty-sequence?}
 
 \TODO
 
-\lispFunctionSubsection{Join-Symbol-To-All-Following}
+\lispFunctionSubsection{join-symbol-to-all-following}
 
 This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item following it.  For example:
@@ -81,10 +81,10 @@ symbol in the list, it joins it to the item following it.  For example:
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
 ;; Returns '(:#10 :#20 :#30)
-\end{verbatim}
+\end{lstlisting}
 
 \lispAffectedBy
 
@@ -99,7 +99,7 @@ symbol in the list, it joins it to the item following it.  For example:
 \texttt{*print-gensym*},
 \texttt{*print-array*}.
 
-\lispFunctionSubsection{Join-Symbol-To-All-Preceeding}
+\lispFunctionSubsection{join-symbol-to-all-preceeding}
 
 This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item preceeding it.  For example:
@@ -110,10 +110,10 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 
 \lispExamples
 
-\begin{verbatim}
+\begin{lstlisting}
 (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
 ;; Returns '(:10% :20% :30%)
-\end{verbatim}
+\end{lstlisting}
 
 \lispAffectedBy
 
@@ -128,64 +128,64 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 \texttt{*print-gensym*},
 \texttt{*print-array*}.
 
-\lispFunctionSubsection{List-To-Vector}
+\lispFunctionSubsection{list-to-vector}
 
 \TODO
 
-\lispFunctionSubsection{Set-Equal}
+\lispFunctionSubsection{set-equal}
 
 \TODO
 
-\lispFunctionSubsection{Simple-Vector-To-List}
+\lispFunctionSubsection{simple-vector-to-list}
 
 \TODO
 
-\lispFunctionSubsection{Sort-Order}
+\lispFunctionSubsection{sort-order}
 
 \TODO
 
-\lispFunctionSubsection{The-Last}
+\lispFunctionSubsection{the-last}
 
 \TODO
 
-\lispFunctionSubsection{Vector-To-List}
+\lispFunctionSubsection{vector-to-list}
 
 \TODO
 
 \section{Generics}
 
-\lispGenericSubsection{Best}
+\lispGenericSubsection{best}
 
 \TODO
 
-\lispGenericSubsection{Minimum}
+\lispGenericSubsection{minimum}
 
 \TODO
 
-\lispGenericSubsection{Minimum?}
+\lispGenericSubsection{minimum?}
 
 \TODO
 
-\lispGenericSubsection{Maximum}
+\lispGenericSubsection{maximum}
 
 \TODO
 
-\lispGenericSubsection{Maximum?}
+\lispGenericSubsection{maximum?}
 
 \TODO
 
-\lispGenericSubsection{Sort-On}
+\lispGenericSubsection{sort-on}
 
 \TODO
 
-\lispGenericSubsection{Slice}
+\lispGenericSubsection{slice}
 
 \TODO
 
-\lispGenericSubsection{Split}
+\lispGenericSubsection{split}
 
 \TODO
 
-\lispGenericSubsection{Worst}
+\lispGenericSubsection{worst}
 
 \TODO
