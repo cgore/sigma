@@ -350,19 +350,51 @@ in-place.
 \lispExamples
 
 \begin{lstlisting}
-(let ((characters '(good bad ugly)))
-  (deletef 'bad characters)
-  (deletef 'ugly characters)
-  characters) ; Only the good is left.
+(let ((men '(good bad ugly)))
+  (deletef 'bad men)
+  (deletef 'ugly men)
+  men) ; Only the good is left.
 \end{lstlisting}
 
 \lispMacroSubsection{do-while}
 
-\TODO
+The \texttt{do-while} macro operates like a
+\texttt{do \{BODY\} while (CONDITIONAL)}
+in the C programming language.
+
+\lispSyntax
+
+\texttt{(defmacro do-while \lispVar{conditional} \&rest \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((t-minus 10))
+  (do-while (<= 0 t-minus)
+    (format t "~A ... " t-minus)
+    (decf t-minus)))
+(format t "Liftoff!")
+\end{lstlisting}
 
 \lispMacroSubsection{do-until}
 
-\TODO
+The \texttt{do-until} macro operates like a
+\texttt{do \{\textit{body}\} while (! \textit{conditional})}
+in the C programming language.
+
+\lispSyntax
+
+\texttt{(defmacro do-until \lispVar{conditional} \&rest \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((t-minus 10))
+  (do-until (< t-minus 0)
+    (format t "~A ... " t-minus)
+    (decf t-minus)))
+(format t "Liftoff!")
+\end{lstlisting}
 
 \lispMacroSubsection{for}
 
