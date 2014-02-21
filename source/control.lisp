@@ -475,6 +475,8 @@ Generally this should not be used, but instead the native looping methods."
        (prog1 (progn ,@body) ,step-action))))
 
 (defmacro forever (&rest body)
+  "The FOREVER macro is just a way to say (while t ...) with a bit of added
+expressiveness and explicitness."
   `(while t ,@body))
 
 (defun function-alias (function &rest aliases)

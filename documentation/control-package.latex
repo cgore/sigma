@@ -415,7 +415,17 @@ A \texttt{for} macro, much like the \texttt{for} in the C programming language.
 
 \lispMacroSubsection{forever}
 
-\TODO
+The \texttt{forever} macro is just a way to say \texttt{(while t ...)} with a
+bit of added expressiveness and explicitness.
+
+\lispExamples
+
+\begin{lstlisting}
+(forever (let ((in (read)))
+           (if (eq in 'quit))
+               (format t "I can't let you do that, Dave.")
+               (format t "You entered ~A" in)))
+\end{lstlisting}
 
 \lispMacroSubsection{multicond}
 
