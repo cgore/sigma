@@ -490,10 +490,24 @@ For example, you might do something like:
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."
-  `(mapcar #'(lambda (clause)
-               (when (first clause)
-                 (mapcar #'eval (rest clause))))
-           ',clauses))
+  (let ((whens '()))
+    (mapcar #'(lambda (clause)
+                (let ((conditional (first clause))
+                      (body (rest clause)))
+                  (push `(when ,conditional ,@body) whens)))
+            clauses)
+    (setf whens (nreverse whens))
+    `(progn ,@whens)))
+
+(behavior 'multicond
+  (should-equalp '(positive even)
+                 (let ((result '())
+                       (x 12))
+                   (multicond ((oddp x)  (push 'odd      result))
+                              ((evenp x) (push 'even     result))
+                              ((< x 0)   (push 'negative result))
+                              ((< 0 x)   (push 'positive result)))
+                   result)))
 
 (defun operator-to-function (operator)
   "The OPERATOR-TO-FUNCTION function takes in any symbol and makes an
