@@ -429,7 +429,20 @@ bit of added expressiveness and explicitness.
 
 \lispMacroSubsection{multicond}
 
-\TODO
+The \texttt{multicond} macro is much like \texttt{cond}, but where multiple
+clauses may be evaluated.
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 12))
+  (multicond ((= x 12) ; This will evaluate.
+              (format t "X is 12!  My favorite number!~%"))
+             ((< x 100) ; This will evaluate also.
+              (format t "X is small.~%"))
+             ((< x 0) ; But this one won't.
+              (format t "X is negative.~%"))))
+\end{lstlisting}
 
 \lispMacroSubsection{opf}
 
