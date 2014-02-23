@@ -33,14 +33,17 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 LATEX_FILES=sigma.latex copyright.latex introduction.latex behave-package.latex	\
-	 bibliography.latex control-package.latex hash-package.latex		\
-	 numeric-package.latex os-package.latex probability-package.latex	\
-	 random-package.latex sequence-package.latex string-package.latex	\
-	 time-series-package.latex truth-package.latex sigma-package.latex
+	  control-package.latex hash-package.latex numeric-package.latex	\
+	  os-package.latex probability-package.latex random-package.latex	\
+	  sequence-package.latex string-package.latex time-series-package.latex	\
+	  truth-package.latex sigma-package.latex
 
 all: sigma.dvi sigma.ps sigma.pdf
 
-sigma.dvi: ${LATEX_FILES}
+sigma.dvi: ${LATEX_FILES} sigma.bib
+	latex sigma.latex
+	bibtex sigma
+	latex sigma.latex
 	latex sigma.latex
 
 sigma.ps: sigma.dvi

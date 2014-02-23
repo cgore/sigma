@@ -13,3 +13,5 @@
 documentation/*.aux
 documentation/*.log
 documentation/*.toc
+documentation/*.bbl
+documentation/*.blg
