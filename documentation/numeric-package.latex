@@ -36,6 +36,22 @@
 
 \section{Macros}
 
+\lispMacroSubsection{+f}
+
+The \texttt{+f} macro is an alias for \texttt{incf}.
+
+\lispMacroSubsection{-f}
+
+The \texttt{-f} macro is an alias for \texttt{decf}.
+
+\lispMacroSubsection{*f}
+
+The \texttt{*f} macro is an alias for \texttt{multf}.
+
+\lispMacroSubsection{/f}
+
+The \texttt{/f} macro is an alias for \texttt{divf}.
+
 \lispMacroSubsection{divf}
 
 The \texttt{divf} macro is divide-and-store, along the lines of \texttt{incf}

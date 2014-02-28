@@ -107,126 +107,130 @@
 \BOOKMARK [2][-]{subsection.3.2.4}{The gethash-in Function}{section.3.2}% 107
 \BOOKMARK [0][-]{chapter.4}{The sigma/numeric Package}{}% 108
 \BOOKMARK [1][-]{section.4.1}{Macros}{chapter.4}% 109
-\BOOKMARK [2][-]{subsection.4.1.1}{The divf Macro}{section.4.1}% 110
-\BOOKMARK [2][-]{subsection.4.1.2}{The multf Macro}{section.4.1}% 111
-\BOOKMARK [1][-]{section.4.2}{Functions}{chapter.4}% 112
-\BOOKMARK [2][-]{subsection.4.2.1}{The bit? Function}{section.4.2}% 113
-\BOOKMARK [2][-]{subsection.4.2.2}{The choose Function}{section.4.2}% 114
-\BOOKMARK [2][-]{subsection.4.2.3}{The factorial Function}{section.4.2}% 115
-\BOOKMARK [2][-]{subsection.4.2.4}{The fractional-part Function}{section.4.2}% 116
-\BOOKMARK [2][-]{subsection.4.2.5}{The fractional-value Function}{section.4.2}% 117
-\BOOKMARK [2][-]{subsection.4.2.6}{The integer-range Function}{section.4.2}% 118
-\BOOKMARK [2][-]{subsection.4.2.7}{The nonnegative? Function}{section.4.2}% 119
-\BOOKMARK [2][-]{subsection.4.2.8}{The nonnegative-integer? Function}{section.4.2}% 120
-\BOOKMARK [2][-]{subsection.4.2.9}{The positive-integer? Function}{section.4.2}% 121
-\BOOKMARK [2][-]{subsection.4.2.10}{The product Function}{section.4.2}% 122
-\BOOKMARK [2][-]{subsection.4.2.11}{The sum Function}{section.4.2}% 123
-\BOOKMARK [2][-]{subsection.4.2.12}{The unsigned-integer? Function}{section.4.2}% 124
-\BOOKMARK [1][-]{section.4.3}{Types}{chapter.4}% 125
-\BOOKMARK [2][-]{subsection.4.3.1}{The nonnegative-float Type}{section.4.3}% 126
-\BOOKMARK [2][-]{subsection.4.3.2}{The nonnegative-integer Type}{section.4.3}% 127
-\BOOKMARK [2][-]{subsection.4.3.3}{The positive-float Type}{section.4.3}% 128
-\BOOKMARK [2][-]{subsection.4.3.4}{The positive-integer Type}{section.4.3}% 129
-\BOOKMARK [0][-]{chapter.5}{The sigma/os Package}{}% 130
-\BOOKMARK [1][-]{section.5.1}{Functions}{chapter.5}% 131
-\BOOKMARK [2][-]{subsection.5.1.1}{The perl Function}{section.5.1}% 132
-\BOOKMARK [2][-]{subsection.5.1.2}{The python Function}{section.5.1}% 133
-\BOOKMARK [2][-]{subsection.5.1.3}{The read-file Function}{section.5.1}% 134
-\BOOKMARK [2][-]{subsection.5.1.4}{The read-lines Function}{section.5.1}% 135
-\BOOKMARK [2][-]{subsection.5.1.5}{The ruby Function}{section.5.1}% 136
-\BOOKMARK [1][-]{section.5.2}{Parameters}{chapter.5}% 137
-\BOOKMARK [2][-]{subsection.5.2.1}{The *perl-path* Parameter}{section.5.2}% 138
-\BOOKMARK [2][-]{subsection.5.2.2}{The *python-path* Parameter}{section.5.2}% 139
-\BOOKMARK [2][-]{subsection.5.2.3}{The *ruby-path* Parameter}{section.5.2}% 140
-\BOOKMARK [0][-]{chapter.6}{The sigma/probability Package}{}% 141
-\BOOKMARK [1][-]{section.6.1}{Macros}{chapter.6}% 142
-\BOOKMARK [2][-]{subsection.6.1.1}{The decaying-probabiliity? Macro}{section.6.1}% 143
-\BOOKMARK [1][-]{section.6.2}{Functions}{chapter.6}% 144
-\BOOKMARK [2][-]{subsection.6.2.1}{The probability? Function}{section.6.2}% 145
-\BOOKMARK [1][-]{section.6.3}{Types}{chapter.6}% 146
-\BOOKMARK [2][-]{subsection.6.3.1}{The probability Type}{section.6.3}% 147
-\BOOKMARK [0][-]{chapter.7}{The sigma/random Package}{}% 148
-\BOOKMARK [1][-]{section.7.1}{Macros}{chapter.7}% 149
-\BOOKMARK [2][-]{subsection.7.1.1}{The nshuffle Macro}{section.7.1}% 150
-\BOOKMARK [1][-]{section.7.2}{Functions}{chapter.7}% 151
-\BOOKMARK [2][-]{subsection.7.2.1}{The gauss Function}{section.7.2}% 152
-\BOOKMARK [2][-]{subsection.7.2.2}{The random-argument Function}{section.7.2}% 153
-\BOOKMARK [2][-]{subsection.7.2.3}{The coin-toss Function}{section.7.2}% 154
-\BOOKMARK [2][-]{subsection.7.2.4}{The random-in-range Function}{section.7.2}% 155
-\BOOKMARK [2][-]{subsection.7.2.5}{The random-in-ranges Function}{section.7.2}% 156
-\BOOKMARK [2][-]{subsection.7.2.6}{The random-range Function}{section.7.2}% 157
-\BOOKMARK [2][-]{subsection.7.2.7}{The randomize-array Function}{section.7.2}% 158
-\BOOKMARK [2][-]{subsection.7.2.8}{The random-array Function}{section.7.2}% 159
-\BOOKMARK [1][-]{section.7.3}{Generics}{chapter.7}% 160
-\BOOKMARK [2][-]{subsection.7.3.1}{The random-element Generic}{section.7.3}% 161
-\BOOKMARK [2][-]{subsection.7.3.2}{The shuffle Generic}{section.7.3}% 162
-\BOOKMARK [0][-]{chapter.8}{The sigma/sequence Package}{}% 163
-\BOOKMARK [1][-]{section.8.1}{Macros}{chapter.8}% 164
-\BOOKMARK [2][-]{subsection.8.1.1}{The arefable? Macro}{section.8.1}% 165
-\BOOKMARK [2][-]{subsection.8.1.2}{The nconcf Macro}{section.8.1}% 166
-\BOOKMARK [2][-]{subsection.8.1.3}{The nthable? Macro}{section.8.1}% 167
-\BOOKMARK [2][-]{subsection.8.1.4}{The set-nthcdr Macro}{section.8.1}% 168
-\BOOKMARK [1][-]{section.8.2}{Functions}{chapter.8}% 169
-\BOOKMARK [2][-]{subsection.8.2.1}{The array-values Function}{section.8.2}% 170
-\BOOKMARK [2][-]{subsection.8.2.2}{The nth-from-end Function}{section.8.2}% 171
-\BOOKMARK [2][-]{subsection.8.2.3}{The sequence? Function}{section.8.2}% 172
-\BOOKMARK [2][-]{subsection.8.2.4}{The empty-sequence? Function}{section.8.2}% 173
-\BOOKMARK [2][-]{subsection.8.2.5}{The join-symbol-to-all-following Function}{section.8.2}% 174
-\BOOKMARK [2][-]{subsection.8.2.6}{The join-symbol-to-all-preceeding Function}{section.8.2}% 175
-\BOOKMARK [2][-]{subsection.8.2.7}{The list-to-vector Function}{section.8.2}% 176
-\BOOKMARK [2][-]{subsection.8.2.8}{The set-equal Function}{section.8.2}% 177
-\BOOKMARK [2][-]{subsection.8.2.9}{The simple-vector-to-list Function}{section.8.2}% 178
-\BOOKMARK [2][-]{subsection.8.2.10}{The sort-order Function}{section.8.2}% 179
-\BOOKMARK [2][-]{subsection.8.2.11}{The the-last Function}{section.8.2}% 180
-\BOOKMARK [2][-]{subsection.8.2.12}{The vector-to-list Function}{section.8.2}% 181
-\BOOKMARK [1][-]{section.8.3}{Generics}{chapter.8}% 182
-\BOOKMARK [2][-]{subsection.8.3.1}{The best Generic}{section.8.3}% 183
-\BOOKMARK [2][-]{subsection.8.3.2}{The minimum Generic}{section.8.3}% 184
-\BOOKMARK [2][-]{subsection.8.3.3}{The minimum? Generic}{section.8.3}% 185
-\BOOKMARK [2][-]{subsection.8.3.4}{The maximum Generic}{section.8.3}% 186
-\BOOKMARK [2][-]{subsection.8.3.5}{The maximum? Generic}{section.8.3}% 187
-\BOOKMARK [2][-]{subsection.8.3.6}{The sort-on Generic}{section.8.3}% 188
-\BOOKMARK [2][-]{subsection.8.3.7}{The slice Generic}{section.8.3}% 189
-\BOOKMARK [2][-]{subsection.8.3.8}{The split Generic}{section.8.3}% 190
-\BOOKMARK [2][-]{subsection.8.3.9}{The worst Generic}{section.8.3}% 191
-\BOOKMARK [0][-]{chapter.9}{The sigma/string Package}{}% 192
-\BOOKMARK [1][-]{section.9.1}{Functions}{chapter.9}% 193
-\BOOKMARK [2][-]{subsection.9.1.1}{The character-range Function}{section.9.1}% 194
-\BOOKMARK [2][-]{subsection.9.1.2}{The character-ranges Function}{section.9.1}% 195
-\BOOKMARK [2][-]{subsection.9.1.3}{The escape-tildes Function}{section.9.1}% 196
-\BOOKMARK [2][-]{subsection.9.1.4}{The replace-char Function}{section.9.1}% 197
-\BOOKMARK [2][-]{subsection.9.1.5}{The strcat Function}{section.9.1}% 198
-\BOOKMARK [2][-]{subsection.9.1.6}{The strmult Function}{section.9.1}% 199
-\BOOKMARK [2][-]{subsection.9.1.7}{The string-join Function}{section.9.1}% 200
-\BOOKMARK [2][-]{subsection.9.1.8}{The stringify Function}{section.9.1}% 201
-\BOOKMARK [2][-]{subsection.9.1.9}{The to-string Function}{section.9.1}% 202
-\BOOKMARK [1][-]{section.9.2}{Methods}{chapter.9}% 203
-\BOOKMARK [2][-]{subsection.9.2.1}{The split Methods}{section.9.2}% 204
-\BOOKMARK [0][-]{chapter.10}{The time-series Package}{}% 205
-\BOOKMARK [1][-]{section.10.1}{Macros}{chapter.10}% 206
-\BOOKMARK [2][-]{subsection.10.1.1}{The snap-index Macro}{section.10.1}% 207
-\BOOKMARK [1][-]{section.10.2}{Functions}{chapter.10}% 208
-\BOOKMARK [2][-]{subsection.10.2.1}{The array-raster-line Function}{section.10.2}% 209
-\BOOKMARK [2][-]{subsection.10.2.2}{The distance Function}{section.10.2}% 210
-\BOOKMARK [2][-]{subsection.10.2.3}{The norm Function}{section.10.2}% 211
-\BOOKMARK [2][-]{subsection.10.2.4}{The raster-line Function}{section.10.2}% 212
-\BOOKMARK [2][-]{subsection.10.2.5}{The similar-points? Function}{section.10.2}% 213
-\BOOKMARK [2][-]{subsection.10.2.6}{The time-series? Function}{section.10.2}% 214
-\BOOKMARK [2][-]{subsection.10.2.7}{The time-multiseries? Function}{section.10.2}% 215
-\BOOKMARK [2][-]{subsection.10.2.8}{The tmsref Function}{section.10.2}% 216
-\BOOKMARK [2][-]{subsection.10.2.9}{The tms-dimensions Function}{section.10.2}% 217
-\BOOKMARK [2][-]{subsection.10.2.10}{The tms-raster-line Function}{section.10.2}% 218
-\BOOKMARK [2][-]{subsection.10.2.11}{The tms-values Function}{section.10.2}% 219
-\BOOKMARK [1][-]{section.10.3}{Types}{chapter.10}% 220
-\BOOKMARK [2][-]{subsection.10.3.1}{The time-multiseries Type}{section.10.3}% 221
-\BOOKMARK [0][-]{chapter.11}{The truth Package}{}% 222
-\BOOKMARK [1][-]{section.11.1}{Functions}{chapter.11}% 223
-\BOOKMARK [2][-]{subsection.11.1.1}{The [?] Function}{section.11.1}% 224
-\BOOKMARK [2][-]{subsection.11.1.2}{The toggle Function}{section.11.1}% 225
-\BOOKMARK [1][-]{section.11.2}{Generics}{chapter.11}% 226
-\BOOKMARK [2][-]{subsection.11.2.1}{The ? Generic}{section.11.2}% 227
-\BOOKMARK [0][-]{chapter.12}{The sigma Package}{}% 228
-\BOOKMARK [1][-]{section.12.1}{Variables}{chapter.12}% 229
-\BOOKMARK [2][-]{subsection.12.1.1}{The *sigma-packages* Variable}{section.12.1}% 230
-\BOOKMARK [1][-]{section.12.2}{Functions}{chapter.12}% 231
-\BOOKMARK [2][-]{subsection.12.2.1}{The use-all-sigma Function}{section.12.2}% 232
+\BOOKMARK [2][-]{subsection.4.1.1}{The +f Macro}{section.4.1}% 110
+\BOOKMARK [2][-]{subsection.4.1.2}{The -f Macro}{section.4.1}% 111
+\BOOKMARK [2][-]{subsection.4.1.3}{The *f Macro}{section.4.1}% 112
+\BOOKMARK [2][-]{subsection.4.1.4}{The /f Macro}{section.4.1}% 113
+\BOOKMARK [2][-]{subsection.4.1.5}{The divf Macro}{section.4.1}% 114
+\BOOKMARK [2][-]{subsection.4.1.6}{The multf Macro}{section.4.1}% 115
+\BOOKMARK [1][-]{section.4.2}{Functions}{chapter.4}% 116
+\BOOKMARK [2][-]{subsection.4.2.1}{The bit? Function}{section.4.2}% 117
+\BOOKMARK [2][-]{subsection.4.2.2}{The choose Function}{section.4.2}% 118
+\BOOKMARK [2][-]{subsection.4.2.3}{The factorial Function}{section.4.2}% 119
+\BOOKMARK [2][-]{subsection.4.2.4}{The fractional-part Function}{section.4.2}% 120
+\BOOKMARK [2][-]{subsection.4.2.5}{The fractional-value Function}{section.4.2}% 121
+\BOOKMARK [2][-]{subsection.4.2.6}{The integer-range Function}{section.4.2}% 122
+\BOOKMARK [2][-]{subsection.4.2.7}{The nonnegative? Function}{section.4.2}% 123
+\BOOKMARK [2][-]{subsection.4.2.8}{The nonnegative-integer? Function}{section.4.2}% 124
+\BOOKMARK [2][-]{subsection.4.2.9}{The positive-integer? Function}{section.4.2}% 125
+\BOOKMARK [2][-]{subsection.4.2.10}{The product Function}{section.4.2}% 126
+\BOOKMARK [2][-]{subsection.4.2.11}{The sum Function}{section.4.2}% 127
+\BOOKMARK [2][-]{subsection.4.2.12}{The unsigned-integer? Function}{section.4.2}% 128
+\BOOKMARK [1][-]{section.4.3}{Types}{chapter.4}% 129
+\BOOKMARK [2][-]{subsection.4.3.1}{The nonnegative-float Type}{section.4.3}% 130
+\BOOKMARK [2][-]{subsection.4.3.2}{The nonnegative-integer Type}{section.4.3}% 131
+\BOOKMARK [2][-]{subsection.4.3.3}{The positive-float Type}{section.4.3}% 132
+\BOOKMARK [2][-]{subsection.4.3.4}{The positive-integer Type}{section.4.3}% 133
+\BOOKMARK [0][-]{chapter.5}{The sigma/os Package}{}% 134
+\BOOKMARK [1][-]{section.5.1}{Functions}{chapter.5}% 135
+\BOOKMARK [2][-]{subsection.5.1.1}{The perl Function}{section.5.1}% 136
+\BOOKMARK [2][-]{subsection.5.1.2}{The python Function}{section.5.1}% 137
+\BOOKMARK [2][-]{subsection.5.1.3}{The read-file Function}{section.5.1}% 138
+\BOOKMARK [2][-]{subsection.5.1.4}{The read-lines Function}{section.5.1}% 139
+\BOOKMARK [2][-]{subsection.5.1.5}{The ruby Function}{section.5.1}% 140
+\BOOKMARK [1][-]{section.5.2}{Parameters}{chapter.5}% 141
+\BOOKMARK [2][-]{subsection.5.2.1}{The *perl-path* Parameter}{section.5.2}% 142
+\BOOKMARK [2][-]{subsection.5.2.2}{The *python-path* Parameter}{section.5.2}% 143
+\BOOKMARK [2][-]{subsection.5.2.3}{The *ruby-path* Parameter}{section.5.2}% 144
+\BOOKMARK [0][-]{chapter.6}{The sigma/probability Package}{}% 145
+\BOOKMARK [1][-]{section.6.1}{Macros}{chapter.6}% 146
+\BOOKMARK [2][-]{subsection.6.1.1}{The decaying-probabiliity? Macro}{section.6.1}% 147
+\BOOKMARK [1][-]{section.6.2}{Functions}{chapter.6}% 148
+\BOOKMARK [2][-]{subsection.6.2.1}{The probability? Function}{section.6.2}% 149
+\BOOKMARK [1][-]{section.6.3}{Types}{chapter.6}% 150
+\BOOKMARK [2][-]{subsection.6.3.1}{The probability Type}{section.6.3}% 151
+\BOOKMARK [0][-]{chapter.7}{The sigma/random Package}{}% 152
+\BOOKMARK [1][-]{section.7.1}{Macros}{chapter.7}% 153
+\BOOKMARK [2][-]{subsection.7.1.1}{The nshuffle Macro}{section.7.1}% 154
+\BOOKMARK [1][-]{section.7.2}{Functions}{chapter.7}% 155
+\BOOKMARK [2][-]{subsection.7.2.1}{The gauss Function}{section.7.2}% 156
+\BOOKMARK [2][-]{subsection.7.2.2}{The random-argument Function}{section.7.2}% 157
+\BOOKMARK [2][-]{subsection.7.2.3}{The coin-toss Function}{section.7.2}% 158
+\BOOKMARK [2][-]{subsection.7.2.4}{The random-in-range Function}{section.7.2}% 159
+\BOOKMARK [2][-]{subsection.7.2.5}{The random-in-ranges Function}{section.7.2}% 160
+\BOOKMARK [2][-]{subsection.7.2.6}{The random-range Function}{section.7.2}% 161
+\BOOKMARK [2][-]{subsection.7.2.7}{The randomize-array Function}{section.7.2}% 162
+\BOOKMARK [2][-]{subsection.7.2.8}{The random-array Function}{section.7.2}% 163
+\BOOKMARK [1][-]{section.7.3}{Generics}{chapter.7}% 164
+\BOOKMARK [2][-]{subsection.7.3.1}{The random-element Generic}{section.7.3}% 165
+\BOOKMARK [2][-]{subsection.7.3.2}{The shuffle Generic}{section.7.3}% 166
+\BOOKMARK [0][-]{chapter.8}{The sigma/sequence Package}{}% 167
+\BOOKMARK [1][-]{section.8.1}{Macros}{chapter.8}% 168
+\BOOKMARK [2][-]{subsection.8.1.1}{The arefable? Macro}{section.8.1}% 169
+\BOOKMARK [2][-]{subsection.8.1.2}{The nconcf Macro}{section.8.1}% 170
+\BOOKMARK [2][-]{subsection.8.1.3}{The nthable? Macro}{section.8.1}% 171
+\BOOKMARK [2][-]{subsection.8.1.4}{The set-nthcdr Macro}{section.8.1}% 172
+\BOOKMARK [1][-]{section.8.2}{Functions}{chapter.8}% 173
+\BOOKMARK [2][-]{subsection.8.2.1}{The array-values Function}{section.8.2}% 174
+\BOOKMARK [2][-]{subsection.8.2.2}{The nth-from-end Function}{section.8.2}% 175
+\BOOKMARK [2][-]{subsection.8.2.3}{The sequence? Function}{section.8.2}% 176
+\BOOKMARK [2][-]{subsection.8.2.4}{The empty-sequence? Function}{section.8.2}% 177
+\BOOKMARK [2][-]{subsection.8.2.5}{The join-symbol-to-all-following Function}{section.8.2}% 178
+\BOOKMARK [2][-]{subsection.8.2.6}{The join-symbol-to-all-preceeding Function}{section.8.2}% 179
+\BOOKMARK [2][-]{subsection.8.2.7}{The list-to-vector Function}{section.8.2}% 180
+\BOOKMARK [2][-]{subsection.8.2.8}{The set-equal Function}{section.8.2}% 181
+\BOOKMARK [2][-]{subsection.8.2.9}{The simple-vector-to-list Function}{section.8.2}% 182
+\BOOKMARK [2][-]{subsection.8.2.10}{The sort-order Function}{section.8.2}% 183
+\BOOKMARK [2][-]{subsection.8.2.11}{The the-last Function}{section.8.2}% 184
+\BOOKMARK [2][-]{subsection.8.2.12}{The vector-to-list Function}{section.8.2}% 185
+\BOOKMARK [1][-]{section.8.3}{Generics}{chapter.8}% 186
+\BOOKMARK [2][-]{subsection.8.3.1}{The best Generic}{section.8.3}% 187
+\BOOKMARK [2][-]{subsection.8.3.2}{The minimum Generic}{section.8.3}% 188
+\BOOKMARK [2][-]{subsection.8.3.3}{The minimum? Generic}{section.8.3}% 189
+\BOOKMARK [2][-]{subsection.8.3.4}{The maximum Generic}{section.8.3}% 190
+\BOOKMARK [2][-]{subsection.8.3.5}{The maximum? Generic}{section.8.3}% 191
+\BOOKMARK [2][-]{subsection.8.3.6}{The sort-on Generic}{section.8.3}% 192
+\BOOKMARK [2][-]{subsection.8.3.7}{The slice Generic}{section.8.3}% 193
+\BOOKMARK [2][-]{subsection.8.3.8}{The split Generic}{section.8.3}% 194
+\BOOKMARK [2][-]{subsection.8.3.9}{The worst Generic}{section.8.3}% 195
+\BOOKMARK [0][-]{chapter.9}{The sigma/string Package}{}% 196
+\BOOKMARK [1][-]{section.9.1}{Functions}{chapter.9}% 197
+\BOOKMARK [2][-]{subsection.9.1.1}{The character-range Function}{section.9.1}% 198
+\BOOKMARK [2][-]{subsection.9.1.2}{The character-ranges Function}{section.9.1}% 199
+\BOOKMARK [2][-]{subsection.9.1.3}{The escape-tildes Function}{section.9.1}% 200
+\BOOKMARK [2][-]{subsection.9.1.4}{The replace-char Function}{section.9.1}% 201
+\BOOKMARK [2][-]{subsection.9.1.5}{The strcat Function}{section.9.1}% 202
+\BOOKMARK [2][-]{subsection.9.1.6}{The strmult Function}{section.9.1}% 203
+\BOOKMARK [2][-]{subsection.9.1.7}{The string-join Function}{section.9.1}% 204
+\BOOKMARK [2][-]{subsection.9.1.8}{The stringify Function}{section.9.1}% 205
+\BOOKMARK [2][-]{subsection.9.1.9}{The to-string Function}{section.9.1}% 206
+\BOOKMARK [1][-]{section.9.2}{Methods}{chapter.9}% 207
+\BOOKMARK [2][-]{subsection.9.2.1}{The split Methods}{section.9.2}% 208
+\BOOKMARK [0][-]{chapter.10}{The time-series Package}{}% 209
+\BOOKMARK [1][-]{section.10.1}{Macros}{chapter.10}% 210
+\BOOKMARK [2][-]{subsection.10.1.1}{The snap-index Macro}{section.10.1}% 211
+\BOOKMARK [1][-]{section.10.2}{Functions}{chapter.10}% 212
+\BOOKMARK [2][-]{subsection.10.2.1}{The array-raster-line Function}{section.10.2}% 213
+\BOOKMARK [2][-]{subsection.10.2.2}{The distance Function}{section.10.2}% 214
+\BOOKMARK [2][-]{subsection.10.2.3}{The norm Function}{section.10.2}% 215
+\BOOKMARK [2][-]{subsection.10.2.4}{The raster-line Function}{section.10.2}% 216
+\BOOKMARK [2][-]{subsection.10.2.5}{The similar-points? Function}{section.10.2}% 217
+\BOOKMARK [2][-]{subsection.10.2.6}{The time-series? Function}{section.10.2}% 218
+\BOOKMARK [2][-]{subsection.10.2.7}{The time-multiseries? Function}{section.10.2}% 219
+\BOOKMARK [2][-]{subsection.10.2.8}{The tmsref Function}{section.10.2}% 220
+\BOOKMARK [2][-]{subsection.10.2.9}{The tms-dimensions Function}{section.10.2}% 221
+\BOOKMARK [2][-]{subsection.10.2.10}{The tms-raster-line Function}{section.10.2}% 222
+\BOOKMARK [2][-]{subsection.10.2.11}{The tms-values Function}{section.10.2}% 223
+\BOOKMARK [1][-]{section.10.3}{Types}{chapter.10}% 224
+\BOOKMARK [2][-]{subsection.10.3.1}{The time-multiseries Type}{section.10.3}% 225
+\BOOKMARK [0][-]{chapter.11}{The truth Package}{}% 226
+\BOOKMARK [1][-]{section.11.1}{Functions}{chapter.11}% 227
+\BOOKMARK [2][-]{subsection.11.1.1}{The [?] Function}{section.11.1}% 228
+\BOOKMARK [2][-]{subsection.11.1.2}{The toggle Function}{section.11.1}% 229
+\BOOKMARK [1][-]{section.11.2}{Generics}{chapter.11}% 230
+\BOOKMARK [2][-]{subsection.11.2.1}{The ? Generic}{section.11.2}% 231
+\BOOKMARK [0][-]{chapter.12}{The sigma Package}{}% 232
+\BOOKMARK [1][-]{section.12.1}{Variables}{chapter.12}% 233
+\BOOKMARK [2][-]{subsection.12.1.1}{The *sigma-packages* Variable}{section.12.1}% 234
+\BOOKMARK [1][-]{section.12.2}{Functions}{chapter.12}% 235
+\BOOKMARK [2][-]{subsection.12.2.1}{The use-all-sigma Function}{section.12.2}% 236

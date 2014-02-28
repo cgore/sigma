@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2014, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -37,7 +37,11 @@
         :sigma/behave
         :sigma/control
         :sigma/sequence)
-  (:export :bit?
+  (:export :+f
+           :-f
+           :*f
+           :/f
+           :bit?
            :choose
            :divf
            :factorial
@@ -270,3 +274,15 @@ as 'n choose k'."
         (factorial k))))
 
 (assert (= 66 (choose 12 2)))
+
+(defmacro +f (&rest rest)
+  `(incf ,@rest))
+
+(defmacro -f (&rest rest)
+  `(decf ,@rest))
+
+(defmacro *f (&rest rest)
+  `(multf ,@rest))
+
+(defmacro /f (&rest rest)
+  `(divf ,@rest))
