@@ -38,11 +38,45 @@
 
 \lispMacroSubsection{divf}
 
-\TODO
+The \texttt{divf} macro is divide-and-store, along the lines of \texttt{incf}
+and \texttt{decf}, but with division instead.  This is similar to
+\texttt{x /= \textit{something}} in the C programming language.
+
+\lispSyntax
+
+\texttt{(divf \lispVar{variable} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{lstlisting}
+;;; Prints 65536 ... %*$\cdots$*) 8 ... 4 ... 2 ... 1 ... 0 ... that's it!
+(let ((x (expt 2 16)))
+  (while (<= 0 x)
+    (format t "~A ... " x)
+    (divf x 2)))
+(format t " that's it!~%")
+\end{lstlisting}
 
 \lispMacroSubsection{multf}
 
-\TODO
+The \texttt{divf} macro is multiply-and-store, along the lines of \texttt{incf}
+and \texttt{decf}, but with multiplication instead.  This is similar to
+\texttt{x *= \textit{something}} in the C programming language.
+
+\lispSyntax
+
+\texttt{(multf \lispVar{variable} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{lstlisting}
+;;; Prints 1 ... 2 ... 4 ... 8 ... %*$\cdots$*) ... 65535 ... that's it!
+(let ((x 1))
+  (while (<= x (expt 2 16))
+    (format t "~A ... " x)
+    (multf x 2)))
+(format t " that's it!~%")
+\end{lstlisting}
 
 \section{Functions}
 

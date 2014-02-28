@@ -446,7 +446,23 @@ clauses may be evaluated.
 
 \lispMacroSubsection{opf}
 
-\TODO
+The \texttt{opf} macro is a generic operate-and-store, along the lines of
+\texttt{incf} and \texttt{decf}, but allowing for any operation.
+
+\lispSyntax
+
+\texttt{(opf \lispVar{operator} \lispVar{variable} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{lstlisting}
+;;; Prints 1 ... 2 ... 4 ... 8 ... %*$\cdots$*) ... 65535 ... that's it!
+(let ((x 1))
+  (while (<= x (expt 2 16))
+    (format t "~A ... " x)
+    (opf #'* x 2)))
+(format t " that's it!~%")
+\end{lstlisting}
 
 \lispMacroSubsection{swap}
 
