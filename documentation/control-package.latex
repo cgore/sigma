@@ -364,7 +364,7 @@ in the C programming language.
 
 \lispSyntax
 
-\texttt{(do-while \lispVar{conditional} \&rest \lispVar{body})}
+\texttt{(do-while \lispVar{conditional} \&body \lispVar{body})}
 
 \lispExamples
 
@@ -384,7 +384,7 @@ in the C programming language.
 
 \lispSyntax
 
-\texttt{(do-until \lispVar{conditional} \&rest \lispVar{body})}
+\texttt{(do-until \lispVar{conditional} \&body \lispVar{body})}
 
 \lispExamples
 
@@ -402,7 +402,7 @@ A \texttt{for} macro, much like the \texttt{for} in the C programming language.
 
 \lispSyntax
 
-\texttt{(for \lispVar{initial conditional step-action} \&rest \lispVar{body})}
+\texttt{(for \lispVar{initial conditional step-action} \&body \lispVar{body})}
 
 \lispExamples
 
@@ -466,29 +466,112 @@ The \texttt{opf} macro is a generic operate-and-store, along the lines of
 
 \lispMacroSubsection{swap}
 
-\TODO
+This is a simple \texttt{swap} macro.  The values of the first and second form
+are swapped with each other.
+
+\lispSyntax
+
+\texttt{(swap \lispVar{x} \lispVar{y})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((first "the first")
+      (last "the last"))
+  (swap first last)
+  `(,first ,last)) ; Returns '("the last" "the first")
+\end{lstlisting}
 
 \lispMacroSubsection{swap-unless}
 
-\TODO
+This macro calls \texttt{swap} unless the predicate evaluates to true.
+
+\lispSyntax
+
+\texttt{(swap-unless \lispVar{predicate} \lispVar{x} \lispVar{y})}
+
+\lispExamples
+
+\begin{lstlisting}
+;;; make smaller and larger in the correct order.
+(let ((smaller 12)
+      (larger 266))
+  (swap-unless #'<= smaller larger))
+\end{lstlisting}
 
 \lispMacroSubsection{swap-when}
 
-\TODO
+This macro calls \texttt{swap} when the predicate evaluates to true.
+
+\lispSyntax
+
+\texttt{(swap-when \lispVar{predicate} \lispVar{x} \lispVar{y})}
+
+\lispExamples
+
+\begin{lstlisting}
+;;; make smaller and larger in the correct order.
+(let ((smaller 12)
+      (larger 6))
+  (swap-when #'> smaller larger))
+\end{lstlisting}
 
 \lispMacroSubsection{until}
 
-\TODO
+The \texttt{until} macro is similar to the while loop in C, but with a negated conditional.
+
+\lispSyntax
+
+\texttt{(until \lispVar{conditional} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 10))
+  (until (< x 0)
+    (format t "~A ... " x)
+    (decf x))
+  (format t "Liftoff!~%"))
+\end{lstlisting}
 
 \lispMacroSubsection{while}
 
-\TODO
+This \texttt{while} macro is similar to the while loop in C.
+
+\lispSyntax
+
+\texttt{(while \lispVar{conditional} \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 10))
+  (while (<= 0 x)
+    (format t "~A ... " x)
+    (decf x))
+  (format t "Liftoff!~%"))
+\end{lstlisting}
 
 \section{Functions}
 
 \lispFunctionSubsection{compose}
 
-\TODO
+The \texttt{compose} function composes a single function from a list of several
+functions such that the new function is equivalent to calling the functions in
+succession. This is based upon a \texttt{compose} function in
+\cite{ansi-common-lisp}, which is based upon the \texttt{compose} function from
+Dylan.
+
+\lispSyntax
+
+\texttt{(compose \&rest \lispVar{functions})}
+
+\lispExamples
+
+\begin{lstlisting}
+(funcall (compose #'sin #'cos #'tan) pi) ; Returns about 0.8414709848078965.
+(sin (cos (tan pi))) ; This is the same.
+\end{lstlisting}
 
 \lispFunctionSubsection{conjoin}
 
@@ -512,7 +595,18 @@ The \texttt{opf} macro is a generic operate-and-store, along the lines of
 
 \lispFunctionSubsection{rcompose}
 
-\TODO
+The \texttt{rcompose} function is a reversed variant of the \texttt{compose} function.
+
+\lispSyntax
+
+\texttt{(compose \&rest \lispVar{functions})}
+
+\lispExamples
+
+\begin{lstlisting}
+(funcall (rcompose #'sin #'cos #'tan) pi) ; Returns about 1.5574077246549023.
+(tan (cos (sin pi))) ; This is the same.
+\end{lstlisting}
 
 \lispFunctionSubsection{rcurry}
 
