@@ -461,7 +461,7 @@ and Common Lisp, with a syntax like Pascal.''"
   ;; XXX: I believe this is correct, but I am not really sure.
   function)
 
-(defmacro for (initial conditional step-action &rest body)
+(defmacro for (initial conditional step-action &body body)
   "A FOR macro, much like the ``for'' in the C programming language.
 A simple example:
   (for ((i 0))
@@ -474,7 +474,7 @@ Generally this should not be used, but instead the native looping methods."
      (while ,conditional
        (prog1 (progn ,@body) ,step-action))))
 
-(defmacro forever (&rest body)
+(defmacro forever (&body body)
   "The FOREVER macro is just a way to say (while t ...) with a bit of added
 expressiveness and explicitness."
   `(while t ,@body))
@@ -596,7 +596,7 @@ swapped with each other."
 
 ;;; TODO: It would be nice if this returned the last evaluated element of
 ;;;       the body instead of the conditional.
-(defmacro while (conditional &rest body)
+(defmacro while (conditional &body body)
   "A WHILE macro, operating in a matter similar to the while loop in C."
   `(do ()
      ((not ,conditional))
@@ -608,7 +608,7 @@ swapped with each other."
               (incf x))
             (should= x 10)))
 
-(defmacro do-while (conditional &rest body)
+(defmacro do-while (conditional &body body)
   "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
   programming language."
   `(progn ,@body
@@ -620,7 +620,7 @@ swapped with each other."
             (do-while (<= 0 i) (decf i))
             (should= i -1)))
 
-(defmacro do-until (conditional &rest body)
+(defmacro do-until (conditional &body body)
   "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
 construct in the C programming language."
   `(do-while (not ,conditional)
@@ -631,7 +631,7 @@ construct in the C programming language."
             (do-until (<= i 0) (decf i))
             (should= i 0)))
 
-(defmacro until (conditional &rest body)
+(defmacro until (conditional &body body)
   "An UNTIL loop construct.  It operates in the negative sense as WHILE."
   `(while (not ,conditional)
      ,@body))
