@@ -41,6 +41,10 @@
            :-f
            :*f
            :/f
+           :f+
+           :f-
+           :f*
+           :f/
            :bit?
            :choose
            :divf
@@ -97,6 +101,24 @@ to a variable."
     (divf x)
     (should= x 123)))
 
+(defmacro f+ (variable &rest addends)
+  `(if (null ',addends)
+       (fop #'+ ,variable 1)
+       (fop #'+ ,variable ,@addends)))
+
+(defmacro f- (variable &rest subtrahends)
+  `(if (null ',subtrahends)
+       (fop #'- ,variable 1)
+       (fop #'- ,variable ,@subtrahends)))
+
+(defmacro f* (variable &rest multiplicands)
+  `(fop #'* ,variable ,@multiplicands)) ; (* variable) works as we want.
+
+(defmacro f/ (variable &rest divisors)
+  `(if (null ',divisors)
+       ,variable
+       (fop #'/ ,variable ,@divisors)))
+
 (defun fractional-part (number)
   "This is the fractional part formula most familiar to computer scientists.
 It possesses the useful feature that frac(x)+int(x)=x, but may be negative.
@@ -131,7 +153,16 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should= 0.0 (fractional-value -10.0)))
 
 (defmacro multf (variable &rest multiplicands)
-  `(opf #'* ,variable ,@multiplicands))
+  `(opf #'* ,variable ,@multiplicands)) ; (* variable) works as we want.
+
+(behavior 'multf
+  (let ((x 10))
+    (multf x)
+    (should= x 10)
+    (multf x 2)
+    (should= x 20)
+    (multf x 3 4 5)
+    (should= x 1200)))
 
 (defun nonnegative? (x)
   (not (minusp x)))

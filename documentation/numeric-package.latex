@@ -73,6 +73,78 @@ and \texttt{decf}, but with division instead.  This is similar to
 (format t " that's it!~%")
 \end{lstlisting}
 
+\lispMacroSubsection{f+}
+
+The \texttt{f+} macro is similar to \texttt{incf} or \texttt{+f}, but it is a
+post-increment instead of a pre-increment.  That is, \texttt{f+} works like
+\texttt{x++} in C but \texttt{incf} and \texttt{+f} work like \texttt{++x} in C.
+
+\lispSyntax
+
+\texttt{(f+ \lispVar{variable} \&rest \lispVar{addends})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 12))
+  (list x (f+ x) x)) ; Returns '(12 12 13).
+\end{lstlisting}
+
+\lispMacroSubsection{f-}
+
+The \texttt{f-} macro is similar to \texttt{decf} or \texttt{-f}, but it is a
+post-decrement instead of a pre-decrement.  That is, \texttt{f-} works like
+\texttt{x--} in C but \texttt{decf} and \texttt{-f} work like \texttt{--x} in C.
+
+\lispSyntax
+
+\texttt{(f- \lispVar{variable} \&rest \lispVar{subtrahends})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 12))
+  (list x (f- x) x)) ; Returns '(12 12 11).
+\end{lstlisting}
+
+\lispMacroSubsection{f*}
+
+The \texttt{f*} macro is similar to \texttt{multf} or \texttt{*f}, but it is a
+post-multiply instead of a pre-multiply. That is, \texttt{f*} works like
+\texttt{x++} in C (just for multiplication instead of addition) but
+\texttt{multf} and \texttt{*f} work like \texttt{++x} in C (again, just for
+multiplication instead of addition.)
+
+\lispSyntax
+
+\texttt{(f* \lispVar{variable} \&rest \lispVar{multiplicands})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 12))
+  (list x (f* x 2) x)) ; Returns '(12 12 24).
+\end{lstlisting}
+
+\lispMacroSubsection{f/}
+
+The \texttt{f/} macro is similar to \texttt{divf} or \texttt{/f}, but it is a
+post-divide instead of a pre-divide. That is, \texttt{f/} works like
+\texttt{x++} in C (just for division instead of addition) but \texttt{divf} and
+\texttt{/f} work like \texttt{++x} in C (again, just for division instead of
+addition.)
+
+\lispSyntax
+
+\texttt{(f/ \lispVar{variable} \&rest \lispVar{divisors})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 12))
+  (list x (f/ x 2) x)) ; Returns '(12 12 6).
+\end{lstlisting}
+
 \lispMacroSubsection{multf}
 
 The \texttt{divf} macro is multiply-and-store, along the lines of \texttt{incf}

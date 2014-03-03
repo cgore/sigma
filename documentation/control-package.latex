@@ -84,7 +84,7 @@ This is similar to the following, but with less typing:
 (let ((it (big-long-calculation)))
   (if it
       (foo it)
-      (format t "The big-long-calculation failed!~%")))
+\      (format t "The big-long-calculation failed!~%")))
 \end{lstlisting}
 
 Or say you need to get a user name from a database call, which might be slow.
@@ -373,7 +373,7 @@ in the C programming language.
   (do-while (<= 0 t-minus)
     (format t "~A ... " t-minus)
     (decf t-minus)))
-(format t "Liftoff!")
+(format t "Liftoff!~%")
 \end{lstlisting}
 
 \lispMacroSubsection{do-until}
@@ -393,7 +393,27 @@ in the C programming language.
   (do-until (< t-minus 0)
     (format t "~A ... " t-minus)
     (decf t-minus)))
-(format t "Liftoff!")
+(format t "Liftoff!~%")
+\end{lstlisting}
+
+\lispMacroSubsection{fop}
+
+\texttt{fop} is like the \texttt{opf} macro, but as a post-assignment variant.
+The difference is similar to the difference between \texttt{x++} and
+\texttt{++x} in the C Programming Language, with opf being like \texttt{++x} and fop
+being like \texttt{x++}.
+
+\lispSyntax
+
+\texttt{(fop \lispVar{operator} \lispVar{variable} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 10))
+  (while (<= 0 x)
+    (format t "~A ... " (fop #'- x 1))))
+(format t "Liftoff!~%")
 \end{lstlisting}
 
 \lispMacroSubsection{for}

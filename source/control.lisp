@@ -57,6 +57,7 @@
            :do-until
            :do-while
            :duplicate
+           :fop
            :for
            :forever
            :function-alias
@@ -536,7 +537,26 @@ in any Common Lisp I have used."
     (opf #'+ x 10)
     (should= x 10)
     (opf #'- x 10)
-    (should= x 0)))
+    (should= x 0))
+  (let ((x 42))
+    (should= (opf #'+ x 1) 43)))
+
+(defmacro fop (operator variable &rest arguments)
+  "FOP is like the OPF macro, but as a post-assignment variant.  The difference
+is similar to the difference between x++ and ++x in the C Programming Language,
+with opf being like ++x and fop being like x++."
+  `(prog1 ,variable
+     (setf ,variable
+           (funcall ,operator ,variable ,@arguments))))
+
+(behavior 'fop
+  (let ((x 0))
+    (fop #'+ x 10)
+    (should= x 10)
+    (fop #'- x 10)
+    (should= x 0))
+  (let ((x 42))
+    (should= (fop #'+ x 1) 42)))
 
 (defun rcurry (function &rest arguments)
   "This function takes in a function and some of its ending arguments, and
