@@ -44,7 +44,7 @@
 
 (defparameter version-major 3)
 (defparameter version-minor 4)
-(defparameter version-revision 5)
+(defparameter version-revision 6)
 
 (defun version-list ()
   (list version-major version-minor version-revision))
@@ -113,7 +113,8 @@ POSSIBILITY OF SUCH DAMAGE.
                                             :depends-on ("control"
                                                          "sequence"))
                                      (:file "sequence"
-                                            :depends-on ("control"))
+                                            :depends-on ("behave"
+                                                         "control"))
                                      (:file "string"
                                             :depends-on ("behave"
                                                          "control"
@@ -131,6 +132,7 @@ POSSIBILITY OF SUCH DAMAGE.
                                                          "hash"
                                                          "numeric"
                                                          "os"
+                                                         "probability"
                                                          "random"
                                                          "sequence"
                                                          "string"

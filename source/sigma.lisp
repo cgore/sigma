@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -43,6 +43,7 @@
     :sigma/numeric
     :sigma/os
     :sigma/random
+    :sigma/probability
     :sigma/sequence
     :sigma/string
     :sigma/time-series
@@ -58,6 +59,7 @@
     :sigma/hash
     :sigma/numeric
     :sigma/os
+    :sigma/probability
     :sigma/random
     :sigma/sequence
     :sigma/string
