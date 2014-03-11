@@ -132,6 +132,44 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 
 \TODO
 
+\lispFunctionSubsection{max*}
+
+The \texttt{max*} function is a shortcut for \texttt{max}. It takes in one or
+more lists and finds the maximum value within all of them. This is so you don't
+have to manually use \texttt{apply} and \texttt{concatenate}.
+
+\lispSyntax
+
+\texttt{(min \&rest \lispVar{lists})}
+
+\lispExamples
+
+\begin{lstlisting}
+(max* '(1 2 3 100 4 5)) ; Returns 100
+(max* '(1 2 3 4)
+      '(5 6 99 7)
+      '(8 9 10)) ; Returns 99
+\end{lstlisting}
+
+\lispFunctionSubsection{min*}
+
+The \texttt{min*} function is a shortcut for \texttt{min}. It takes in one or
+more lists and finds the maximum value within all of them. This is so you don't
+have to manually use \texttt{apply} and \texttt{concatenate}.
+
+\lispSyntax
+
+\texttt{(min \&rest \lispVar{lists})}
+
+\lispExamples
+
+\begin{lstlisting}
+(min* '(1 2 3 -100 4 5)) ; Returns -100
+(min* '(1 2 3 4)
+      '(5 6 -99 7)
+      '(8 9 10)) ; Returns -99
+\end{lstlisting}
+
 \lispFunctionSubsection{set-equal}
 
 \TODO

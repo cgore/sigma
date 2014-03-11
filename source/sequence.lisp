@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2014, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -32,9 +32,9 @@
 ;;;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;;;; POSSIBILITY OF SUCH DAMAGE.
 
-
 (defpackage :sigma/sequence
   (:use :common-lisp
+        :sigma/behave
         :sigma/control)
   (:export :arefable?
            :array-values
@@ -43,6 +43,8 @@
            :join-symbol-to-all-preceeding
            :join-symbol-to-all-following
            :list-to-vector
+           :max*
+           :min*
            :maximum
            :maximum?
            :minimum
@@ -62,7 +64,6 @@
            :vector-to-list
            :worst))
 (in-package :sigma/sequence)
-
 
 (defun nth-from-end (n list)
   "This macro is similar to NTH, but counting from the back."
@@ -84,7 +85,6 @@
   (assert (equal (nth-from-end 11 0-to-10)
                  nil)))
 
-
 (defmacro set-nthcdr (n list new-value)
   `(progn (assert (nonnegative-integer? ,n))
           (if (zerop ,n)
@@ -95,10 +95,8 @@
 #+sbcl (sb-ext:without-package-locks (defsetf nthcdr set-nthcdr))
 #+clisp (ext:without-package-lock () (defsetf nthcdr set-nthcdr))
 
-
 (defun sequence? (sequence)
   (typep sequence 'sequence))
-
 
 (defun empty-sequence? (sequence)
   (and (sequence? sequence)
@@ -106,10 +104,8 @@
            (and (arrayp sequence)
                 (some #'zerop (array-dimensions sequence))))))
 
-
 (defmacro nconcf (list-1 list-2)
   `(setf ,list-1 (nconc ,list-1 ,list-2)))
-
 
 (defun the-last (list)
   (assert (listp list))
@@ -131,27 +127,43 @@
   (loop for index from 0 to (1- (length vector))
         collect (svref vector index)))
 
+(defun max* (&rest lists)
+  "The MAX* function is a shortcut for MAX. It takes in one or more lists and finds
+the maximum value within all of them."
+  (apply #'max (apply #'concatenate 'list lists)))
+
+(behavior 'max*
+  (should= 100 (max* '(1 2 3 4 5 100 6)))
+  (should= 100 (max* '(1 2 3 4 5)
+                     '(7 8 100)
+                     '(10 11))))
+
+(defun min* (&rest lists)
+  "The MIN* function is a shortcut for MIN. It takes in one or more lists and finds
+the minimum value within all of them."
+  (apply #'min (apply #'concatenate 'list lists)))
+
+(behavior 'min*
+  (should= -100 (min* '(1 2 3 4 5 -100 6)))
+  (should= -100 (min* '(1 2 3 4 5)
+                      '(7 8 -100)
+                      '(10 11))))
 
 (defgeneric minimum (sequence &key key start end))
-
 
 (defmethod minimum ((sequence sequence)
                     &key (key #'identity) (start 0) (end nil))
   "This reduces MIN onto the sequence provided."
   (reduce #'min sequence :key key :start start :end end))
 
-
 (defgeneric maximum (sequence &key key start end))
-
 
 (defmethod maximum ((sequence sequence)
                     &key (key #'identity) (start 0) (end nil))
   "This reduces MAX onto the sequence provided."
   (reduce #'max sequence :key key :start start :end end))
 
-
 (defgeneric minimum? (sequence &key position key start end))
-
 
 (defmethod minimum? ((sequence sequence)
                       &key (position nil) (key #'identity) (start 0) (end nil))
@@ -160,9 +172,7 @@
   (<= (funcall key (elt sequence position))
       (minimum sequence :key key :start start :end end)))
 
-
 (defgeneric maximum? (sequence &key position key start end))
-
 
 (defmethod maximum? ((sequence sequence)
                      &key (position nil) (key #'identity) (start 0) (end nil))
@@ -171,9 +181,7 @@
   (>= (funcall key (elt sequence position))
       (maximum sequence :key key :start start :end end)))
 
-
 (defgeneric best (sequence predicate &key key))
-
 
 (defmethod best ((list list) predicate &key (key #'identity))
   "This returns the ``best'' element in a list.  This is equivalent to, but
@@ -189,7 +197,6 @@ sequence with the same predicate and key."
         (setf best i)))
     best))
 
-
 (defmethod best ((vector vector) predicate &key (key #'identity))
   "This returns the ``best'' element in a vector.  This is equivalent to, but
 faster than (O(n) vs. O(n*lg(n))), taking the first element after sorting the
@@ -204,9 +211,7 @@ sequence with the same predicate and key."
         (setf best (aref vector i))))
     best))
 
-
 (defgeneric worst (sequence predicate &key key))
-
 
 (defmethod worst ((list list) predicate &key (key #'identity))
   "This returns the ``worst'' element in a list.  This is equivalent to, but
@@ -222,7 +227,6 @@ sequence with the same predicate and key."
         (setf worst i)))
     worst))
 
-
 (defmethod worst ((vector vector) predicate &key (key #'identity))
   "This returns the ``worst'' element in a vector.  This is equivalent to, but
 faster than (O(n) vs. O(n*lg(n))), taking the last element after sorting the
@@ -237,11 +241,9 @@ sequence with the same predicate and key."
         (setf worst (aref vector i))))
     worst))
 
-
 (defun nthable? (n list)
   (and (listp list)
        (typep n `(integer 0 ,(1- (length list))))))
-
 
 (defun arefable? (array position)
   (and (arrayp array)
@@ -253,9 +255,7 @@ sequence with the same predicate and key."
               position
               (array-dimensions array))))
 
-
 (defgeneric sort-on (sequence-to-sort ordering-sequence predicate &key key))
-
 
 (defmethod sort-on ((sequence-to-sort list)
                     (ordering-sequence list)
@@ -271,7 +271,6 @@ sequence with the same predicate and key."
                       predicate
                       :key (compose key #'car))))
 
-
 (defmethod sort-on ((sequence-to-sort vector)
                     (ordering-sequence list)
                     predicate
@@ -280,7 +279,6 @@ sequence with the same predicate and key."
                            ordering-sequence
                            predicate
                            :key key)))
-
 
 (defmethod sort-on (sequence-to-sort
                     (ordering-sequence vector)
@@ -291,7 +289,6 @@ sequence with the same predicate and key."
            predicate
            :key key))
 
-
 (defun sort-order (sequence predicate &key (key #'identity))
   "This function returns the indices in the order for the sorted sequence."
   (sort-on (integer-range (1- (length sequence)))
@@ -299,9 +296,7 @@ sequence with the same predicate and key."
            predicate
            :key key))
 
-
 (defgeneric split (sequence separators &key key test remove-separators?))
-
 
 (defmethod split ((list list)
                    separators
@@ -329,9 +324,7 @@ SEQUENCE for membership in the SEPERATORS."
     (push (reverse current-list) result)
     (reverse result)))
 
-
 (defgeneric slice (sequence &optional slice))
-
 
 (defmethod slice ((vector vector) &optional (slice 1))
   "This method returns a slice from a one-dimensional vector; that is, a modular
@@ -350,7 +343,6 @@ The slice argument may be any positive rational number."
     (make-array (list (length result))
                 :initial-contents (reverse result))))
 
-
 (defmethod slice ((list list) &optional (slice 1))
   "This method returns a slice from a one-dimensional list; that is, a modular
 subset of the list.  For example,
@@ -367,7 +359,6 @@ The slice argument may be any positive rational number."
         (push (svref vector index) result))
       (incf index slice))
     (reverse result)))
-
 
 (defun join-symbol-to-all-preceeding (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
@@ -415,7 +406,6 @@ the FORMAT builtin function."
            (join-symbol-to-all-preceeding :b '(:a :b :c :b)))
          '(:|ab| :|cb|)))
 
-
 (defun join-symbol-to-all-following (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item following it.  For example:
@@ -457,7 +447,6 @@ the FORMAT builtin function."
 (assert (equal (join-symbol-to-all-following :foo '(:foo bar :foo :baz))
                '(:foobar :foobaz)))
 
-
 (defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
   (assert (listp list-1))
   (assert (listp list-2))
@@ -470,8 +459,6 @@ the FORMAT builtin function."
                                              :key key :test-not test-not))))
         (t (and (not (set-difference list-1 list-2 :key key))
                 (not (set-difference list-2 list-1 :key key))))))
-
-
 
 (defun array-values (array positions)
   "This function returns a list of the values in array found at the specified
