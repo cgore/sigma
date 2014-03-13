@@ -52,7 +52,7 @@ You can download the library from GitHub at:\\
 and I have some other information on it at my own website at:\\
 \url{http://cgore.com/programming/lisp/sigma/}
 
-\section{Getting Lisp}
+\section*{Getting Lisp}
 
 Before using this library you need a working Lisp.  I use and recommend
 \textsc{Sbcl}, Steel Bank Common Lisp, which is available at:\\
@@ -67,7 +67,7 @@ If you are using Debian or a similar Linux distribution (including Ubuntu), you
 can just run as root:\\
 \texttt{apt-get install sbcl sbcl-doc sbcl-source}
 
-\section{Getting \textsc{Emacs} and \textsc{Slime}}
+\section*{Getting \textsc{Emacs} and \textsc{Slime}}
 
 After installing, the best way to interact with any Common Lisp is via
 \textsc{Slime}, the Superior Lisp Interaction Mode for \textsc{Emacs}, which is
@@ -76,7 +76,7 @@ available at:\\
 This can be installed on Debian by:\\
 \texttt{apt-get install slime emacs emacs-goodies-el}
 
-\section{Using the Library}
+\section*{Using the Library}
 
 First we need to clone the utilities.\\
 \texttt{mkdir -p ~/programming/lisp}\\
@@ -95,10 +95,16 @@ Now we need to start up our Lisp REPL.  The best way to do this for perfonal use
 is SLIME from within Emacs, but I will demonstrate using the shell itself here.\\
 \texttt{sbcl}
 
-Now we are in SBCL.\\
-\texttt{(require :asdf)} \textit{; Require ASDF}\\
-\texttt{(require :sigma)} \textit{; Require the system via ASDF.}\\
-\texttt{(sigma:use-all-sigma)} \textit{; This will pollute COMMON-LISP-USER}\\
-\texttt{(sum (loop for i from 1 to 100 collect i))} \textit{; Returns 5050 and makes Euler sad.}
+Now we are in SBCL.  Let's calculate something.
+
+$$\sum_{i=0}^{100} i$$
+
+\begin{lstlisting}
+(require :asdf)} ; Require ASDF
+(require :sigma) ; Require the Sigma system via ASDF.
+(sigma:use-all-sigma) ; This will pollute COMMON-LISP-USER.
+(sum (loop for i from 1 to 100
+           collect i)) ; Returns 5050, and makes Euler sad.
+\end{lstlisting}
 
 Have fun!
