@@ -588,8 +588,15 @@ Dylan.
 
 \lispExamples
 
+We want to calculate:
+
+$$
+\sin\left( \cos\left( \tan\left( \pi \right) \right) \right)
+\approx 0.841{,}470{,}984{,}807{,}896{,}5
+$$
+
 \begin{lstlisting}
-(funcall (compose #'sin #'cos #'tan) pi) ; Returns about 0.8414709848078965.
+(funcall (compose #'sin #'cos #'tan) pi)
 (sin (cos (tan pi))) ; This is the same.
 \end{lstlisting}
 
@@ -630,10 +637,10 @@ Dylan.
 \lispExamples
 
 \begin{lstlisting}
-(let ((x 123)
+(let ((x 100)
       (f (curry #'+ x)))
   (loop for i from 1 to 10 collect
-        (funcall f i)))
+        (funcall f i))) ; Returns '(101 102 103 ... 110)
 \end{lstlisting}
 
 \lispFunctionSubsection{disjoin}
@@ -707,21 +714,59 @@ The \texttt{rcompose} function is a reversed variant of the \texttt{compose} fun
 
 \lispExamples
 
+We want to calculate:
+
+$$
+\tan\left( \cos\left( \sin\left( \pi \right) \right) \right)
+\approx 1.557{,}407{,}724{,}654{,}902{,}3
+$$
+
 \begin{lstlisting}
-(funcall (rcompose #'sin #'cos #'tan) pi) ; Returns about 1.5574077246549023.
+(funcall (rcompose #'sin #'cos #'tan) pi)
 (tan (cos (sin pi))) ; This is the same.
 \end{lstlisting}
 
 \lispFunctionSubsection{rcurry}
 
-\TODO
+This function takes in a function and some of its ending arguments, and returns
+a function that expects the rest of the required arguments. This is from
+\cite{ansi-common-lisp} and is based upon the \texttt{rcurry} function from
+Dylan.
+
+\lispSyntax
+
+\texttt{(rcurry \lispVar{function} \&rest \lispVar{arguments})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((x 100)
+      (f (rcurry #'- x)))
+  (loop for i from 1 to 10 collect
+        (funcall f i))) ; Returns '(-99 -98 -97 ... -90)
+\end{lstlisting}
 
 \lispFunctionSubsection{unimplemented}
 
-\TODO
+This is a convenience function that merely raises an error.  It is for code that
+is yet to be written.
+
+\lispSyntax
+
+\texttt{(unimplemented)}
+
+\lispExamples
+
+\begin{lstlisting}
+(defun turing-test-solver ()
+  (unimplemented)) ; TODO: figure out how to program this.
+\end{lstlisting}
 
 \section{Generics}
 
 \lispGenericSubsection{duplicate}
 
-\TODO
+The \texttt{duplicate} generic is to provide a deep copy facility for any of
+your objects.  If you define a class and want a deep copy facility for it,
+implement a version of \texttt{duplicate} that is correct for it.  This library
+provides versions of \texttt{duplicate} for most built-in classes already.
