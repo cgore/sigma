@@ -638,9 +638,9 @@ Dylan.
 
 \lispFunctionSubsection{disjoin}
 
-This function takes in one or more predicates, and returns a predicate that
-returns true whenever any of the predicates return true. This is from
-\cite{ansi-common-lisp} and is based upon the disjoin function from Dylan.
+The \texttt{disjoin} function takes in one or more predicates, and returns a
+predicate that returns true whenever any of the predicates return true. This is
+from \cite{ansi-common-lisp} and is based upon the disjoin function from Dylan.
 
 \lispSyntax
 
@@ -660,11 +660,42 @@ returns true whenever any of the predicates return true. This is from
 
 \lispFunctionSubsection{function-alias}
 
-\TODO
+The \texttt{function-alias} function produces one or more aliases (alternate
+names) for a function.
+
+\lispSyntax
+
+\texttt{(function-alias \lispVar{function} \&rest \lispVar{aliases})}
+
+\lispExamples
+
+\begin{lstlisting}
+(function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)
+\end{lstlisting}
 
 \lispFunctionSubsection{operator-to-function}
 
-\TODO
+The \texttt{operator-to-function} function takes in any symbol and makes an
+evaluatable function out of it. The principle purpose for this is so that we can
+treat macros and other non-function things like a function, for using them with
+\texttt{mapcar} or similar.
+
+\knownIssues
+
+\GithubIssue{8}
+
+\lispSyntax
+
+\texttt{(operator-to-function \lispVar{operator})}
+
+\lispExamples
+
+\begin{lstlisting}
+;;; In case you don't like (setf a 1 b 2 c 3).
+(mapcar (operator-to-function 'setf)
+        '(a b c)
+        '(1 2 3))
+\end{lstlisting}
 
 \lispFunctionSubsection{rcompose}
 

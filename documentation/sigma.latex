@@ -70,6 +70,7 @@
 \newcommand{\lispSyntax}[1]{\subsubsection*{Syntax}}
 \newcommand{\lispExamples}[1]{\subsubsection*{Examples}}
 \newcommand{\lispAffectedBy}[1]{\subsubsection*{Affected By}}
+\newcommand{\knownIssues}[1]{\subsubsection*{Known Issues}}
 
 \definecolor{commentcolor}{rgb}{0.1,0.1,0.4}
 \definecolor{identifiercolor}{rgb}{0.2,0.2,0.2}
@@ -93,6 +94,8 @@
   \texttt{#1} $\Longrightarrow$ \texttt{#2}
 }
 \newcommand{\lispVar}[1]{\texttt{\textit{#1}}}
+
+\newcommand{\GithubIssue}[1]{\href{https://github.com/cgore/sigma/issues/#1}{{\color{red}[Issue \##1]}}}
 
 \title{{\Huge $\Sigma$}\\
   A Library for \textsc{Ansi} Common Lisp}
