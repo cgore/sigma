@@ -37,7 +37,7 @@ Now we need to start up our Lisp REPL.  The best way to do this for perfonal use
 Now we are in SBCL.
 
  (require :asdf) ; Require ASDF
- (require :sigma) ; Require the system via ASDF.
+ (asdf:operate 'asdf:load-op 'sigma) ; Require the system via ASDF.
  (sigma:use-all-sigma) ; This will pollute COMMON-LISP-USER
  (sum (loop for i from 1 to 100 collect i)) ; Returns 5050 and makes Euler sad.
 
