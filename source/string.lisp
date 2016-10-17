@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2013, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2016, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -101,7 +101,13 @@ END."
            (when (eq current #\~)
              (push #\~ result))
            (push current result))
-    (strcat (reverse result))))
+    (apply 'strcat (reverse result))))
+
+(behavior 'escape-tildes
+  (should-equal (escape-tildes "foo bar")
+                "foo bar")
+  (should-equal (escape-tildes "foo~bar")
+                "foo~~bar"))
 
 (defun replace-char (string from-char to-char)
   "Replaces every instance of FROM-CHAR with TO-CHAR."
