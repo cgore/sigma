@@ -92,23 +92,6 @@ END."
   (should-equal (character-ranges #\a #\z)
                 (character-ranges #\z #\a)))
 
-(defun escape-tildes (string)
-  (let ((input (vector-to-list string))
-        (result nil)
-        (current nil))
-    (while (not (null input))
-           (setf current (pop input))
-           (when (eq current #\~)
-             (push #\~ result))
-           (push current result))
-    (apply 'strcat (reverse result))))
-
-(behavior 'escape-tildes
-  (should-equal (escape-tildes "foo bar")
-                "foo bar")
-  (should-equal (escape-tildes "foo~bar")
-                "foo~~bar"))
-
 (defun replace-char (string from-char to-char)
   "Replaces every instance of FROM-CHAR with TO-CHAR."
   (assert (stringp string))
@@ -176,6 +159,23 @@ versions."
           (should-string= "foo" (strcat "foo"))
           (should-string= "1234" (strcat 1 2 3 4))
           (should-string= "1" (strcat 1)))
+
+(defun escape-tildes (string)
+  (let ((input (vector-to-list string))
+        (result nil)
+        (current nil))
+    (while (not (null input))
+           (setf current (pop input))
+           (when (eq current #\~)
+             (push #\~ result))
+           (push current result))
+    (apply 'strcat (reverse result))))
+
+(behavior 'escape-tildes
+  (should-equal (escape-tildes "foo bar")
+                "foo bar")
+  (should-equal (escape-tildes "foo~bar")
+                "foo~~bar"))
 
 (defun strmult (count &rest strings)
   (apply #'strcat (loop for i from 1 to count
