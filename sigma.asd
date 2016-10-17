@@ -1,4 +1,5 @@
-;;;; Copyright (c) 2005 -- 2014, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2016, Christopher Mark Gore,
+;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
 ;;;; 2317 South River Road, Saint Charles, Missouri 63303 USA.
@@ -44,7 +45,7 @@
 
 (defparameter version-major 3)
 (defparameter version-minor 4)
-(defparameter version-revision 6)
+(defparameter version-revision 7)
 
 (defun version-list ()
   (list version-major version-minor version-revision))
