@@ -1,8 +1,8 @@
-;;;; Copyright (c) 2005 -- 2016, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2021, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
-;;;; 2317 South River Road, Saint Charles, Missouri 63303 USA.
+;;;; 22 Forest Glade Court, Saint Charles, Missouri 63304 USA.
 ;;;; Web: http://cgore.com
 ;;;; Email: cgore@cgore.com
 ;;;;
@@ -60,10 +60,10 @@
   :version #.(version-string)
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "
-Copyright (c) 2005 -- 2016, Christopher Mark Gore,
+Copyright (c) 2005 -- 2021, Christopher Mark Gore,
 All rights reserved.
 
-2317 South River Road, Saint Charles, Missouri 63303 USA.
+22 Forest Glade Court, Saint Charles, Missouri 63304 USA.
 Web: http://cgore.com
 Email: cgore@cgore.com
 
