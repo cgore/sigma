@@ -51,7 +51,7 @@
   "The POPULATE-HASH-TABLE function makes initial construction of hash tables a
 lot easier, just taking in key/value pairs as the arguments to the function, and
 returning a newly-constructed hash table."
-  (let ((result (make-hash-table)))
+  (let ((result (make-hash-table :test 'equal)))
     (a?while key (pop pairs)
       (sethash key result (pop pairs)))
     result))
@@ -64,6 +64,13 @@ returning a newly-constructed hash table."
       (should= (gethash 'a h) 1)
       (should= (gethash 'b h) 2)
       (should= (gethash 'c h) 3)))
+  (spec "works with string keys"
+    (let ((h (populate-hash-table "a" 1
+                                  "b" 2
+                                  "c" 3)))
+      (should= (gethash "a" h) 1)
+      (should= (gethash "b" h) 2)
+      (should= (gethash "c" h) 3)))
   (spec "handles lists as values"
     (let ((v (populate-hash-table 'name "Valentinus"
                                   'likes '(birds roses)
