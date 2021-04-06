@@ -40,7 +40,10 @@
            :populate-hash-table
            :inchash
            :dechash
-           :gethash-in))
+           :gethash-in
+           :make-partition
+           :set-partition
+           :populate-partition))
 (in-package :sigma/hash)
 
 (defmacro sethash (key hash-table value)
@@ -124,3 +127,70 @@ be specified at once, to work with nested hash tables."
       (sethash 'b i 123)
       (sethash 'a h i)
       (should= (gethash-in '(a b) h 123)))))
+
+(defun make-partition ()
+  "The MAKE-PARTITION function is a variant of MAKE-HASH-TABLE that assumes
+you're going to use the hash table for partitions with multiple entries per
+key, not a one-to-one hashmap."
+  (make-hash-table :test 'equal))
+
+(defmacro set-partition (key hash-table value)
+  "The SET-PARTITION macro is a variant of SETHASH that assumes the hash entries
+are all sequences, allowing for multiple results per key.  When you call GETHASH
+on the hashmap you will get back a sequence of all the entries for that key."
+  `(sethash ,key ,hash-table
+            (if (gethash ,key ,hash-table)
+                (cons ,value (gethash ,key ,hash-table))
+                (list ,value))))
+
+(behavior 'set-partition
+  (spec "simple example"
+    (let ((p (make-partition)))
+      (set-partition 'a p 1)
+      (set-partition 'b p 2)
+      (set-partition 'c p 3)
+      (set-partition 'a p 4)
+      (should-equal (gethash 'a p) '(4 1))
+      (should-equal (gethash 'b p) '(2))
+      (should-equal (gethash 'c p) '(3))
+      (should-equal (gethash 'd p) nil)))
+  (spec "works with lists"
+    (let ((p (make-partition)))
+      (set-partition 'a p '(1 2 3))
+      (set-partition 'a p 4)
+      (set-partition 'a p '(5 6 7))
+      (set-partition 'b p 8)
+      (set-partition 'c p 9)
+      (should-equal (gethash 'a p) '((5 6 7) 4 (1 2 3)))
+      (should-equal (gethash 'b p) '(8))
+      (should-equal (gethash 'c p) '(9)))))
+
+(defun populate-partition (&rest pairs)
+  "The POPULATE-PARTITION function make initial construction of a partition a
+lot easier, just taking in key/value pairs as the arguments to the function,
+where there can be multiple entries for any key, and returning a
+newly-constructed partition."
+  (let ((result (make-partition)))
+    (a?while key (pop pairs)
+      (set-partition key result (pop pairs)))
+    result))
+
+(behavior 'populate-partition
+  (spec "simple example"
+    (let ((p (populate-partition 'a 1
+                                 'b 2
+                                 'c 3
+                                 'a 4)))
+      (should-equal (gethash 'a p) '(4 1))
+      (should-equal (gethash 'b p) '(2))
+      (should-equal (gethash 'c p) '(3))
+      (should-equal (gethash 'd p) nil)))
+  (spec "works with lists"
+    (let ((p (populate-partition 'a '(1 2 3)
+                                 'a 4
+                                 'a '(5 6 7)
+                                 'b 8
+                                 'c 9)))
+      (should-equal (gethash 'a p) '((5 6 7) 4 (1 2 3)))
+      (should-equal (gethash 'b p) '(8))
+      (should-equal (gethash 'c p) '(9)))))

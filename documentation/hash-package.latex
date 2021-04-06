@@ -40,6 +40,46 @@
 
 The \texttt{sethash} macro is shortcut for \texttt{setf gethash}.
 
+\lispSyntax
+
+\texttt{(set-partition \lispVar{key} \lispVar{hash-table} \lispVar{value})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{key}] The key to add to in the hash table.
+\item[\lispVar{hash-table}] The hash table we are modifying.
+\item[\lispVar{value}] The value to set the hash table key to.
+\end{description}
+
+\lispReturns
+
+The new \lispVar{value} for key.
+
+\lispMacroSubsection{set-partition}
+
+The \texttt{set-partition} macro is a variant of \texttt{sethash} that assumes
+the hash entries are all sequences, allowing for multiple results per key.  When
+you call \texttt{gethash} on the hashmap you will get back a sequence of all the
+entries for that key.
+
+\lispSyntax
+
+\texttt{(set-partition \lispVar{key} \lispVar{hash-table} \lispVar{value})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{key}] The key to add to in the hash table.
+\item[\lispVar{hash-table}] The partition, a hash table, we are modifying.
+\item[\lispVar{value}] The value to add to the hash table key. 
+\end{description}
+
+\lispReturns
+
+The new set of values for key, a sequence containing your newly added
+\lispVar{value} and any previously added values.
+
 \section{Functions}
 
 \lispFunctionSubsection{populate-hash-table}
@@ -104,4 +144,38 @@ multiple keys to be specified at once, to work with nested hash tables.
   (sethash 'b i 123)
   (sethash 'a h i)
   (gethash-in '(a b) h 123)) ; Returns 123
+\end{lstlisting}
+
+\lispFunctionSubsection{make-partition}
+
+The \texttt{make-partition} function is a variant of \texttt{make-hash-table}
+that assumes you're going to use the hash table for partitions with multiple
+entries per key, not a one-to-one hashmap.
+
+\lispSyntax
+
+\texttt{(make-partition)}
+
+\lispFunctionSubsection{populate-partition}
+
+The \texttt{populate-partition} function make initial construction of a
+partition a lot easier, just taking in key/value pairs as the arguments to the
+function, where there can be multiple entries for any key, and returning a
+newly-constructed partition.
+
+\lispSyntax
+
+\texttt{(populate-partition \&rest \lispVar{pairs})}
+
+\lispExamples
+
+\begin{lstlisting}
+(populate-partition 'a '(1 2 3)
+                    'a 4
+                    'a '(5 6 7)
+                    'b 8
+                    'c 9
+                    'c 10
+                    'd 11
+                    'a 147)
 \end{lstlisting}
