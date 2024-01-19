@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2024, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -38,7 +38,8 @@
         :sigma/control
         :sigma/numeric
         :sigma/sequence)
-  (:export :character-range
+  (:export :+whitespace+
+           :character-range
            :character-ranges
            :escape-tildes
            :replace-char
@@ -49,6 +50,10 @@
            :strmult
            :to-string))
 (in-package :sigma/string)
+
+(when (not (find-symbol "+whitespace+"))
+  (defconstant +whitespace+
+    '(#\Space #\Newline #\Backspace #\Tab #\Linefeed #\Page #\Return #\Rubout)))
 
 (defun character-range (start end)
   "The CHARACTER-RANGE function returns a list of the characters from START to
@@ -121,6 +126,33 @@ END."
            (mapcar (lambda (string)
                      (concatenate 'string connecting-string string))
                    (rest strings)))))
+
+(defun string-trim-whitespace (string)
+  "Removes whitespace from the left side and the right side of a string."
+  (string-trim +whitespace+ string))
+
+(behavior 'string-trim-whitespace
+  (should-string= (string-trim-whitespace "   foo   ") "foo")
+  (should-string= (string-trim-whitespace "foo   ")    "foo")
+  (should-string= (string-trim-whitespace "   foo")    "foo"))
+
+(defun string-left-trim-whitespace (string)
+  "Removes whitespace from the left side only of a string."
+  (string-left-trim +whitespace+ string))
+
+(behavior 'string-left-trim-whitespace
+  (should-string= (string-left-trim-whitespace "   foo   ") "foo   ")
+  (should-string= (string-left-trim-whitespace "foo   ")    "foo   ")
+  (should-string= (string-left-trim-whitespace "   foo")    "foo"))
+
+(defun string-right-trim-whitespace (string)
+  "Removes whitespace from the right side only of a string."
+  (string-right-trim +whitespace+ string))
+
+(behavior 'string-right-trim-whitespace
+  (should-string= (string-right-trim-whitespace "   foo   ") "   foo")
+  (should-string= (string-right-trim-whitespace "foo   ")    "foo")
+  (should-string= (string-right-trim-whitespace "   foo")    "   foo"))
 
 (defun stringify (argument)
   "The STRINGIFY function takes in an argument of any type and converts it to a

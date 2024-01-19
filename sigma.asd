@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2021, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2024, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -44,7 +44,7 @@
 (in-package :sigma/system)
 
 (defparameter version-major 3)
-(defparameter version-minor 5)
+(defparameter version-minor 6)
 (defparameter version-revision 0)
 
 (defun version-list ()
@@ -60,7 +60,7 @@
   :version #.(version-string)
   :author "Christopher Mark Gore <cgore@cgore.com>"
   :license "
-Copyright (c) 2005 -- 2021, Christopher Mark Gore,
+Copyright (c) 2005 -- 2024, Christopher Mark Gore,
 All rights reserved.
 
 22 Forest Glade Court, Saint Charles, Missouri 63304 USA.
