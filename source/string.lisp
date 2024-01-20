@@ -46,6 +46,9 @@
            :strcat
            :stringify
            :string-join
+           :string-trim-whitespace
+           :string-left-trim-whitespace
+           :string-right-trim-whitespace
            :split
            :strmult
            :to-string))

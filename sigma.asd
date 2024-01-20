@@ -45,7 +45,7 @@
 
 (defparameter version-major 3)
 (defparameter version-minor 6)
-(defparameter version-revision 0)
+(defparameter version-revision 1)
 
 (defun version-list ()
   (list version-major version-minor version-revision))
