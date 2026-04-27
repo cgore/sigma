@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2021, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2026, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -41,7 +41,9 @@
            :should-be-null
            :should-be-a
            :should-be-true
-           :should-be-false))
+           :should-be-false
+           :should-not-be-true
+           :should-not-be-false))
 (in-package :sigma/behave)
 
 (defmacro behavior (thing &body body)
@@ -170,3 +172,11 @@ specified by TYPE.
 (defmacro should-be-false (&body body)
   "The SHOULD-BE-FALSE macro is a short-hand method for (SHOULD #'NOT ...)."
   `(should #'not (progn ,@body)))
+
+(defmacro should-not-be-true (&body body)
+  "The SHOULD-NOT-BE-TRUE macro is a short-hand method for (SHOULD-NOT #'IDENTITY ...)."
+  `(should-not #'identity (progn ,@body)))
+
+(defmacro should-not-be-false (&body body)
+  "The SHOULD-BE-FALSE macro is a short-hand method for (SHOULD-NOT #'NOT ...)."
+  `(should-not #'not (progn ,@body)))
