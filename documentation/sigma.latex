@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -98,7 +98,8 @@
 \newcommand{\GithubIssue}[1]{\href{https://github.com/cgore/sigma/issues/#1}{{\color{red}[Issue \##1]}}}
 
 \title{{\Huge $\Sigma$}\\
-  A Library for \textsc{Ansi} Common Lisp}
+  A Library for \textsc{Ansi} Common Lisp\\
+  \url{https://github.com/cgore/sigma/}}
 \author{Christopher Mark Gore\\
   \url{http://www.cgore.com}\\
   \mailto{cgore@cgore.com}}

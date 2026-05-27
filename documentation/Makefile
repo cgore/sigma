@@ -1,4 +1,4 @@
-#### Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+#### Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 #### Soli Deo Gloria,
 #### All rights reserved.
 ####
