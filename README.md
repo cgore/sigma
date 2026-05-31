@@ -52,8 +52,7 @@ is SLIME from within Emacs, but I will demonstrate using the shell itself here.
 Now we are in SBCL.
 
 ```lisp
-(require :asdf) ; Require ASDF
-(asdf:operate 'asdf:load-op 'sigma) ; Require the system via ASDF.
+(asdf:load-system :sigma) ; Require the system via ASDF.
 (sigma:use-all-sigma) ; This will pollute COMMON-LISP-USER
 (sum (loop for i from 1 to 100 collect i)) ; Returns 5050 and makes Euler sad.
 ```
