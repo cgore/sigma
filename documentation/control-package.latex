@@ -338,6 +338,38 @@ specify the anaphor to use, instead of just the default \texttt{it}.
   (do-something input)) ; Operate on input for all input.
 \end{lstlisting}
 
+\lispMacroSubsection{defconstant-once}
+
+The \texttt{defconstant-once} macro defines a constant using
+\texttt{defconstant}, but only if it is not already bound.  This is particularly
+useful for large immutable datasets so that reloading a file with ASDF does not
+produce redefinition warnings.
+
+\lispSyntax
+
+\texttt{(defconstant-once \lispVar{name} \lispVar{value} \&optional \lispVar{docstring})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{name}] The name of the constant (conventionally using
+  \texttt{+plus-signs+}).
+\item[\lispVar{value}] The value of the constant.  This expression is evaluated
+  only the first time the constant is defined.
+\item[\lispVar{docstring}] An optional documentation string for the constant.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(defconstant-once +reward-a1-stats+
+  '((697 46.467 1345840.30 0.49023)
+    ...)
+  "Statistics from reward-a1 runs.")
+\end{lstlisting}
+
+This macro is defined in the \texttt{sigma/control} package.
+
 \lispMacroSubsection{deletef}
 
 The \texttt{deletef} macro deletes \texttt{item} from \texttt{sequence}

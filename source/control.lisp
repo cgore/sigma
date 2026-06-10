@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2021, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2026, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -52,6 +52,7 @@
            :compose
            :conjoin
            :curry
+           :defconstant-once
            :deletef
            :disjoin
            :do-until
@@ -395,6 +396,41 @@ and Common Lisp, with a syntax like Pascal.''"
           (loop for i from 1 to 100
              do (should= (funcall (curry #'+ 1 2) i)
                          (+ 1 2 i))))
+
+(defmacro defconstant-once (name value &optional docstring)
+  "Define NAME as a constant with VALUE, but only if it is not already bound.
+
+NAME should be a symbol (typically in +plus-signs+ convention).
+VALUE is evaluated once, when the constant is first defined.
+DOCSTRING is an optional documentation string."
+  `(unless (boundp ',name)
+     (defconstant ,name ,value ,@(when docstring (list docstring)))))
+
+(let ((unique-name (gentemp "TEST-CONSTANT-")))
+  (eval `(defconstant-once ,unique-name 42 "A test constant."))
+
+  (should-be-true (boundp unique-name))
+  (should= (symbol-value unique-name) 42)
+  (should-equalp (documentation unique-name 'variable) "A test constant.")
+  )
+
+(behavior 'defconstant-once
+  "Tests for the defconstant-once macro."
+
+  (spec "defines only on first call and ignores subsequent calls"
+    (let ((unique-name (gentemp "TEST-CONSTANT-")))
+      ;; First definition
+      (eval `(defconstant-once ,unique-name 42 "A test constant."))
+
+      (should-be-true (boundp unique-name))
+      (should= (symbol-value unique-name) 42)
+      (should-equalp (documentation unique-name 'variable) "A test constant.")
+
+      ;; Second call should be ignored (no redefinition)
+      (eval `(defconstant-once ,unique-name 999 "This should be ignored."))
+
+      (should= (symbol-value unique-name) 42)        ; value unchanged
+      (should-equalp (documentation unique-name 'variable) "A test constant."))))
 
 #-cmu
 (defmacro deletef (item sequence &rest rest)
