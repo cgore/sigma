@@ -1,4 +1,4 @@
-;;;; Copyright (C) 2005 -- 2024, Christopher Mark Gore,
+;;;; Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -54,9 +54,8 @@
            :to-string))
 (in-package :sigma/string)
 
-(when (not (find-symbol "+whitespace+"))
-  (defconstant +whitespace+
-    '(#\Space #\Newline #\Backspace #\Tab #\Linefeed #\Page #\Return #\Rubout)))
+(defconstant-once +whitespace+
+                  '(#\Space #\Newline #\Backspace #\Tab #\Linefeed #\Page #\Return #\Rubout))
 
 (defun character-range (start end)
   "The CHARACTER-RANGE function returns a list of the characters from START to
