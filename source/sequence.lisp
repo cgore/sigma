@@ -86,10 +86,13 @@
                  nil)))
 
 (defmacro set-nthcdr (n list new-value)
-  `(progn (assert (sigma/numeric:nonnegative-integer? ,n))
+  `(progn (assert (and (integerp ,n)
+                       (not (minusp ,n)))
+                  (,n)
+                  "The value ~S is not a nonnegative integer." ,n)
           (if (zerop ,n)
-            (setf ,list ,new-value)
-            (setf (cdr (nthcdr (1- ,n) ,list)) ,new-value))))
+              (setf ,list ,new-value)
+              (setf (cdr (nthcdr (1- ,n) ,list)) ,new-value))))
 
 #+cmu (defsetf nthcdr set-nthcdr)
 #+sbcl (sb-ext:without-package-locks (defsetf nthcdr set-nthcdr))
