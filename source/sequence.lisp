@@ -86,7 +86,7 @@
                  nil)))
 
 (defmacro set-nthcdr (n list new-value)
-  `(progn (assert (nonnegative-integer? ,n))
+  `(progn (assert (sigma/numeric:nonnegative-integer? ,n))
           (if (zerop ,n)
             (setf ,list ,new-value)
             (setf (cdr (nthcdr (1- ,n) ,list)) ,new-value))))
