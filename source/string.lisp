@@ -44,6 +44,7 @@
            :escape-tildes
            :replace-char
            :strcat
+           :string-concatenate
            :stringify
            :string-join
            :string-trim-whitespace
@@ -193,6 +194,8 @@ versions."
           (should-string= "foo" (strcat "foo"))
           (should-string= "1234" (strcat 1 2 3 4))
           (should-string= "1" (strcat 1)))
+
+(function-alias 'strcat 'string-concatenate)
 
 (defun escape-tildes (string)
   (let ((input (vector-to-list string))
