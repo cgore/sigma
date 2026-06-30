@@ -294,7 +294,7 @@ sequence with the same predicate and key."
 
 (defun sort-order (sequence predicate &key (key #'identity))
   "This function returns the indices in the order for the sorted sequence."
-  (sort-on (integer-range (1- (length sequence)))
+  (sort-on (loop for i from 0 below (length sequence) collect i)
            sequence
            predicate
            :key key))
