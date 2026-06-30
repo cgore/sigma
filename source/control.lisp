@@ -61,9 +61,12 @@
            :fop
            :for
            :forever
+           :function-alias-as-a-function
+           :function-aliases-as-a-function
            :function-alias
            :function-aliases
            :it
+           :macro-alias
            :multicond
            :operator-to-function
            :opf
@@ -516,14 +519,46 @@ Generally this should not be used, but instead the native looping methods."
 expressiveness and explicitness."
   `(while t ,@body))
 
-(defun function-alias (function &rest aliases)
+(defmacro macro-alias (macro &rest aliases)
+  "This produces one or more aliases (alternate names) for a macro."
+  `(progn
+     ,@(mapcar (lambda (a)
+                 `(setf (macro-function ',a) (macro-function ',macro)))
+               aliases)))
+
+(defun function-alias-as-a-function (function &rest aliases)
   "This produces one or more aliases (alternate names) for a function.
 For example, you might do something like:
-> (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)"
+
+> (function-alias-as-a-function 'that-guy-doesnt-know-when-to-stop-typing 'shorter)
+
+This is the older DEFUN variant, the newer variant is a DEFMACRO below."
   (loop for alias in aliases
         do (setf (fdefinition alias) (fdefinition function))))
 
-(function-alias 'function-alias 'function-aliases) ; This line seemed fitting.
+(function-alias-as-a-function 'function-alias-as-a-function
+                              'function-aliases-as-a-function)
+
+(defmacro function-alias (function &rest aliases)
+  "This produces one or more aliases (alternate names) for a function.
+For example, you might do something like:
+
+> (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)"
+  (let* ((the-function (if (consp function)
+                           (second function)
+                           function))
+         (the-aliases (mapcar #'(lambda (a)
+                                  (if (consp a)
+                                      (second a)
+                                      a))
+                              aliases)))
+    `(progn
+       ,@(mapcar #'(lambda (a) `(declaim (ftype function ,a))) the-aliases)
+       ,(when the-aliases
+          `(setf (fdefinition ',(first the-aliases))
+                 (fdefinition ',the-function))))))
+
+(macro-alias function-alias function-aliases)
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."
