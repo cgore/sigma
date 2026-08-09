@@ -35,6 +35,7 @@
 
 (defpackage :sigma/truth
   (:use :common-lisp
+        :sigma/behave
         :sigma/control)
   (:export :?
            :[?]
@@ -53,10 +54,23 @@ any non-NIL value becomes T."))
 Lisp-style simplistic truth value (NIL, T)."
   (if x t nil))
 
+(behavior '?
+  (should-be-null (? nil))
+  (should-eq t (? t))
+  (should-eq t (? 0))
+  (should-eq t (? 'foo))
+  (should-eq t (? '(1 2 3))))
+
 
 (defun toggle (x)
   "Return the boolean negation of X: NIL if X is true, T if X is false."
   (if x nil t))
+
+(behavior 'toggle
+  (should-eq t (toggle nil))
+  (should-be-null (toggle t))
+  (should-be-null (toggle 1))
+  (should-be-null (toggle 'x)))
 
 
 (defun [?] (x)
@@ -64,3 +78,9 @@ Lisp-style simplistic truth value (NIL, T)."
 for false based upon its truth value.  In other words, NIL -> 0 and everything
 else -> 1."
   (if x 1 0))
+
+(behavior '[?]
+  (should= 0 ([?] nil))
+  (should= 1 ([?] t))
+  (should= 1 ([?] 0))
+  (should= 1 ([?] 'anything)))

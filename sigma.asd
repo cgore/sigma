@@ -111,7 +111,8 @@
                                            "numeric"
                                            "sequence"))
                              (:file "truth"
-                              :depends-on ("control"))
+                              :depends-on ("behave"
+                                           "control"))
                              (:file "sigma"
                               :depends-on ("behave"
                                            "control"
