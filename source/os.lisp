@@ -35,6 +35,7 @@
 
 (defpackage :sigma/os
   (:use :common-lisp
+        :sigma/behave
         :sigma/control
         :sigma/string)
   (:export :*perl-path*
@@ -90,6 +91,41 @@
                   (cons current-line result)))
       ((null current-line)
        (reverse (rest result))))))
+
+(behavior 'read-file
+  (let ((path (merge-pathnames
+               (make-pathname :name (format nil "sigma-os-rf-~A" (random 100000000))
+                              :type "tmp")
+               #p"/tmp/")))
+    (unwind-protect
+         (progn
+           (with-open-file (out path :direction :output
+                                :if-exists :supersede
+                                :if-does-not-exist :create)
+             (write-string "hello" out)
+             (write-char #\Newline out)
+             (write-string "world" out))
+           (should-string= (read-file path)
+                           (format nil "hello~%world")))
+      (when (probe-file path)
+        (delete-file path)))))
+
+(behavior 'read-lines
+  (let ((path (merge-pathnames
+               (make-pathname :name (format nil "sigma-os-rl-~A" (random 100000000))
+                              :type "tmp")
+               #p"/tmp/")))
+    (unwind-protect
+         (progn
+           (with-open-file (out path :direction :output
+                                :if-exists :supersede
+                                :if-does-not-exist :create)
+             (write-line "alpha" out)
+             (write-line "beta" out)
+             (write-string "gamma" out))
+           (should-equal (read-lines path) '("alpha" "beta" "gamma")))
+      (when (probe-file path)
+        (delete-file path)))))
 
 
 (defparameter *ruby-path* "/usr/bin/ruby")

@@ -90,7 +90,8 @@
                                            "control"
                                            "sequence"))
                              (:file "os"
-                              :depends-on ("control"
+                              :depends-on ("behave"
+                                           "control"
                                            "string"))
                              (:file "probability"
                               :depends-on ("control"
