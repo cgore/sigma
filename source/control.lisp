@@ -288,38 +288,50 @@
             (should-eq result :bar)))
 
 (defmacro awhile (expression &body body)
-  "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191."
-  `(do ((it ,expression ,expression))
-       ((not it))
-     ,@body))
+  "This is anaphoric WHILE, from Paul Graham's ``On Lisp'' page 191.
+Returns the value of the last form in BODY from the last iteration, or NIL if
+BODY never runs."
+  (let ((result (gensym "RESULT")))
+    `(let ((,result nil))
+       (do ((it ,expression ,expression))
+           ((not it) ,result)
+         (setf ,result (progn ,@body))))))
 
 (behavior 'awhile
           (let ((i 0))
-            (should-be-null (awhile (< i 10) (incf i)))
+            (should= 10 (awhile (< i 10) (incf i)))
             (should= i 10))
           (let ((forward '(1 2 3 4 5))
                 (backward nil))
-            (should-be-null (awhile (pop forward)
-                              (push it backward)))
+            (should-equal '(5 4 3 2 1)
+                          (awhile (pop forward)
+                            (push it backward)))
             (should-be-null forward)
-            (should-equal '(5 4 3 2 1) backward)))
+            (should-equal '(5 4 3 2 1) backward))
+          (should-be-null (awhile nil t)))
 
 (defmacro a?while (anaphor expression &body body)
-  "This is an anaphoric WHILE that allows for the specification of the anaphor."
-  `(do ((,anaphor ,expression ,expression))
-       ((not ,anaphor))
-     ,@body))
+  "This is an anaphoric WHILE that allows for the specification of the anaphor.
+Returns the value of the last form in BODY from the last iteration, or NIL if
+BODY never runs."
+  (let ((result (gensym "RESULT")))
+    `(let ((,result nil))
+       (do ((,anaphor ,expression ,expression))
+           ((not ,anaphor) ,result)
+         (setf ,result (progn ,@body))))))
 
 (behavior 'a?while
           (let ((i 0))
-            (should-be-null (a?while foo (< i 10) (incf i)))
+            (should= 10 (a?while foo (< i 10) (incf i)))
             (should= i 10))
           (let ((forward '(1 2 3 4 5))
                 (backward nil))
-            (should-be-null (a?while number (pop forward)
-                              (push number backward)))
+            (should-equal '(5 4 3 2 1)
+                          (a?while number (pop forward)
+                            (push number backward)))
             (should-be-null forward)
-            (should-equal '(5 4 3 2 1) backward)))
+            (should-equal '(5 4 3 2 1) backward))
+          (should-be-null (a?while foo nil t)))
 
 (defun rcompose (&rest functions)
   "A version of COMPOSE in reverse order."
@@ -712,50 +724,65 @@ swapped with each other."
   "Signal an error indicating that this code path is not yet implemented."
   (error "This is not yet implemented."))
 
-;;; TODO: It would be nice if this returned the last evaluated element of
-;;;       the body instead of the conditional.
 (defmacro while (conditional &body body)
-  "A WHILE macro, operating in a matter similar to the while loop in C."
-  `(do ()
-     ((not ,conditional))
-     ,@body))
+  "A WHILE macro, similar to the while loop in C.  Returns the value of the
+last form in BODY from the last iteration, or NIL if BODY never runs."
+  (let ((result (gensym "RESULT")))
+    `(let ((,result nil))
+       (do ()
+           ((not ,conditional) ,result)
+         (setf ,result (progn ,@body))))))
 
 (behavior 'while
           (let ((x 0))
-            (while (< x 10)
-              (incf x))
-            (should= x 10)))
+            (should= 10 (while (< x 10)
+                          (incf x)))
+            (should= x 10))
+          (let ((x 0))
+            (should= 30 (while (< x 3)
+                          (incf x)
+                          (* x 10))))
+          (should-be-null (while nil t)))
 
 (defmacro do-while (conditional &body body)
   "The DO-WHILE macro operates like a do {BODY} while (CONDITIONAL) in the C
-  programming language."
-  `(progn ,@body
-          (while ,conditional
-                 ,@body)))
+  programming language.  Returns the value of the last form in BODY from the
+  last iteration (BODY always runs at least once)."
+  (let ((result (gensym "RESULT")))
+    `(let ((,result (progn ,@body)))
+       (while ,conditional
+         (setf ,result (progn ,@body)))
+       ,result)))
 
 (behavior 'do-while
           (let ((i 100))
-            (do-while (<= 0 i) (decf i))
-            (should= i -1)))
+            (should= -1 (do-while (<= 0 i) (decf i)))
+            (should= i -1))
+          (should= 1 (let ((i 0))
+                       (do-while (< i 1) (incf i)))))
 
 (defmacro do-until (conditional &body body)
   "A DO-UNTIL loop construct; it operates like do {BODY} while (! CONDITIONAL)
-construct in the C programming language."
+construct in the C programming language.  Returns the value of the last form
+in BODY from the last iteration (BODY always runs at least once)."
   `(do-while (not ,conditional)
      ,@body))
 
 (behavior 'do-until
           (let ((i 100))
-            (do-until (<= i 0) (decf i))
+            (should= 0 (do-until (<= i 0) (decf i)))
             (should= i 0)))
 
 (defmacro until (conditional &body body)
-  "An UNTIL loop construct.  It operates in the negative sense as WHILE."
+  "An UNTIL loop construct.  It operates in the negative sense as WHILE.
+Returns the value of the last form in BODY from the last iteration, or NIL if
+BODY never runs."
   `(while (not ,conditional)
      ,@body))
 
 (behavior 'until
           (let ((x 0))
-            (until (<= 10 x)
-                   (incf x))
-            (should= x 10)))
+            (should= 10 (until (<= 10 x)
+                          (incf x)))
+            (should= x 10))
+          (should-be-null (until t t)))

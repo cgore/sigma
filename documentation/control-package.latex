@@ -309,7 +309,8 @@ allows you to specify the anaphor to use, instead of just the default of
 
 The \texttt{awhile} macro is an anaphoric variant of \texttt{while}.  This is
 based on \cite[p.~191]{on-lisp}.  This is useful if you need to consume input
-repeatedly for all input.
+repeatedly for all input.  It returns the value of the last form in the body
+from the last iteration, or \texttt{nil} if the body never runs.
 
 \lispSyntax
 
@@ -320,12 +321,19 @@ repeatedly for all input.
 \begin{lstlisting}
 (awhile (get-input)
   (do-something it)) ; Operate on input for all input.
+
+(let ((forward '(1 2 3))
+      (backward nil))
+  (awhile (pop forward)
+    (push it backward))) ; Returns (3 2 1)
 \end{lstlisting}
 
 \lispMacroSubsection{a?while}
 
 The \texttt{a?while} macro is a variant of \texttt{awhile} that allows you to
-specify the anaphor to use, instead of just the default \texttt{it}.
+specify the anaphor to use, instead of just the default \texttt{it}.  It
+returns the value of the last form in the body from the last iteration, or
+\texttt{nil} if the body never runs.
 
 \lispSyntax
 
@@ -392,7 +400,8 @@ in-place.
 
 The \texttt{do-while} macro operates like a
 \texttt{do \{BODY\} while (CONDITIONAL)}
-in the C programming language.
+in the C programming language.  The body always runs at least once.  The macro
+returns the value of the last form in the body from the last iteration.
 
 \lispSyntax
 
@@ -412,7 +421,8 @@ in the C programming language.
 
 The \texttt{do-until} macro operates like a
 \texttt{do \{\textit{body}\} while (! \textit{conditional})}
-in the C programming language.
+in the C programming language.  The body always runs at least once.  The macro
+returns the value of the last form in the body from the last iteration.
 
 \lispSyntax
 
@@ -570,7 +580,9 @@ This macro calls \texttt{swap} when the predicate evaluates to true.
 
 \lispMacroSubsection{until}
 
-The \texttt{until} macro is similar to the while loop in C, but with a negated conditional.
+The \texttt{until} macro is similar to the while loop in C, but with a negated
+conditional.  It returns the value of the last form in the body from the last
+iteration, or \texttt{nil} if the body never runs.
 
 \lispSyntax
 
@@ -584,11 +596,17 @@ The \texttt{until} macro is similar to the while loop in C, but with a negated c
     (format t "~A ... " x)
     (decf x))
   (format t "Liftoff!~%"))
+
+(let ((x 0))
+  (until (<= 10 x)
+    (incf x))) ; Returns 10
 \end{lstlisting}
 
 \lispMacroSubsection{while}
 
-This \texttt{while} macro is similar to the while loop in C.
+This \texttt{while} macro is similar to the while loop in C.  It returns the
+value of the last form in the body from the last iteration, or \texttt{nil} if
+the body never runs.
 
 \lispSyntax
 
@@ -602,7 +620,13 @@ This \texttt{while} macro is similar to the while loop in C.
     (format t "~A ... " x)
     (decf x))
   (format t "Liftoff!~%"))
+
+(let ((x 0))
+  (while (< x 3)
+    (incf x)
+    (* x 10))) ; Returns 30
 \end{lstlisting}
+
 
 
 \lispMacroSubsection{macro-alias}
