@@ -44,8 +44,8 @@
 (in-package :sigma/system)
 
 (defparameter version-major 3)
-(defparameter version-minor 8)
-(defparameter version-revision 6)
+(defparameter version-minor 9)
+(defparameter version-revision 0)
 
 (defun version-list ()
   (list version-major version-minor version-revision))
@@ -63,6 +63,21 @@
   :homepage "https://github.com/cgore/sigma"
   :source-control (:git "https://github.com/cgore/sigma.git")
   :bug-tracker "https://github.com/cgore/sigma/issues"
+
+  ;; Specs live in the sources as BEHAVIOR/SHOULD forms and run at load time.
+  ;; TEST-OP reloads every source file so those top-level assertions run again.
+  ;; (We LOAD sources directly rather than LOAD-SYSTEM :FORCE T, which ASDF
+  ;; forbids inside a nested OPERATE.)
+  :perform (test-op (operation system)
+                    (declare (ignore operation))
+                    (labels ((reload (component)
+                               (typecase component
+                                 (cl-source-file
+                                  (load (component-pathname component)))
+                                 (parent-component
+                                  (map nil #'reload (component-children component))))))
+                      (reload system)))
+
   :components ((:module "source"
                 :components ((:file "behave")
                              (:file "control"
