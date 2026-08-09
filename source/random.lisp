@@ -235,18 +235,35 @@ place."))
 
 
 (defmethod shuffle ((array array))
-  "This randomly shuffles the contents of an array."
-  (let ((result (duplicate array)))
-    (do* ((j (1- (array-total-size result)) (1- j))
-          (k (random-in-range 1 (1+ j)) (random-in-range 1 (1+ j))))
-      ((minusp j) result)
-      (swap (row-major-aref result j)
-            (row-major-aref result k)))))
+  "This randomly shuffles the contents of an array.
+Uses Fisher–Yates: for an array of size 0 or 1 the result is a copy of the
+input; larger arrays are shuffled in linear time."
+  (let* ((result (duplicate array))
+         (n (array-total-size result)))
+    (loop for j from (1- n) downto 1
+          for k = (random (1+ j)) ; 0 <= k <= j
+          do (swap (row-major-aref result j)
+                   (row-major-aref result k)))
+    result))
 
 
 (defmethod shuffle ((list list))
   "This randomly shuffles a list."
   (vector-to-list (shuffle (list-to-vector list))))
+
+(behavior 'shuffle
+  (should-be-null (shuffle nil))
+  (should-equal '(1) (shuffle '(1)))
+  (let* ((original '(1 2 3 4 5 6 7 8))
+         (copy (copy-list original))
+         (shuffled (shuffle original)))
+    (should-equal original copy) ; non-destructive
+    (should-equal (sort (copy-list shuffled) #'<) original))
+  (let* ((original #(a b c d))
+         (shuffled (shuffle original)))
+    (should-equalp original #(a b c d))
+    (should-equal (sort (coerce shuffled 'list) #'string< :key #'symbol-name)
+                  '(a b c d))))
 
 
 (defmacro nshuffle (argument)
