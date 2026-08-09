@@ -94,7 +94,8 @@
                                            "control"
                                            "string"))
                              (:file "probability"
-                              :depends-on ("control"
+                              :depends-on ("behave"
+                                           "control"
                                            "numeric"))
                              (:file "random"
                               :depends-on ("control"

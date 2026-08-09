@@ -35,6 +35,7 @@
 
 (defpackage :sigma/probability
   (:use :common-lisp
+        :sigma/behave
         :sigma/control
         :sigma/numeric)
   (:export :decaying-probability?
@@ -54,6 +55,15 @@
   (assert (typep probability 'probability))
   (<= (random 1.0) probability))
 
+(behavior 'probability?
+  ;; Certainty bounds: 0 never succeeds, 1 always does (RANDOM is in [0,1)).
+  (dotimes (i 50)
+    (should-be-false (probability? 0))
+    (should-be-true (probability? 1)))
+  (should-be-true (typep 0.5 'probability))
+  (should-be-true (typep 0 'probability))
+  (should-be-true (typep 1 'probability)))
+
 
 (defmacro decaying-probability? (probability &optional (factor 1/2))
   "With probability PROBABILITY, return T and multiply PROBABILITY by FACTOR
@@ -63,3 +73,15 @@ return NIL without changing PROBABILITY."
      (progn (multf ,probability ,factor)
             t)
      nil))
+
+(behavior 'decaying-probability?
+  (let ((p 1.0))
+    (should-be-true (decaying-probability? p))
+    (should= p 0.5))
+  ;; Use certainty (1.0) again so the factor path is deterministic.
+  (let ((p 1.0))
+    (should-be-true (decaying-probability? p 1/4))
+    (should= p 0.25))
+  (let ((p 0))
+    (should-be-false (decaying-probability? p))
+    (should= p 0)))
