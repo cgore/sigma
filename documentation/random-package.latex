@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -34,52 +34,179 @@
 
 \lispPackageChapter{sigma/random}
 
+The \texttt{sigma/random} package provides helpers for random sampling,
+shuffling, and drawing from simple distributions.
+
 \section{Macros}
 
 \lispMacroSubsection{nshuffle}
 
-\TODO
+The \texttt{nshuffle} macro randomly shuffles its argument in place.  It
+expands to an assignment of \texttt{(shuffle \ldots)} back into the place.
+
+\lispSyntax
+
+\texttt{(nshuffle \lispVar{argument})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((xs '(1 2 3 4 5)))
+  (nshuffle xs)
+  xs) ; Returns the same elements in a random order
+\end{lstlisting}
 
 \section{Functions}
 
 \lispFunctionSubsection{gauss}
 
-\TODO
+The \texttt{gauss} function draws a sample from a Gaussian (normal)
+distribution with mean \texttt{mu} and standard deviation \texttt{sigma}.  The
+implementation uses the Box--Muller method, caching the second sample of each
+pair between calls.
+
+\lispSyntax
+
+\texttt{(gauss \lispVar{mu} \lispVar{sigma})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{mu}] The mean of the distribution.
+\item[\lispVar{sigma}] The standard deviation of the distribution.
+\end{description}
 
 \lispFunctionSubsection{random-argument}
 
-\TODO
+The \texttt{random-argument} function returns one of its arguments chosen
+uniformly at random, or \texttt{nil} if no arguments are given.
+
+\lispSyntax
+
+\texttt{(random-argument \&rest \lispVar{rest})}
+
+\lispExamples
+
+\begin{lstlisting}
+(random-argument 'rock 'paper 'scissors)
+\end{lstlisting}
 
 \lispFunctionSubsection{coin-toss}
 
-\TODO
+The \texttt{coin-toss} function returns \texttt{t} or \texttt{nil} with equal
+probability, like a fair coin toss.
+
+\lispSyntax
+
+\texttt{(coin-toss)}
 
 \lispFunctionSubsection{random-in-range}
 
-\TODO
+The \texttt{random-in-range} function returns a random number in the half-open
+interval $[\textit{lower},\textit{upper})$.  Either bound may be a sequence, in
+which case the most extreme member of that sequence is used (\texttt{maximum}
+for the lower bound, \texttt{minimum} for the upper).  If the lower bound is
+greater than the upper, the bounds are swapped.  If they are equal, that common
+value is returned.
+
+\lispSyntax
+
+\texttt{(random-in-range \lispVar{lower} \lispVar{upper})}
+
+\lispExamples
+
+\begin{lstlisting}
+(random-in-range 0 10)     ; A number in [0, 10)
+(random-in-range 0.0 1.0)  ; A float in [0.0, 1.0)
+\end{lstlisting}
 
 \lispFunctionSubsection{random-in-ranges}
 
-\TODO
+The \texttt{random-in-ranges} function, given one or more restricting ranges
+each as a two-element list, returns a random number in a range common to all of
+them.
+
+\lispSyntax
+
+\texttt{(random-in-ranges \&rest \lispVar{ranges})}
+
+\lispExamples
+
+\begin{lstlisting}
+(random-in-ranges '(0 10) '(5 15)) ; A number in a common subrange
+\end{lstlisting}
 
 \lispFunctionSubsection{random-range}
 
-\TODO
+The \texttt{random-range} function returns a two-element list
+$(\textit{lo}\ \textit{hi})$ of random bounds within
+$[\textit{lower},\textit{upper})$.  Without \texttt{:containing}, the two
+bounds are independent samples ordered so that $\textit{lo} \le \textit{hi}$.
+With \texttt{:containing} (a number or sequence), the result is chosen so that
+the returned range covers that value or those values.
+
+\lispSyntax
+
+\texttt{(random-range \lispVar{lower} \lispVar{upper} \&key
+  \lispVar{containing})}
 
 \lispFunctionSubsection{randomize-array}
 
-\TODO
+The \texttt{randomize-array} function fills an array in place with values from
+\texttt{(random \textit{argument-for-random})} and returns the array.
+
+\lispSyntax
+
+\texttt{(randomize-array \lispVar{array} \lispVar{argument-for-random})}
 
 \lispFunctionSubsection{random-array}
 
-\TODO
+The \texttt{random-array} function returns a new array of the given dimensions
+whose contents are randomized as by \texttt{randomize-array}.
+
+\lispSyntax
+
+\texttt{(random-array \lispVar{dimensions} \lispVar{argument-for-random})}
+
+\lispExamples
+
+\begin{lstlisting}
+(random-array '(3 3) 10) ; A 3-by-3 array of integers in [0, 10)
+\end{lstlisting}
 
 \section{Generics}
 
 \lispGenericSubsection{random-element}
 
-\TODO
+The \texttt{random-element} generic returns a randomly chosen element from a
+sequence, or \texttt{nil} if the sequence is empty.  Methods are provided for
+lists and arrays.
+
+\lispSyntax
+
+\texttt{(random-element \lispVar{sequence})}
+
+\lispExamples
+
+\begin{lstlisting}
+(random-element '(a b c d))
+(random-element #(1 2 3 4 5))
+\end{lstlisting}
 
 \lispGenericSubsection{shuffle}
 
-\TODO
+The \texttt{shuffle} generic returns a new container with the same elements as
+its argument in random order.  The original is not modified; use
+\texttt{nshuffle} to shuffle a place in place.  Methods are provided for lists
+and arrays.
+
+\lispSyntax
+
+\texttt{(shuffle \lispVar{container})}
+
+\lispExamples
+
+\begin{lstlisting}
+(shuffle '(1 2 3 4 5))
+(shuffle #(a b c d e))
+\end{lstlisting}

@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -35,15 +35,33 @@
 
 \lispPackageChapter{sigma/string}
 
-The \texttt{String} package contains useful tools for working with strings.
+The \texttt{sigma/string} package contains useful tools for working with
+strings: ranges of characters, joining and repeating, trimming whitespace, and
+converting other objects to text.
+
+\section{Constants}
+
+\lispParameterSubsection{+whitespace+}
+
+The \texttt{+whitespace+} constant is a list of characters treated as
+whitespace by the trimming functions:
+\texttt{\#\textbackslash Space},
+\texttt{\#\textbackslash Newline},
+\texttt{\#\textbackslash Backspace},
+\texttt{\#\textbackslash Tab},
+\texttt{\#\textbackslash Linefeed},
+\texttt{\#\textbackslash Page},
+\texttt{\#\textbackslash Return}, and
+\texttt{\#\textbackslash Rubout}.
 
 \section{Functions}
 
 \lispFunctionSubsection{character-range}
 
 The \texttt{character-range} function returns a list of characters from the
-\lispVar{start} to the \lispVar{end} character.  Note that this is returning a
-list, not a string.
+\lispVar{start} to the \lispVar{end} character.  Note that this returns a
+list, not a string.  The endpoints may be given in either order; the result is
+always ascending.
 
 \lispSyntax
 
@@ -73,8 +91,8 @@ list, not a string.
 \lispFunctionSubsection{character-ranges}
 
 The \texttt{character-ranges} function is a convenience wrapper for
-\texttt{character-range} function, concatenating several calls and making the
-resultant list contain only unique instances.
+\texttt{character-range}, concatenating several calls and making the
+resultant list contain only unique instances, sorted in ascending order.
 
 \lispSyntax
 
@@ -85,8 +103,8 @@ resultant list contain only unique instances.
 \lispArgs
 
 \begin{description}
-  \item[\lispVar{start${}_n$}] The character to start the nth range with, inclusive.
-  \item[\lispVar{end${}_n$}] The character to end the nth range with, inclusive.
+  \item[\lispVar{start${}_n$}] The character to start the $n$th range with, inclusive.
+  \item[\lispVar{end${}_n$}] The character to end the $n$th range with, inclusive.
 \end{description}
 
 \lispExamples
@@ -104,34 +122,199 @@ resultant list contain only unique instances.
 
 \lispFunctionSubsection{escape-tildes}
 
-\TODO
+The \texttt{escape-tildes} function returns a copy of a string in which every
+tilde (\texttt{\#\textbackslash\textasciitilde}) is doubled, suitable for use as
+a \texttt{format} control string that should print tildes literally.
+
+\lispSyntax
+
+\texttt{(escape-tildes \lispVar{string})}
+
+\lispExamples
+
+\begin{lstlisting}
+(escape-tildes "foo bar")  ; Returns "foo bar"
+(escape-tildes "foo~bar")  ; Returns "foo~~bar"
+\end{lstlisting}
 
 \lispFunctionSubsection{replace-char}
 
-\TODO
+The \texttt{replace-char} function replaces every instance of
+\texttt{from-char} in \texttt{string} with \texttt{to-char}.  The string is
+modified in place and returned.
+
+\lispSyntax
+
+\texttt{(replace-char \lispVar{string} \lispVar{from-char} \lispVar{to-char})}
+
+\lispExamples
+
+\begin{lstlisting}
+(replace-char (copy-seq "banana") #\textbackslash a #\textbackslash o)
+;; Returns "bonono"
+\end{lstlisting}
 
 \lispFunctionSubsection{strcat}
 
-\TODO
+The \texttt{strcat} function takes any number of arguments, converts each to a
+string with \texttt{to-string}, and concatenates the results.  The symbol
+\texttt{string-concatenate} is an alias for this function.
+
+\lispSyntax
+
+\texttt{(strcat \&rest \lispVar{rest})}
+
+\texttt{(string-concatenate \&rest \lispVar{rest})}
+
+\lispExamples
+
+\begin{lstlisting}
+(strcat "foo" "bar")           ; Returns "foobar"
+(strcat "foo" 123 "bar")       ; Returns "foo123bar"
+(strcat)                       ; Returns ""
+(strcat 1 2 3 4)               ; Returns "1234"
+\end{lstlisting}
+
+\lispFunctionSubsection{string-concatenate}
+
+The \texttt{string-concatenate} function is an alias for \texttt{strcat}.
 
 \lispFunctionSubsection{strmult}
 
-\TODO
+The \texttt{strmult} function concatenates its string arguments (via
+\texttt{strcat}) and repeats that result \texttt{count} times, returning one
+combined string.  When \texttt{count} is less than $1$, it returns the empty
+string.
+
+\lispSyntax
+
+\texttt{(strmult \lispVar{count} \&rest \lispVar{strings})}
+
+\lispExamples
+
+\begin{lstlisting}
+(strmult 3 "ab")     ; Returns "ababab"
+(strmult 2 "x" "y")  ; Returns "xyxy"
+(strmult 0 "nope")   ; Returns ""
+\end{lstlisting}
 
 \lispFunctionSubsection{string-join}
 
-\TODO
+The \texttt{string-join} function joins a list of strings into one string,
+inserting \texttt{connecting-string} between each adjacent pair.  A single
+string may be passed and is returned unchanged aside from the single-element
+join path.  The connecting string defaults to the empty string.
+
+\lispSyntax
+
+\texttt{(string-join \lispVar{strings} \&optional \lispVar{connecting-string})}
+
+\lispExamples
+
+\begin{lstlisting}
+(string-join '("a" "b" "c") "-") ; Returns "a-b-c"
+(string-join '("a" "b" "c"))     ; Returns "abc"
+\end{lstlisting}
 
 \lispFunctionSubsection{stringify}
 
-\TODO
+The \texttt{stringify} function takes an argument of any type and converts it
+to a string.  This produces the string as from the \texttt{\textasciitilde A}
+directive to \texttt{format}.  Also see \texttt{to-string}.
+
+\lispSyntax
+
+\texttt{(stringify \lispVar{argument})}
+
+\lispExamples
+
+\begin{lstlisting}
+(stringify 12) ; Returns "12"
+\end{lstlisting}
+
+\lispFunctionSubsection{string-trim-whitespace}
+
+The \texttt{string-trim-whitespace} function removes whitespace from both ends
+of a string, using the characters in \texttt{+whitespace+}.
+
+\lispSyntax
+
+\texttt{(string-trim-whitespace \lispVar{string})}
+
+\lispExamples
+
+\begin{lstlisting}
+(string-trim-whitespace "   foo   ") ; Returns "foo"
+\end{lstlisting}
+
+\lispFunctionSubsection{string-left-trim-whitespace}
+
+The \texttt{string-left-trim-whitespace} function removes whitespace from the
+left side only of a string.
+
+\lispSyntax
+
+\texttt{(string-left-trim-whitespace \lispVar{string})}
+
+\lispExamples
+
+\begin{lstlisting}
+(string-left-trim-whitespace "   foo   ") ; Returns "foo   "
+\end{lstlisting}
+
+\lispFunctionSubsection{string-right-trim-whitespace}
+
+The \texttt{string-right-trim-whitespace} function removes whitespace from the
+right side only of a string.
+
+\lispSyntax
+
+\texttt{(string-right-trim-whitespace \lispVar{string})}
+
+\lispExamples
+
+\begin{lstlisting}
+(string-right-trim-whitespace "   foo   ") ; Returns "   foo"
+\end{lstlisting}
 
 \lispFunctionSubsection{to-string}
 
-\TODO
+The \texttt{to-string} function converts common types of things into a string.
+It handles some special cases more usefully than \texttt{stringify} for most
+user-facing output: \texttt{nil} becomes the empty string, and symbols become
+their downcased names.
+
+\lispSyntax
+
+\texttt{(to-string \lispVar{s})}
+
+\lispExamples
+
+\begin{lstlisting}
+(to-string nil)    ; Returns ""
+(to-string :foo)   ; Returns "foo"
+(to-string "hello"); Returns "hello"
+\end{lstlisting}
 
 \section{Methods}
 
 \lispMethodsSubsection{split}
 
-\TODO
+The \texttt{split} method on strings splits a string into a list of substrings
+on \texttt{separators}.  Separators may be a single separator or a sequence of
+them.  The \texttt{key} and \texttt{test} arguments control membership tests,
+and \texttt{remove-separators?} controls whether separator text is kept.  The
+implementation coerces the string to a list, delegates to the list method of
+\texttt{split} from \texttt{sigma/sequence}, and coerces each piece back to a
+string.
+
+\lispSyntax
+
+\texttt{(split \lispVar{string} \lispVar{separators} \&key \lispVar{key}
+  \lispVar{test} \lispVar{remove-separators?})}
+
+\lispExamples
+
+\begin{lstlisting}
+(split "a,b,c" #\,) ; Returns '("a" "b" "c")
+\end{lstlisting}

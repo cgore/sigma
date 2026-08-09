@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -38,23 +38,23 @@
 
 \lispMacroSubsection{sethash}
 
-The \texttt{sethash} macro is shortcut for \texttt{setf gethash}.
+The \texttt{sethash} macro is a shortcut for \texttt{setf gethash}.
 
 \lispSyntax
 
-\texttt{(set-partition \lispVar{key} \lispVar{hash-table} \lispVar{value})}
+\texttt{(sethash \lispVar{key} \lispVar{hash-table} \lispVar{value})}
 
 \lispArgs
 
 \begin{description}
-\item[\lispVar{key}] The key to add to in the hash table.
+\item[\lispVar{key}] The key to set in the hash table.
 \item[\lispVar{hash-table}] The hash table we are modifying.
-\item[\lispVar{value}] The value to set the hash table key to.
+\item[\lispVar{value}] The value to store under that key.
 \end{description}
 
 \lispReturns
 
-The new \lispVar{value} for key.
+The new \lispVar{value} for the key.
 
 \lispMacroSubsection{set-partition}
 
@@ -158,7 +158,7 @@ entries per key, not a one-to-one hashmap.
 
 \lispFunctionSubsection{populate-partition}
 
-The \texttt{populate-partition} function make initial construction of a
+The \texttt{populate-partition} function makes initial construction of a
 partition a lot easier, just taking in key/value pairs as the arguments to the
 function, where there can be multiple entries for any key, and returning a
 newly-constructed partition.

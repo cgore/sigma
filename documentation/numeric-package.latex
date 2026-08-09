@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -147,7 +147,7 @@ addition.)
 
 \lispMacroSubsection{multf}
 
-The \texttt{divf} macro is multiply-and-store, along the lines of \texttt{incf}
+The \texttt{multf} macro is multiply-and-store, along the lines of \texttt{incf}
 and \texttt{decf}, but with multiplication instead.  This is similar to
 \texttt{x *= \textit{something}} in the C programming language.
 
@@ -170,69 +170,309 @@ and \texttt{decf}, but with multiplication instead.  This is similar to
 
 \lispFunctionSubsection{bit?}
 
-\TODO
+The \texttt{bit?} function returns true if its argument is of type
+\texttt{bit} (that is, either $0$ or $1$).
+
+\lispSyntax
+
+\texttt{(bit? \lispVar{b})}
+
+\lispExamples
+
+\begin{lstlisting}
+(bit? 0)   ; Returns T
+(bit? 1)   ; Returns T
+(bit? 2)   ; Returns NIL
+(bit? 0.5) ; Returns NIL
+\end{lstlisting}
 
 \lispFunctionSubsection{choose}
 
-The \lispVar{choose} function computes the binomial coefficient for $n$ and $k$,
+The \texttt{choose} function computes the binomial coefficient for $n$ and $k$,
 typically spoken as \textit{n choose k}, and usually written mathematically as
 $n \choose k$.
 
+\lispSyntax
+
+\texttt{(choose \lispVar{n} \lispVar{k})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{n}] A positive integer.
+\item[\lispVar{k}] A positive integer such that $0 < k < n$.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(choose 12 2) ; Returns 66
+\end{lstlisting}
+
 \lispFunctionSubsection{factorial}
 
-The \lispVar{factorial} function computes $n!$ for positive integers.  NB, this
-isn't intelligent, and uses a loop instead of better approaches.
+The \texttt{factorial} function computes $n!$ for positive integers.  NB, this
+is not intelligent, and uses a loop instead of better approaches.
+
+\lispSyntax
+
+\texttt{(factorial \lispVar{n})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{n}] A positive integer.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(factorial 5) ; Returns 120
+(factorial 1) ; Returns 1
+\end{lstlisting}
 
 \lispFunctionSubsection{fractional-part}
 
-\TODO
+The \texttt{fractional-part} function returns the fractional part of a number
+in the form most familiar to computer scientists.  It has the useful property
+that
+\[
+\operatorname{frac}(x)+\operatorname{int}(x)=x,
+\]
+but the result may be negative.  See
+\url{http://mathworld.wolfram.com/FractionalPart.html}.
+
+\lispSyntax
+
+\texttt{(fractional-part \lispVar{number})}
+
+\lispExamples
+
+\begin{lstlisting}
+(fractional-part 10.5)  ; Returns 0.5
+(fractional-part 10)    ; Returns 0
+(fractional-part -10.5) ; Returns -0.5
+(fractional-part -10)   ; Returns 0
+\end{lstlisting}
 
 \lispFunctionSubsection{fractional-value}
 
-\TODO
+The \texttt{fractional-value} function returns the fractional value of a number
+in the form most familiar to mathematicians.  The result is always nonnegative,
+and forms a sawtooth wave.  This is known as \texttt{SawtoothWave} in
+Mathematica.  See \url{http://mathworld.wolfram.com/FractionalPart.html}.
+The symbol \texttt{sawtooth-wave} is an alias for this function.
+
+\lispSyntax
+
+\texttt{(fractional-value \lispVar{number})}
+
+\texttt{(sawtooth-wave \lispVar{number})}
+
+\lispExamples
+
+\begin{lstlisting}
+(fractional-value 10.5)  ; Returns 0.5
+(fractional-value 10)    ; Returns 0
+(fractional-value -10.5) ; Returns 0.5
+(fractional-value -10)   ; Returns 0
+\end{lstlisting}
 
 \lispFunctionSubsection{integer-range}
 
-\TODO
+The \texttt{integer-range} function generates lists of integer ranges of the
+form $[\textit{start},\textit{stop}]$.  It has three forms.
+
+\lispSyntax
+
+\texttt{(integer-range \lispVar{stop})}
+
+\texttt{(integer-range \lispVar{start} \lispVar{stop})}
+
+\texttt{(integer-range \lispVar{start} \lispVar{stop} \lispVar{step})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{stop}] The inclusive end of the range.  When it is the sole
+  argument, the range begins at $0$.
+\item[\lispVar{start}] The inclusive start of the range.
+\item[\lispVar{step}] The stride between successive values.  When omitted, the
+  step is $1$ or $-1$ according to the direction from start to stop.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(integer-range 10)
+;; Returns '(0 1 2 3 4 5 6 7 8 9 10)
+
+(integer-range 5 10)
+;; Returns '(5 6 7 8 9 10)
+
+(integer-range 5 10 2)
+;; Returns '(5 7 9)
+
+(integer-range -5 0)
+;; Returns '(-5 -4 -3 -2 -1 0)
+
+(integer-range 10 5 -1)
+;; Returns '(10 9 8 7 6 5)
+\end{lstlisting}
 
 \lispFunctionSubsection{nonnegative?}
 
-\TODO
+The \texttt{nonnegative?} function returns true if its argument is not negative
+(that is, if $x \ge 0$).
+
+\lispSyntax
+
+\texttt{(nonnegative? \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+(nonnegative? 0)   ; Returns T
+(nonnegative? 3.5) ; Returns T
+(nonnegative? -1)  ; Returns NIL
+\end{lstlisting}
 
 \lispFunctionSubsection{nonnegative-integer?}
 
-\TODO
+The \texttt{nonnegative-integer?} function returns true if its argument is an
+integer greater than or equal to $0$.
+
+\lispSyntax
+
+\texttt{(nonnegative-integer? \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+(nonnegative-integer? 12)   ; Returns T
+(nonnegative-integer? 0)    ; Returns T
+(nonnegative-integer? 12.7) ; Returns NIL
+(nonnegative-integer? -12)  ; Returns NIL
+\end{lstlisting}
 
 \lispFunctionSubsection{positive-integer?}
 
-\TODO
+The \texttt{positive-integer?} function returns true if its argument is an
+integer strictly greater than $0$.
+
+\lispSyntax
+
+\texttt{(positive-integer? \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+(positive-integer? 12)   ; Returns T
+(positive-integer? 0)    ; Returns NIL
+(positive-integer? 12.7) ; Returns NIL
+(positive-integer? -12)  ; Returns NIL
+\end{lstlisting}
 
 \lispFunctionSubsection{product}
 
-\TODO
+The \texttt{product} function returns the product of the elements of a
+sequence, optionally transformed by a key function and restricted to a
+subsequence.  An empty range yields $1$.
+
+\lispSyntax
+
+\texttt{(product \lispVar{sequence} \&key \lispVar{key} \lispVar{start}
+  \lispVar{end})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{sequence}] A sequence of numbers.
+\item[\lispVar{key}] A function of one argument applied to each element before
+  multiplication.  The default is \texttt{identity}.
+\item[\lispVar{start}] The starting index (inclusive).  The default is $0$.
+\item[\lispVar{end}] The ending index (exclusive), or \texttt{nil} for the end
+  of the sequence.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(product '(1 2 3 4 5)) ; Returns 120
+(product '(1 2 3 4 5) :start 2) ; Returns 60
+\end{lstlisting}
+
+\lispFunctionSubsection{sawtooth-wave}
+
+The \texttt{sawtooth-wave} function is an alias for
+\texttt{fractional-value}.
 
 \lispFunctionSubsection{sum}
 
-\TODO
+The \texttt{sum} function returns the sum of the elements of a sequence,
+optionally transformed by a key function and restricted to a subsequence.  An
+empty range yields $0$.
+
+\lispSyntax
+
+\texttt{(sum \lispVar{sequence} \&key \lispVar{key} \lispVar{start}
+  \lispVar{end})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{sequence}] A sequence of numbers.
+\item[\lispVar{key}] A function of one argument applied to each element before
+  addition.  The default is \texttt{identity}.
+\item[\lispVar{start}] The starting index (inclusive).  The default is $0$.
+\item[\lispVar{end}] The ending index (exclusive), or \texttt{nil} for the end
+  of the sequence.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(sum (loop for i from 1 to 100 collect i)) ; Returns 5050
+(sum '(1 2 3 4 5) :end 3)                 ; Returns 6
+(sum '(1 2 3) :key (lambda (i) (* i 2)))  ; Returns 12
+\end{lstlisting}
 
 \lispFunctionSubsection{unsigned-integer?}
 
-\TODO
+The \texttt{unsigned-integer?} function returns true if its argument is a
+nonnegative integer.  It is an alias for \texttt{nonnegative-integer?}.
+
+\lispSyntax
+
+\texttt{(unsigned-integer? \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+(unsigned-integer? 12)   ; Returns T
+(unsigned-integer? 0)    ; Returns T
+(unsigned-integer? 12.7) ; Returns NIL
+(unsigned-integer? -12)  ; Returns NIL
+\end{lstlisting}
 
 \section{Types}
 
 \lispTypeSubsection{nonnegative-float}
 
-\TODO
+The \texttt{nonnegative-float} type comprises floating-point numbers greater
+than or equal to $0.0$.
 
 \lispTypeSubsection{nonnegative-integer}
 
-\TODO
+The \texttt{nonnegative-integer} type comprises integers greater than or equal
+to $0$.
 
 \lispTypeSubsection{positive-float}
 
-\TODO
+The \texttt{positive-float} type comprises floating-point numbers strictly
+greater than $0.0$.
 
 \lispTypeSubsection{positive-integer}
 
-\TODO
+The \texttt{positive-integer} type comprises integers strictly greater than
+$0$.

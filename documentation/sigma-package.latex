@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -34,14 +34,50 @@
 
 \lispPackageChapter{sigma}
 
+The \texttt{sigma} package is the umbrella package for the library.  It uses
+every subordinate package and re-exports a short list of entry points for
+loading the whole system into the current package.
+
 \section{Variables}
 
 \lispVariableSubsection{*sigma-packages*}
 
-\TODO
+The \texttt{*sigma-packages*} variable holds a list of all Sigma package
+designators.  \texttt{use-all-sigma} walks this list.  The default value is
+
+\begin{lstlisting}
+(:sigma/behave
+ :sigma/control
+ :sigma/hash
+ :sigma/numeric
+ :sigma/os
+ :sigma/probability
+ :sigma/random
+ :sigma/sequence
+ :sigma/string
+ :sigma/time-series
+ :sigma/truth
+ :sigma)
+\end{lstlisting}
 
 \section{Functions}
 
 \lispFunctionSubsection{use-all-sigma}
 
-\TODO
+The \texttt{use-all-sigma} function calls \texttt{use-package} on every package
+in \texttt{*sigma-packages*} from the current package, making all of their
+external symbols available without package prefixes.  This will pollute
+\texttt{common-lisp-user} if that is your current package; that is intentional
+for interactive use.
+
+\lispSyntax
+
+\texttt{(use-all-sigma)}
+
+\lispExamples
+
+\begin{lstlisting}
+(asdf:load-system :sigma)
+(sigma:use-all-sigma)
+(sum (loop for i from 1 to 100 collect i)) ; Returns 5050
+\end{lstlisting}

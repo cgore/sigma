@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -48,7 +48,7 @@ error.
 \lispMacroSubsection{behavior}
 
 The \texttt{behavior} macro is used to specify a block of expected behavior for
-a \texttt{thing}.  It specifies an example group, loosly similar to the
+a \texttt{thing}.  It specifies an example group, loosely similar to the
 \texttt{describe} blocks in Ruby's RSpec.  It takes a single argument, the
 \texttt{thing} we are trying to describe, and then a body of code to evaluate
 that is evaluated in an implicit \texttt{progn}.  It is to be used around a set
@@ -62,7 +62,7 @@ of examples, or around a set of assertions directly.
 
 \begin{description}
 \item[\lispVar{thing}] This is what we are describing the behavior of.
-\item[\lispVar{body}] This is an implicit proc to contain the behavior.
+\item[\lispVar{body}] This is an implicit \texttt{progn} to contain the behavior.
 \end{description}
 
 \lispExamples
@@ -86,7 +86,7 @@ of examples, or around a set of assertions directly.
                           (should= (* 1/a a)
                                    (* a 1/a)
                                    1.0)))
-                  (spec "commutitativity"
+                  (spec "commutativity"
                         (should= (* a b) (* b a))))))
 \end{lstlisting}
 
@@ -104,7 +104,7 @@ behavior.  It will normally serve as a grouping for assertions or nested
 
 \begin{description}
 \item[\lispVar{description}] This is a string to describe the specification.
-\item[\lispVar{body}] This is an implicit proc to contain the specification.
+\item[\lispVar{body}] This is an implicit \texttt{progn} to contain the specification.
 \end{description}
 
 \lispExamples
@@ -233,6 +233,42 @@ The \texttt{should-be-false} macro is a short-hand method for
 (should-be-false nil)
 (should-be-false (not t))
 (should-be-false (< 44 2))
+\end{lstlisting}
+
+\lispMacroSubsection{should-not-be-true}
+
+The \texttt{should-not-be-true} macro is a short-hand method for
+\texttt{(should-not~\#'identity~\ldots)}.  It asserts that the body does not
+evaluate to a true value.
+
+\lispSyntax
+
+\texttt{(should-not-be-true \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(should-not-be-true nil)     ; Passes
+(should-not-be-true (not t)) ; Passes
+(should-not-be-true t)       ; Fails
+\end{lstlisting}
+
+\lispMacroSubsection{should-not-be-false}
+
+The \texttt{should-not-be-false} macro is a short-hand method for
+\texttt{(should-not~\#'not~\ldots)}.  It asserts that the body does not evaluate
+to a false value; that is, that it is true.
+
+\lispSyntax
+
+\texttt{(should-not-be-false \&body \lispVar{body})}
+
+\lispExamples
+
+\begin{lstlisting}
+(should-not-be-false t)         ; Passes
+(should-not-be-false (not nil)) ; Passes
+(should-not-be-false nil)       ; Fails
 \end{lstlisting}
 
 \lispMacroSubsection{should-be-a}
@@ -397,7 +433,7 @@ The \texttt{should-not<} macro is a short-hand method for
 
 \lispMacroSubsection{should>}
 
-The \texttt{should<} macro is a short-hand method for
+The \texttt{should>} macro is a short-hand method for
 \texttt{(should \#'> \ldots)}.
 
 \lispSyntax

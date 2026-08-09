@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -34,21 +34,72 @@
 
 \lispPackageChapter{sigma/probability}
 
+The \texttt{sigma/probability} package offers a small set of helpers for
+working with probabilities in the unit interval.
+
 \section{Macros}
 
-\lispMacroSubsection{decaying-probabiliity?}
+\lispMacroSubsection{decaying-probability?}
 
-\TODO
+The \texttt{decaying-probability?} macro performs a probabilistic test with
+\texttt{probability?}.  When the test succeeds, it multiplies the place
+\texttt{probability} by \texttt{factor} (default $1/2$) in place, so that
+successive calls become less likely, and returns true.  When the test fails, it
+returns \texttt{nil} without changing \texttt{probability}.
+
+\lispSyntax
+
+\texttt{(decaying-probability? \lispVar{probability} \&optional
+  \lispVar{factor})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{probability}] A place holding a value of type
+  \texttt{probability}.
+\item[\lispVar{factor}] The multiplicative decay applied after a successful
+  trial.  The default is $1/2$.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((p 1.0))
+  (loop while (decaying-probability? p)
+        collect p))
+;; Collects a geometrically decaying sequence until a trial fails.
+\end{lstlisting}
 
 \section{Functions}
 
 \lispFunctionSubsection{probability?}
 
-\TODO
+The \texttt{probability?} function returns true with the given probability.  It
+draws a uniform random number in $[0,1)$ and returns true when that number is
+less than or equal to \texttt{probability}.
+
+\lispSyntax
+
+\texttt{(probability? \lispVar{probability})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{probability}] A value of type \texttt{probability}.
+\end{description}
+
+\lispExamples
+
+\begin{lstlisting}
+(probability? 0.0) ; Always returns NIL
+(probability? 1.0) ; Always returns T
+(probability? 0.5) ; Returns T or NIL with equal chance
+\end{lstlisting}
 
 \section{Types}
 
 \lispTypeSubsection{probability}
 
-
-\TODO
+The \texttt{probability} type comprises values suitable for use as
+probabilities: floating-point numbers in $[0.0, 1.0]$, the integers $0$ and $1$,
+and bits.

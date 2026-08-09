@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -34,46 +34,128 @@
 
 \lispPackageChapter{sigma/sequence}
 
+The \texttt{sigma/sequence} package provides utilities for lists, vectors, and
+other sequences: extrema, sorting by a parallel key, slicing, splitting, and a
+few destructive helpers.
+
 \section{Macros}
-
-\lispMacroSubsection{arefable?}
-
-\TODO
 
 \lispMacroSubsection{nconcf}
 
-\TODO
+The \texttt{nconcf} macro destructively concatenates \texttt{list-2} onto
+\texttt{list-1} and stores the result back into the place \texttt{list-1},
+analogous to \texttt{nconc} with assignment.
 
-\lispMacroSubsection{nthable?}
+\lispSyntax
 
-\TODO
+\texttt{(nconcf \lispVar{list-1} \lispVar{list-2})}
+
+\lispExamples
+
+\begin{lstlisting}
+(let ((a '(1 2 3))
+      (b '(4 5 6)))
+  (nconcf a b)
+  a) ; Returns '(1 2 3 4 5 6)
+\end{lstlisting}
 
 \lispMacroSubsection{set-nthcdr}
 
-\TODO
+The \texttt{set-nthcdr} macro sets the $n$th \texttt{cdr} of a list to a new
+value.  When $n$ is $0$, it sets the list place itself.  On implementations that
+allow it, this is also installed as the \texttt{setf} expander for
+\texttt{nthcdr}.
+
+\lispSyntax
+
+\texttt{(set-nthcdr \lispVar{n} \lispVar{list} \lispVar{new-value})}
 
 \section{Functions}
 
+\lispFunctionSubsection{arefable?}
+
+The \texttt{arefable?} function returns true if \texttt{position} is a valid
+multidimensional index list for \texttt{array} via \texttt{aref}: the same rank
+as the array, with each coordinate in range for its dimension.
+
+\lispSyntax
+
+\texttt{(arefable? \lispVar{array} \lispVar{position})}
+
 \lispFunctionSubsection{array-values}
 
-\TODO
+The \texttt{array-values} function returns a list of the values in an array at
+the specified positions.  Each position is a list of subscripts suitable for
+\texttt{aref}.
+
+\lispSyntax
+
+\texttt{(array-values \lispVar{array} \lispVar{positions})}
+
+\lispExamples
+
+\begin{lstlisting}
+(array-values #2A((1 2) (3 4))
+              '((0 0) (1 1))) ; Returns '(1 4)
+\end{lstlisting}
 
 \lispFunctionSubsection{nth-from-end}
 
-\TODO
+The \texttt{nth-from-end} function is similar to \texttt{nth}, but counts from
+the end of the list.  Index $0$ is the last element.
+
+\lispSyntax
+
+\texttt{(nth-from-end \lispVar{n} \lispVar{list})}
+
+\lispExamples
+
+\begin{lstlisting}
+(nth-from-end 0 '(0 1 2 3 4 5 6 7 8 9 10)) ; Returns 10
+(nth-from-end 3 '(0 1 2 3 4 5 6 7 8 9 10)) ; Returns 7
+\end{lstlisting}
+
+\lispFunctionSubsection{nthable?}
+
+The \texttt{nthable?} function returns true if $n$ is a valid index for
+\texttt{list} via \texttt{nth}: a nonnegative integer strictly less than the
+length of the list.
+
+\lispSyntax
+
+\texttt{(nthable? \lispVar{n} \lispVar{list})}
 
 \lispFunctionSubsection{sequence?}
 
-\TODO
+The \texttt{sequence?} function returns true if its argument is of type
+\texttt{sequence} (a list or vector).
+
+\lispSyntax
+
+\texttt{(sequence? \lispVar{sequence})}
 
 \lispFunctionSubsection{empty-sequence?}
 
-\TODO
+The \texttt{empty-sequence?} function returns true if its argument is a sequence
+that contains no elements.  For arrays, any dimension of size zero counts as
+empty.
+
+\lispSyntax
+
+\texttt{(empty-sequence? \lispVar{sequence})}
+
+\lispExamples
+
+\begin{lstlisting}
+(empty-sequence? '())  ; Returns T
+(empty-sequence? #())  ; Returns T
+(empty-sequence? '(a)) ; Returns NIL
+\end{lstlisting}
 
 \lispFunctionSubsection{join-symbol-to-all-following}
 
-This function takes a symbol and a list, and for every occurance of the
-symbol in the list, it joins it to the item following it.  For example:
+This function takes a symbol and a list, and for every occurrence of the
+symbol in the list, it joins it to the item following it.
 
 \lispSyntax
 
@@ -101,8 +183,8 @@ symbol in the list, it joins it to the item following it.  For example:
 
 \lispFunctionSubsection{join-symbol-to-all-preceeding}
 
-This function takes a symbol and a list, and for every occurance of the
-symbol in the list, it joins it to the item preceeding it.  For example:
+This function takes a symbol and a list, and for every occurrence of the
+symbol in the list, it joins it to the item preceding it.
 
 \lispSyntax
 
@@ -130,17 +212,28 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 
 \lispFunctionSubsection{list-to-vector}
 
-\TODO
-
-\lispFunctionSubsection{max*}
-
-The \texttt{max*} function is a shortcut for \texttt{max}. It takes in one or
-more lists and finds the maximum value within all of them. This is so you don't
-have to manually use \texttt{apply} and \texttt{concatenate}.
+The \texttt{list-to-vector} function takes a list and returns an equivalent
+vector.
 
 \lispSyntax
 
-\texttt{(min \&rest \lispVar{lists})}
+\texttt{(list-to-vector \lispVar{list})}
+
+\lispExamples
+
+\begin{lstlisting}
+(list-to-vector '(1 2 3)) ; Returns #(1 2 3)
+\end{lstlisting}
+
+\lispFunctionSubsection{max*}
+
+The \texttt{max*} function is a shortcut for \texttt{max}.  It takes in one or
+more lists and finds the maximum value within all of them, so that you need not
+manually use \texttt{apply} and \texttt{concatenate}.
+
+\lispSyntax
+
+\texttt{(max* \&rest \lispVar{lists})}
 
 \lispExamples
 
@@ -153,13 +246,13 @@ have to manually use \texttt{apply} and \texttt{concatenate}.
 
 \lispFunctionSubsection{min*}
 
-The \texttt{min*} function is a shortcut for \texttt{min}. It takes in one or
-more lists and finds the maximum value within all of them. This is so you don't
-have to manually use \texttt{apply} and \texttt{concatenate}.
+The \texttt{min*} function is a shortcut for \texttt{min}.  It takes in one or
+more lists and finds the minimum value within all of them, so that you need not
+manually use \texttt{apply} and \texttt{concatenate}.
 
 \lispSyntax
 
-\texttt{(min \&rest \lispVar{lists})}
+\texttt{(min* \&rest \lispVar{lists})}
 
 \lispExamples
 
@@ -172,58 +265,233 @@ have to manually use \texttt{apply} and \texttt{concatenate}.
 
 \lispFunctionSubsection{set-equal}
 
-\TODO
+The \texttt{set-equal} function returns true if two lists contain the same
+elements when viewed as sets, using an optional key and either \texttt{test} or
+\texttt{test-not} for element comparison.  Order and duplicate multiplicity are
+ignored.
+
+\lispSyntax
+
+\texttt{(set-equal \lispVar{list-1} \lispVar{list-2} \&key \lispVar{key}
+  \lispVar{test} \lispVar{test-not})}
+
+\lispExamples
+
+\begin{lstlisting}
+(set-equal '(1 2 3) '(3 2 1))     ; Returns T
+(set-equal '(1 2) '(1 2 3))       ; Returns NIL
+(set-equal '("a" "b") '("A" "B")
+           :test #'string-equal)  ; Returns T
+\end{lstlisting}
 
 \lispFunctionSubsection{simple-vector-to-list}
 
-\TODO
+The \texttt{simple-vector-to-list} function takes a vector and returns an
+equivalent list, reading elements with \texttt{svref}.
+
+\lispSyntax
+
+\texttt{(simple-vector-to-list \lispVar{vector})}
 
 \lispFunctionSubsection{sort-order}
 
-\TODO
+The \texttt{sort-order} function returns the indices that would sort the
+sequence.  Sorting those indices by the corresponding elements under
+\texttt{predicate} and \texttt{key} yields the sorted order of the original
+sequence.
+
+\lispSyntax
+
+\texttt{(sort-order \lispVar{sequence} \lispVar{predicate} \&key
+  \lispVar{key})}
+
+\lispExamples
+
+\begin{lstlisting}
+(sort-order '(30 10 20) #'<) ; Returns '(1 2 0)
+\end{lstlisting}
 
 \lispFunctionSubsection{the-last}
 
-\TODO
+The \texttt{the-last} function returns the last element of a list (the
+\texttt{car} of its \texttt{last} cons), or \texttt{nil} if the list is empty.
+
+\lispSyntax
+
+\texttt{(the-last \lispVar{list})}
+
+\lispExamples
+
+\begin{lstlisting}
+(the-last '(a b c d)) ; Returns D
+(the-last '())        ; Returns NIL
+\end{lstlisting}
 
 \lispFunctionSubsection{vector-to-list}
 
-\TODO
+The \texttt{vector-to-list} function takes a vector and returns an equivalent
+list.
+
+\lispSyntax
+
+\texttt{(vector-to-list \lispVar{vector})}
+
+\lispExamples
+
+\begin{lstlisting}
+(vector-to-list #(1 2 3)) ; Returns '(1 2 3)
+\end{lstlisting}
 
 \section{Generics}
 
 \lispGenericSubsection{best}
 
-\TODO
+The \texttt{best} generic returns the ``best'' element of a sequence according
+to a predicate and optional key.  This is equivalent to taking the first element
+after sorting the sequence with the same predicate and key, but runs in linear
+time.  Methods are provided for lists and vectors.  An empty sequence yields
+\texttt{nil}.
+
+\lispSyntax
+
+\texttt{(best \lispVar{sequence} \lispVar{predicate} \&key \lispVar{key})}
+
+\lispExamples
+
+\begin{lstlisting}
+(best '(3 1 4 1 5) #'<) ; Returns 1
+(best '(3 1 4 1 5) #'>) ; Returns 5
+\end{lstlisting}
 
 \lispGenericSubsection{minimum}
 
-\TODO
+The \texttt{minimum} generic returns the minimum element of a sequence,
+optionally after applying a key, considering only the subsequence from
+\texttt{start} to \texttt{end}.
+
+\lispSyntax
+
+\texttt{(minimum \lispVar{sequence} \&key \lispVar{key} \lispVar{start}
+  \lispVar{end})}
+
+\lispExamples
+
+\begin{lstlisting}
+(minimum '(3 1 4 1 5)) ; Returns 1
+\end{lstlisting}
 
 \lispGenericSubsection{minimum?}
 
-\TODO
+The \texttt{minimum?} generic returns true if the element at
+\texttt{position} in the sequence is a minimum under \texttt{key} within the
+subsequence from \texttt{start} to \texttt{end}.  When \texttt{position} is
+omitted, it defaults to the last index.
+
+\lispSyntax
+
+\texttt{(minimum? \lispVar{sequence} \&key \lispVar{position} \lispVar{key}
+  \lispVar{start} \lispVar{end})}
 
 \lispGenericSubsection{maximum}
 
-\TODO
+The \texttt{maximum} generic returns the maximum element of a sequence,
+optionally after applying a key, considering only the subsequence from
+\texttt{start} to \texttt{end}.
+
+\lispSyntax
+
+\texttt{(maximum \lispVar{sequence} \&key \lispVar{key} \lispVar{start}
+  \lispVar{end})}
+
+\lispExamples
+
+\begin{lstlisting}
+(maximum '(3 1 4 1 5)) ; Returns 5
+\end{lstlisting}
 
 \lispGenericSubsection{maximum?}
 
-\TODO
+The \texttt{maximum?} generic returns true if the element at
+\texttt{position} in the sequence is a maximum under \texttt{key} within the
+subsequence from \texttt{start} to \texttt{end}.  When \texttt{position} is
+omitted, it defaults to the last index.
+
+\lispSyntax
+
+\texttt{(maximum? \lispVar{sequence} \&key \lispVar{position} \lispVar{key}
+  \lispVar{start} \lispVar{end})}
 
 \lispGenericSubsection{sort-on}
 
-\TODO
+The \texttt{sort-on} generic sorts one sequence according to a parallel ordering
+sequence.  Corresponding elements are paired; the pairs are sorted by the
+predicate on the ordering values (optionally through a key), and the sorted
+elements of the sequence to sort are returned.  Methods accept lists and
+vectors in either role.
+
+\lispSyntax
+
+\texttt{(sort-on \lispVar{sequence-to-sort} \lispVar{ordering-sequence}
+  \lispVar{predicate} \&key \lispVar{key})}
+
+\lispExamples
+
+\begin{lstlisting}
+(sort-on '(a b c) '(3 1 2) #'<) ; Returns '(b c a)
+\end{lstlisting}
 
 \lispGenericSubsection{slice}
 
-\TODO
+The \texttt{slice} generic returns a modular subset of a sequence, taking every
+\texttt{slice}-th element (\texttt{slice} defaults to $1$).  The stride may be
+any positive rational number.  Methods are provided for lists and vectors.
+
+\lispSyntax
+
+\texttt{(slice \lispVar{sequence} \&optional \lispVar{slice})}
+
+\lispExamples
+
+\begin{lstlisting}
+(slice '(1 2 3 4 5 6 7 8 9) 2) ; Returns '(1 3 5 7 9)
+(slice #(1 2 3 4 5 6 7 8 9) 2) ; Returns #(1 3 5 7 9)
+\end{lstlisting}
 
 \lispGenericSubsection{split}
 
-\TODO
+The \texttt{split} generic splits a sequence into subsequences wherever an
+element is a member of \texttt{separators} (under \texttt{key} and
+\texttt{test}).  When \texttt{remove-separators?} is true (the default),
+separator elements are omitted from the results.  Methods are provided for lists
+(and, in the string package, for strings).
+
+\lispSyntax
+
+\texttt{(split \lispVar{sequence} \lispVar{separators} \&key \lispVar{key}
+  \lispVar{test} \lispVar{remove-separators?})}
+
+\lispExamples
+
+\begin{lstlisting}
+(split '(1 2 0 3 4 0 5) '(0))
+;; Returns '((1 2) (3 4) (5))
+\end{lstlisting}
 
 \lispGenericSubsection{worst}
 
-\TODO
+The \texttt{worst} generic returns the ``worst'' element of a sequence according
+to a predicate and optional key.  This is equivalent to taking the last element
+after sorting the sequence with the same predicate and key, but runs in linear
+time.  Methods are provided for lists and vectors.  An empty sequence yields
+\texttt{nil}.
+
+\lispSyntax
+
+\texttt{(worst \lispVar{sequence} \lispVar{predicate} \&key \lispVar{key})}
+
+\lispExamples
+
+\begin{lstlisting}
+(worst '(3 1 4 1 5) #'<) ; Returns 5
+(worst '(3 1 4 1 5) #'>) ; Returns 1
+\end{lstlisting}

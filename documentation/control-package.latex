@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -65,7 +65,7 @@ returned successfully.
 \item[\lispVar{conditional}] The boolean conditional to select between the
   \lispVar{t-action} and the \lispVar{nil-action}.
 \item[\lispVar{t-action}] The action to evaluate if the \lispVar{conditional}
-  evaluate as true.
+  evaluates as true.
 \item[\lispVar{nil-action}] The action to evaluate if the \lispVar{conditional}
   evaluates as nil.
 \end{description}
@@ -115,7 +115,7 @@ need to nest calls to anaphoric macros.
 \item[\lispVar{conditional}] The boolean conditional to select between the
   \lispVar{t-action} and the \lispVar{nil-action}.
 \item[\lispVar{t-action}] The action to evaluate if the \lispVar{conditional}
-  evaluate as true.
+  evaluates as true.
 \item[\lispVar{nil-action}] The action to evaluate if the \lispVar{conditional}
   evaluates as nil.
 \end{description}
@@ -177,13 +177,13 @@ that you can write recursive lambdas.
            (if (<= x 0)
                1
                (* x (self (1- x)))))
-         10))) ; Calculates 10!, inefficently.
+         10))) ; Calculates 10!, inefficiently.
 \end{lstlisting}
 
 \lispMacroSubsection{a?lambda}
 
 
-The \texttt{a?lambda} macro is an variant of \texttt{alambda} that allows you to
+The \texttt{a?lambda} macro is a variant of \texttt{alambda} that allows you to
 specify the anaphor to use, instead of just the default of \texttt{it}.
 
 \begin{lstlisting}
@@ -191,7 +191,7 @@ specify the anaphor to use, instead of just the default of \texttt{it}.
            (if (<= x 0)
                1
                (* x (! (1- x)))))
-         10))) ; Calculates 10!, inefficently.
+         10))) ; Calculates 10!, inefficiently.
 \end{lstlisting}
 
 \lispMacroSubsection{ablock}
@@ -267,7 +267,7 @@ allows you to specify the anaphor to use, instead of just the default of
 
 \lispMacroSubsection{awhen}
 
-The \texttt{awhen} macro is an anaphoric variant of \texttt{when} built-in.
+The \texttt{awhen} macro is an anaphoric variant of the built-in \texttt{when}.
 This is based on \cite[p.~191]{on-lisp}.  It works in a similar manner to
 \texttt{aif}, defining \texttt{it} as the default anaphor.  This is useful when
 the conditional is the result of a complicated computation, so you don't have to
@@ -294,7 +294,7 @@ allows you to specify the anaphor to use, instead of just the default of
 
 \lispSyntax
 
-\texttt{(a?when \lispVar{conditional} \&body \lispVar{body})}
+\texttt{(a?when \lispVar{anaphor} \lispVar{conditional} \&body \lispVar{body})}
 
 \lispExamples
 
@@ -329,12 +329,12 @@ specify the anaphor to use, instead of just the default \texttt{it}.
 
 \lispSyntax
 
-\texttt{(awhile \lispVar{anaphor} \lispVar{expression} \&body \lispVar{body})}
+\texttt{(a?while \lispVar{anaphor} \lispVar{expression} \&body \lispVar{body})}
 
 \lispExamples
 
 \begin{lstlisting}
-(awhile input (get-input)
+(a?while input (get-input)
   (do-something input)) ; Operate on input for all input.
 \end{lstlisting}
 
@@ -604,6 +604,22 @@ This \texttt{while} macro is similar to the while loop in C.
   (format t "Liftoff!~%"))
 \end{lstlisting}
 
+
+\lispMacroSubsection{macro-alias}
+
+The \texttt{macro-alias} macro produces one or more alternate names for a macro
+by copying its macro function.
+
+\lispSyntax
+
+\texttt{(macro-alias \lispVar{macro} \&rest \lispVar{aliases})}
+
+\lispExamples
+
+\begin{lstlisting}
+(macro-alias when whenever)
+\end{lstlisting}
+
 \section{Functions}
 
 \lispFunctionSubsection{compose}
@@ -697,7 +713,7 @@ from \cite{ansi-common-lisp} and is based upon the disjoin function from Dylan.
           chars))
 \end{lstlisting}
 
-\lispFunctionSubsection{function-alias}
+\lispMacroSubsection{function-alias}
 
 The \texttt{function-alias} function produces one or more aliases (alternate
 names) for a function.
@@ -711,6 +727,32 @@ names) for a function.
 \begin{lstlisting}
 (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)
 \end{lstlisting}
+
+\lispMacroSubsection{function-aliases}
+
+The \texttt{function-aliases} macro is an alias for \texttt{function-alias}.
+
+\lispFunctionSubsection{function-alias-as-a-function}
+
+The \texttt{function-alias-as-a-function} function is the older functional form of
+\texttt{function-alias}.  It assigns the function definition of
+\texttt{function} to each name in \texttt{aliases} by modifying
+\texttt{fdefinition}.  Prefer the \texttt{function-alias} macro in new code.
+
+\lispSyntax
+
+\texttt{(function-alias-as-a-function \lispVar{function} \&rest \lispVar{aliases})}
+
+\lispExamples
+
+\begin{lstlisting}
+(function-alias-as-a-function 'long-name 'short)
+\end{lstlisting}
+
+\lispFunctionSubsection{function-aliases-as-a-function}
+
+The \texttt{function-aliases-as-a-function} function is an alias for
+\texttt{function-alias-as-a-function}.
 
 \lispFunctionSubsection{operator-to-function}
 
@@ -742,7 +784,7 @@ The \texttt{rcompose} function is a reversed variant of the \texttt{compose} fun
 
 \lispSyntax
 
-\texttt{(compose \&rest \lispVar{functions})}
+\texttt{(rcompose \&rest \lispVar{functions})}
 
 \lispExamples
 
@@ -794,6 +836,24 @@ is yet to be written.
   (unimplemented)) ; TODO: figure out how to program this.
 \end{lstlisting}
 
+
+\section{Symbols}
+
+\lispVariableSubsection{it}
+
+The symbol \texttt{it} is the default anaphor used by macros such as
+\texttt{aif}, \texttt{aand}, \texttt{awhen}, \texttt{awhile}, \texttt{acond},
+and \texttt{ablock}.  It is exported so that client code may refer to the
+anaphor without package qualification.  It is not a global variable; each
+anaphoric macro binds it locally.
+
+\lispVariableSubsection{self}
+
+The symbol \texttt{self} is the default anaphor used by \texttt{alambda} for
+recursive calls.  It is exported so that client code may refer to it without
+package qualification.  It is not a global variable; \texttt{alambda} binds it
+locally as a local function.
+
 \section{Generics}
 
 \lispGenericSubsection{duplicate}
@@ -801,4 +861,17 @@ is yet to be written.
 The \texttt{duplicate} generic is to provide a deep copy facility for any of
 your objects.  If you define a class and want a deep copy facility for it,
 implement a version of \texttt{duplicate} that is correct for it.  This library
-provides versions of \texttt{duplicate} for most built-in classes already.
+provides methods for lists (deeply mapped), arrays (deeply copied element-wise),
+numbers, symbols, and functions (the last three returned unchanged, being
+immutable or not meaningfully copyable).
+
+\lispSyntax
+
+\texttt{(duplicate \lispVar{item})}
+
+\lispExamples
+
+\begin{lstlisting}
+(duplicate '(1 2 (3 4))) ; Returns a fresh tree equal to the original
+(duplicate 42)           ; Returns 42
+\end{lstlisting}

@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -32,20 +32,65 @@
 %%%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%%% POSSIBILITY OF SUCH DAMAGE.
 
-\lispPackageChapter{truth}
+\lispPackageChapter{sigma/truth}
+
+The \texttt{sigma/truth} package provides a few small tools for converting and
+negating truth values.
 
 \section{Functions}
 
 \lispFunctionSubsection{[?]}
 
-\TODO
+The \texttt{[?]} function is Knuth's truth function.  It converts its argument
+to $1$ for true and $0$ for false.  In other words, \texttt{nil} maps to $0$ and
+everything else maps to $1$.
+
+\lispSyntax
+
+\texttt{([?] \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+([?] nil) ; Returns 0
+([?] t)   ; Returns 1
+([?] 12)  ; Returns 1
+\end{lstlisting}
 
 \lispFunctionSubsection{toggle}
 
-\TODO
+The \texttt{toggle} function returns the boolean negation of its argument:
+\texttt{nil} if the argument is true, and \texttt{t} if the argument is false.
+
+\lispSyntax
+
+\texttt{(toggle \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+(toggle nil) ; Returns T
+(toggle t)   ; Returns NIL
+(toggle 12)  ; Returns NIL
+\end{lstlisting}
 
 \section{Generics}
 
 \lispGenericSubsection{?}
 
-\TODO
+The \texttt{?} generic converts a generalized boolean into a strict boolean:
+\texttt{nil} stays \texttt{nil}, and any non-\texttt{nil} value becomes
+\texttt{t}.
+
+\lispSyntax
+
+\texttt{(? \lispVar{x})}
+
+\lispExamples
+
+\begin{lstlisting}
+(? nil) ; Returns NIL
+(? t)   ; Returns T
+(? 12)  ; Returns T
+(? '()) ; Returns NIL
+\end{lstlisting}

@@ -1,4 +1,4 @@
-%%%% Copyright (C) 2005 -- 2021, Christopher Mark Gore,
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
 %%%% Soli Deo Gloria,
 %%%% All rights reserved.
 %%%%
@@ -34,38 +34,120 @@
 
 \lispPackageChapter{sigma/os}
 
+The \texttt{sigma/os} package provides a few helpers for talking to the
+operating system: reading files and running short scripts in other languages.
+The script runners use \textsc{Sbcl}'s \texttt{sb-ext:run-program} and are
+convenience wrappers, not full foreign interfaces.
+
 \section{Functions}
 
 \lispFunctionSubsection{perl}
 
-\TODO
+The \texttt{perl} function runs a short Perl snippet by invoking the interpreter
+at \texttt{*perl-path*} with \texttt{-e}.  The arguments are concatenated into a
+single string of source before they are passed to Perl.  Standard output is
+inherited from Lisp.
+
+\lispSyntax
+
+\texttt{(perl \&rest \lispVar{code})}
+
+\lispExamples
+
+\begin{lstlisting}
+(perl "print 2 + 2, qq(\\n);")
+\end{lstlisting}
 
 \lispFunctionSubsection{python}
 
-\TODO
+The \texttt{python} function runs a short Python snippet by invoking the
+interpreter at \texttt{*python-path*} with \texttt{-c}.  The arguments are
+concatenated into a single string of source before they are passed to Python.
+Standard output is inherited from Lisp.
+
+\lispSyntax
+
+\texttt{(python \&rest \lispVar{code})}
+
+\lispExamples
+
+\begin{lstlisting}
+(python "print(2 + 2)")
+\end{lstlisting}
 
 \lispFunctionSubsection{read-file}
 
-\TODO
+The \texttt{read-file} function reads the entire contents of a file and returns
+them as a single string.
+
+\lispSyntax
+
+\texttt{(read-file \lispVar{filename})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{filename}] A pathname designator for an existing file.
+\end{description}
+
+\lispReturns
+
+A string containing the full contents of the file.
 
 \lispFunctionSubsection{read-lines}
 
-\TODO
+The \texttt{read-lines} function reads the entire contents of a file and returns
+a list of its lines, without the terminating newlines.
+
+\lispSyntax
+
+\texttt{(read-lines \lispVar{filename})}
+
+\lispArgs
+
+\begin{description}
+\item[\lispVar{filename}] A pathname designator for an existing file.
+\end{description}
+
+\lispReturns
+
+A list of strings, one per line.
 
 \lispFunctionSubsection{ruby}
 
-\TODO
+The \texttt{ruby} function runs a short Ruby snippet by invoking the interpreter
+at \texttt{*ruby-path*} with \texttt{-e}.  The arguments are concatenated into a
+single string of source before they are passed to Ruby.  Standard output is
+inherited from Lisp.
+
+\lispSyntax
+
+\texttt{(ruby \&rest \lispVar{code})}
+
+\lispExamples
+
+\begin{lstlisting}
+(ruby "puts 2 + 2")
+\end{lstlisting}
 
 \section{Parameters}
 
 \lispParameterSubsection{*perl-path*}
 
-\TODO
+The \texttt{*perl-path*} parameter holds the pathname of the Perl interpreter
+used by \texttt{perl}.  The default is \texttt{/usr/bin/perl}.
 
 \lispParameterSubsection{*python-path*}
 
-\TODO
+The \texttt{*python-path*} parameter holds the pathname of the Python
+interpreter used by \texttt{python}.  The default is \texttt{/usr/bin/python}.
 
 \lispParameterSubsection{*ruby-path*}
 
-\TODO
+The \texttt{*ruby-path*} parameter holds the pathname of the Ruby interpreter
+used by \texttt{ruby}.  The default is \texttt{/usr/bin/ruby}.
+
+\lispParameterSubsection{*ruby*}
+
+The \texttt{*ruby*} symbol is exported from the package for compatibility.  Prefer
+\texttt{ruby} and \texttt{*ruby-path*} in new code.
