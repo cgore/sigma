@@ -66,6 +66,8 @@
            :function-alias
            :function-aliases
            :it
+           :juxt
+           :juxtapose
            :macro-alias
            :multicond
            :operator-to-function
@@ -369,6 +371,32 @@ Lisp, with a syntax like Pascal.''"
                                   numbers)
                           (mapcar (compose #'sin #'cos) numbers))))
 
+(defun juxtapose (&rest functions)
+  "Return a function that is the juxtaposition of FUNCTIONS, as in Clojure's
+JUXT.  The returned function takes any number of arguments and returns a list
+of the results of applying each of FUNCTIONS to those arguments, in order:
+
+  (funcall (juxtapose #'a #'b #'c) x)  =>  (list (a x) (b x) (c x))
+
+Unlike COMPOSE, which pipes a value through functions in series, JUXTAPOSE
+applies each function independently to the same arguments (fan-out).
+FUNCTIONS may be function objects or symbols naming functions.  JUXT is an
+alias for this function."
+  (dolist (function functions)
+    (assert (or (functionp function)
+                (symbolp function))))
+  (lambda (&rest arguments)
+    (mapcar (lambda (function)
+              (apply function arguments))
+            functions)))
+
+(behavior 'juxtapose
+  (should-equal (funcall (juxtapose #'1+ #'1-) 10) '(11 9))
+  (should-equal (funcall (juxtapose #'car #'cdr) '(a b c)) '(a (b c)))
+  (should-equal (funcall (juxtapose #'+ #'*) 2 3 4) '(9 24))
+  (should-equal (funcall (juxtapose #'identity) 'x) '(x))
+  (should-equal (funcall (juxtapose)) '()))
+
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
 returns true whenever all of the predicates return true.  This is from Paul
@@ -659,6 +687,12 @@ For example, you might do something like:
     (fmakunbound 'function-alias-behavior-b)))
 
 (macro-alias function-alias function-aliases)
+
+(function-alias 'juxtapose 'juxt)
+
+(behavior 'juxt
+  (should-eq (fdefinition 'juxt) (fdefinition 'juxtapose))
+  (should-equal (funcall (juxt #'1+ #'1-) 10) '(11 9)))
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."

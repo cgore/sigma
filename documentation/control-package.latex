@@ -675,6 +675,30 @@ $$
 (sin (cos (tan pi))) ; This is the same.
 \end{lstlisting}
 
+\lispFunctionSubsection{juxtapose}
+
+The \texttt{juxtapose} function takes any number of functions and returns a new
+function that is their juxtaposition, as in Clojure's \texttt{juxt}.  The
+returned function applies each of those functions to its arguments and returns
+a list of the results in order.  Unlike \texttt{compose}, which pipes a value
+through functions in series, \texttt{juxtapose} fans out the same arguments to
+each function independently.  The name \texttt{juxt} is a \texttt{function-alias}
+for \texttt{juxtapose}.
+
+\lispSyntax
+
+\texttt{(juxtapose \&rest \lispVar{functions})}
+
+\texttt{(juxt \&rest \lispVar{functions})}
+
+\lispExamples
+
+\begin{lstlisting}
+(funcall (juxtapose #'1+ #'1-) 10)      ; Returns (11 9)
+(funcall (juxt #'car #'cdr) '(a b c))   ; Returns (A (B C))
+(funcall (juxtapose #'+ #'*) 2 3 4)     ; Returns (9 24)
+\end{lstlisting}
+
 \lispFunctionSubsection{conjoin}
 
 The \texttt{conjoin} function takes in one or more predicates, and returns a
