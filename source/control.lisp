@@ -48,6 +48,7 @@
            :awhile
            :a?while
            :->
+           :->>
            :alambda
            :a?lambda
            :compose
@@ -80,6 +81,7 @@
            :swap-unless
            :swap-when
            :thread-first
+           :thread-last
            :unimplemented
            :until
            :while))
@@ -434,6 +436,41 @@ The macro -> is an alias for THREAD-FIRST."
   (should-equal (macroexpand-1 '(thread-first x (foo y) (bar z) (baz w)))
                 '(baz (bar (foo x y) z) w)))
 
+(defmacro thread-last (x &rest forms)
+  "Thread-last macro, as in Clojure's ->>.
+
+Inserts X as the last argument of each of FORMS, nesting left-to-right:
+
+  (thread-last x (foo y) (bar z) (baz w))
+  => (baz w (bar z (foo y x)))
+
+A non-list form F is treated as (F).  With no FORMS, expands to X.
+The macro ->> is an alias for THREAD-LAST."
+  (reduce (lambda (acc form)
+            (let ((form (if (listp form) form (list form))))
+              `(,@form ,acc)))
+          forms
+          :initial-value x))
+
+(behavior 'thread-last
+  (should= 5 (thread-last 5))
+  (should= 6 (thread-last 5 1+))
+  (should= 6 (thread-last 5 (1+)))
+  (should-equal '(2 4 6)
+                (thread-last '(1 2 3 4 5)
+                  (mapcar #'1+)
+                  (remove-if-not #'evenp)))
+  (should= 9
+           (thread-last 2
+             (* 3)
+             (+ 3)))
+  (should-equal '(b a c)
+                (thread-last (list 'a 'b)
+                  (cons 'c)
+                  (reverse)))
+  (should-equal (macroexpand-1 '(thread-last x (foo y) (bar z) (baz w)))
+                '(baz w (bar z (foo y x)))))
+
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
 returns true whenever all of the predicates return true.  This is from Paul
@@ -740,6 +777,17 @@ For example, you might do something like:
   (should= 9 (eval '(-> 2 (* 3) (+ 3))))
   (should-equal (macroexpand-1 '(-> x (foo y) (bar z) (baz w)))
                 '(baz (bar (foo x y) z) w)))
+
+(macro-alias thread-last ->>)
+
+(behavior '->>
+  (should-eq (macro-function '->>) (macro-function 'thread-last))
+  (should-equal '(2 4 6)
+                (eval '(->> '(1 2 3 4 5)
+                            (mapcar #'1+)
+                            (remove-if-not #'evenp))))
+  (should-equal (macroexpand-1 '(->> x (foo y) (bar z) (baz w)))
+                '(baz w (bar z (foo y x)))))
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."

@@ -733,6 +733,41 @@ expression alone.  The name \texttt{->} is a \texttt{macro-alias} for
 (-> x (foo y) (bar z) (baz w))  ; => (baz (bar (foo x y) z) w)
 \end{lstlisting}
 
+\lispMacroSubsection{thread-last}
+
+The \texttt{thread-last} macro (Clojure's \texttt{->>}) inserts an expression
+as the \emph{last} argument of a sequence of forms, nesting left-to-right.  That
+is,
+
+\begin{lstlisting}
+(thread-last x (foo y) (bar z) (baz w))
+\end{lstlisting}
+
+expands to
+
+\begin{lstlisting}
+(baz w (bar z (foo y x)))
+\end{lstlisting}
+
+A non-list form \texttt{f} is treated as \texttt{(f)}.  With no forms, the
+macro expands to the initial expression alone.  The name \texttt{->>} is a
+\texttt{macro-alias} for \texttt{thread-last}.
+
+\lispSyntax
+
+\texttt{(thread-last \lispVar{x} \&rest \lispVar{forms})}
+
+\texttt{(->> \lispVar{x} \&rest \lispVar{forms})}
+
+\lispExamples
+
+\begin{lstlisting}
+(->> '(1 2 3 4 5)
+     (mapcar #'1+)
+     (remove-if-not #'evenp))   ; Returns (2 4 6)
+(->> x (foo y) (bar z) (baz w)) ; => (baz w (bar z (foo y x)))
+\end{lstlisting}
+
 \lispFunctionSubsection{conjoin}
 
 The \texttt{conjoin} function takes in one or more predicates, and returns a
