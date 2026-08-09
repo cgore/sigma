@@ -110,12 +110,21 @@ the result of the call with NOT."
 specified by TYPE.
 
 (should-be-a 'integer 1) ; passes
-(should-be-a 'float 1) ; passes
+(should-be-a 'float 1.0) ; passes
 (should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; passes
 (should-be-a 'integer 1.0) ; fails"
-  (mapcar (lambda (thing)
-            (assert (typep thing type)))
-          things))
+  `(progn
+     ,@(mapcar (lambda (thing)
+                 `(assert (typep ,thing ,type)))
+               things)))
+
+(behavior 'should-be-a
+  (should-be-a 'integer 1)
+  (should-be-a 'float 1.0)
+  (should-be-a 'integer 1 2 3 4 5 6 7 8 9)
+  (should-be-a 'number 1 2.0 3/2)
+  (let ((x 42))
+    (should-be-a 'integer x)))
 
 (defun should-macro-constructor (should-prefix test-function)
   "Define and export a SHOULD-style macro named by concatenating SHOULD-PREFIX

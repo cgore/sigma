@@ -289,7 +289,7 @@ be of the type specified by \texttt{type}.
 
 \begin{lstlisting}
 (should-be-a 'integer 1)                 ; Passes
-(should-be-a 'float 1)                   ; Passes
+(should-be-a 'float 1.0)                 ; Passes
 (should-be-a 'integer 1 2 3 4 5 6 7 8 9) ; Passes
 (should-be-a 'integer 1.0)               ; Fails
 \end{lstlisting}
