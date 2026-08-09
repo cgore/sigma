@@ -768,6 +768,38 @@ macro expands to the initial expression alone.  The name \texttt{->>} is a
 (->> x (foo y) (bar z) (baz w)) ; => (baz w (bar z (foo y x)))
 \end{lstlisting}
 
+\lispMacroSubsection{thread-as}
+
+The \texttt{thread-as} macro (Clojure's \texttt{as->}) threads a value under an
+explicit name.  It binds \texttt{name} to \texttt{expr}, evaluates the first
+form with that binding, rebinds \texttt{name} to the result, and repeats.  The
+name may appear anywhere in each form (unlike \texttt{thread-first} /
+\texttt{thread-last}, which fix the hole position).  Unlike \texttt{a?and} /
+\texttt{aand}, evaluation does not short-circuit on \texttt{nil}.  The name
+\texttt{as->} is a \texttt{macro-alias} for \texttt{thread-as}.
+
+\lispSyntax
+
+\texttt{(thread-as \lispVar{expr} \lispVar{name} \&rest \lispVar{forms})}
+
+\texttt{(as-> \lispVar{expr} \lispVar{name} \&rest \lispVar{forms})}
+
+\lispExamples
+
+\begin{lstlisting}
+(thread-as 0 n
+  (1+ n)
+  (* n 2)
+  (+ n 5))                 ; Returns 7
+
+(as-> nil n
+  (or n 0)
+  (1+ n))                  ; Returns 1 (continues through NIL)
+
+(thread-as 'X v
+  (list 'a v 'b))          ; Returns (A X B)
+\end{lstlisting}
+
 \lispFunctionSubsection{conjoin}
 
 The \texttt{conjoin} function takes in one or more predicates, and returns a

@@ -44,7 +44,7 @@
 (in-package :sigma/system)
 
 (defparameter version-major 3)
-(defparameter version-minor 12)
+(defparameter version-minor 13)
 (defparameter version-revision 0)
 
 (defun version-list ()

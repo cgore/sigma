@@ -49,6 +49,7 @@
            :a?while
            :->
            :->>
+           :as->
            :alambda
            :a?lambda
            :compose
@@ -80,6 +81,7 @@
            :swap
            :swap-unless
            :swap-when
+           :thread-as
            :thread-first
            :thread-last
            :unimplemented
@@ -471,6 +473,52 @@ The macro ->> is an alias for THREAD-LAST."
   (should-equal (macroexpand-1 '(thread-last x (foo y) (bar z) (baz w)))
                 '(baz w (bar z (foo y x)))))
 
+(defmacro thread-as (expr name &rest forms)
+  "Named threading macro, as in Clojure's as->.
+
+Binds NAME to EXPR, evaluates the first of FORMS in that lexical environment,
+rebinds NAME to that result, and repeats for each successive form.  Unlike
+THREAD-FIRST / THREAD-LAST, NAME may appear anywhere in each form.  Unlike
+A?AND / AAND, there is no short-circuit on NIL — every form is evaluated.
+
+  (thread-as 0 n
+    (1+ n)
+    (* n 2)
+    (+ n 5))
+  => 7
+
+With no FORMS, expands to EXPR.  The macro AS-> is an alias for THREAD-AS."
+  (if (null forms)
+      expr
+      `(let ((,name ,expr))
+         (thread-as ,(first forms) ,name ,@(rest forms)))))
+
+(behavior 'thread-as
+  (should= 0 (thread-as 0 n))
+  (should= 7
+           (thread-as 0 n
+             (1+ n)
+             (* n 2)
+             (+ n 5)))
+  (should-equal "oo"
+                (thread-as "foo" s
+                  (subseq s 1)
+                  (string-upcase s)
+                  (string-downcase s)))
+  ;; Continues through NIL (unlike A?AND).
+  (should= 1
+           (thread-as nil n
+             (or n 0)
+             (1+ n)))
+  (should-equal '(3 2 1)
+                (thread-as (list 1 2 3) xs
+                  (reverse xs)
+                  (copy-list xs)))
+  ;; NAME can sit in the middle of a form.
+  (should-equal '(a X b)
+                (thread-as 'X v
+                  (list 'a v 'b))))
+
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
 returns true whenever all of the predicates return true.  This is from Paul
@@ -788,6 +836,13 @@ For example, you might do something like:
                             (remove-if-not #'evenp))))
   (should-equal (macroexpand-1 '(->> x (foo y) (bar z) (baz w)))
                 '(baz w (bar z (foo y x)))))
+
+(macro-alias thread-as as->)
+
+(behavior 'as->
+  (should-eq (macro-function 'as->) (macro-function 'thread-as))
+  (should= 7 (eval '(as-> 0 n (1+ n) (* n 2) (+ n 5))))
+  (should= 1 (eval '(as-> nil n (or n 0) (1+ n)))))
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."
