@@ -51,6 +51,10 @@
 
 (defparameter *perl-path* "/usr/bin/perl")
 
+(behavior '*perl-path*
+  (should-be-a 'string *perl-path*)
+  (should-be-true (plusp (length *perl-path*))))
+
 
 (defun perl (&rest code)
   "This is a simple function to easily call Perl code snippets.  It is far
@@ -59,8 +63,16 @@
                       `("-e" ,(apply #'strcat code))
                       :output t))
 
+(behavior 'perl
+  (when (probe-file *perl-path*)
+    (should-be-true (sb-ext:process-p (perl "print 2 + 2;")))))
+
 
 (defparameter *python-path* "/usr/bin/python")
+
+(behavior '*python-path*
+  (should-be-a 'string *python-path*)
+  (should-be-true (plusp (length *python-path*))))
 
 
 (defun python (&rest code)
@@ -69,6 +81,14 @@
   (sb-ext:run-program *python-path*
                       `("-c" ,(apply #'strcat code))
                       :output t))
+
+(behavior 'python
+  (when (or (probe-file *python-path*)
+            (probe-file "/usr/bin/python3"))
+    (let ((*python-path* (if (probe-file *python-path*)
+                             *python-path*
+                             "/usr/bin/python3")))
+      (should-be-true (sb-ext:process-p (python "print(2 + 2)"))))))
 
 
 (defun read-file (filename)
@@ -130,6 +150,10 @@
 
 (defparameter *ruby-path* "/usr/bin/ruby")
 
+(behavior '*ruby-path*
+  (should-be-a 'string *ruby-path*)
+  (should-be-true (plusp (length *ruby-path*))))
+
 
 (defun ruby (&rest code)
   "This is a simple function to easily call Ruby code snippets.  It is far
@@ -138,19 +162,6 @@
                       `("-e" ,(apply #'strcat code))
                       :output t))
 
-(behavior 'script-runners
-  ;; Only exercise runners when the configured interpreter exists so the
-  ;; suite stays hermetic on minimal systems.
-  (when (probe-file *perl-path*)
-    (should-be-true (sb-ext:process-p
-                     (perl "print 2 + 2;"))))
-  (when (or (probe-file *python-path*)
-            (probe-file "/usr/bin/python3"))
-    (let ((*python-path* (if (probe-file *python-path*)
-                             *python-path*
-                             "/usr/bin/python3")))
-      (should-be-true (sb-ext:process-p
-                       (python "print(2 + 2)")))))
+(behavior 'ruby
   (when (probe-file *ruby-path*)
-    (should-be-true (sb-ext:process-p
-                     (ruby "puts 2 + 2")))))
+    (should-be-true (sb-ext:process-p (ruby "puts 2 + 2")))))

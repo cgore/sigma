@@ -49,6 +49,16 @@
        (integer 0 1)
        bit))
 
+(behavior 'probability
+  (should-be-true (typep 0 'probability))
+  (should-be-true (typep 1 'probability))
+  (should-be-true (typep 0.0 'probability))
+  (should-be-true (typep 1.0 'probability))
+  (should-be-true (typep 0.5 'probability))
+  (should-be-false (typep -0.1 'probability))
+  (should-be-false (typep 1.5 'probability))
+  (should-be-false (typep 2 'probability)))
+
 
 (defun probability? (probability)
   "This is a simple probabilistic testing function."

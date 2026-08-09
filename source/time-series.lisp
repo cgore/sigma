@@ -95,6 +95,14 @@ dimensions, where each array represents data from a single time step."
 (deftype time-multiseries ()
   '(satisfies time-multiseries?))
 
+(behavior 'time-multiseries
+  (should-be-true
+   (typep (list (make-array '(2 2) :initial-element 0)
+                (make-array '(2 2) :initial-element 1))
+          'time-multiseries))
+  (should-be-false (typep '(1 2 3) 'time-multiseries))
+  (should-be-false (typep '() 'time-multiseries)))
+
 
 (defun tmsref (time-multiseries time &rest position)
   "This function works like AREF, but for a time series or multiseries.  The

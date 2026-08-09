@@ -183,8 +183,12 @@ LIST is empty."
 
 (behavior 'vector-to-list
   (should-equal (vector-to-list #(1 2 3)) '(1 2 3))
-  (should-equal (vector-to-list #()) nil)
-  (should-equal (simple-vector-to-list #(a b)) '(a b)))
+  (should-equal (vector-to-list #()) nil))
+
+(behavior 'simple-vector-to-list
+  (should-equal (simple-vector-to-list #(a b c)) '(a b c))
+  (should-equal (simple-vector-to-list #()) nil)
+  (should-equal (simple-vector-to-list (vector 1 2 3)) '(1 2 3)))
 
 (defun max* (&rest lists)
   "The MAX* function is a shortcut for MAX. It takes in one or more lists and finds

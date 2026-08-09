@@ -58,6 +58,15 @@
 (defconstant-once +whitespace+
                   '(#\Space #\Newline #\Backspace #\Tab #\Linefeed #\Page #\Return #\Rubout))
 
+(behavior '+whitespace+
+  (should-be-true (boundp '+whitespace+))
+  (should-be-true (listp +whitespace+))
+  (should-be-true (member #\Space +whitespace+ :test #'char=))
+  (should-be-true (member #\Tab +whitespace+ :test #'char=))
+  (should-be-true (member #\Newline +whitespace+ :test #'char=))
+  (should-string= (string-trim +whitespace+ (format nil " ~A " #\Tab))
+                  ""))
+
 (defun character-range (start end)
   "The CHARACTER-RANGE function returns a list of the characters from START to
 END."

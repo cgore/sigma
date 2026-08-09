@@ -597,6 +597,28 @@ This is the older DEFUN variant, the newer variant is a DEFMACRO below."
 (function-alias-as-a-function 'function-alias-as-a-function
                               'function-aliases-as-a-function)
 
+(behavior 'function-alias-as-a-function
+  (flet ((sample (x) (* x 3)))
+    (setf (fdefinition 'faafa-behavior-src) #'sample)
+    (function-alias-as-a-function 'faafa-behavior-src
+                                  'faafa-behavior-a
+                                  'faafa-behavior-b)
+    (should-be-true (fboundp 'faafa-behavior-a))
+    (should-be-true (fboundp 'faafa-behavior-b))
+    (should-eq (fdefinition 'faafa-behavior-a)
+               (fdefinition 'faafa-behavior-src))
+    (should-eq (fdefinition 'faafa-behavior-b)
+               (fdefinition 'faafa-behavior-src))
+    (should= 9 (faafa-behavior-a 3))
+    (should= 9 (faafa-behavior-b 3))
+    (fmakunbound 'faafa-behavior-src)
+    (fmakunbound 'faafa-behavior-a)
+    (fmakunbound 'faafa-behavior-b)))
+
+(behavior 'function-aliases-as-a-function
+  (should-eq (fdefinition 'function-aliases-as-a-function)
+             (fdefinition 'function-alias-as-a-function)))
+
 (defmacro function-alias (function &rest aliases)
   "This produces one or more aliases (alternate names) for a function.
 For example, you might do something like:
@@ -768,6 +790,36 @@ swapped with each other."
 (defun unimplemented ()
   "Signal an error indicating that this code path is not yet implemented."
   (error "This is not yet implemented."))
+
+(behavior 'unimplemented
+  (handler-case
+      (progn (unimplemented)
+             (should-be-true nil)) ; must not reach here
+    (error (e)
+      (should-be-true
+       (search "not yet implemented" (princ-to-string e)
+               :test #'char-equal)))))
+
+(behavior 'it
+  ;; The default anaphor used by AIF / AWHEN / etc.
+  (should= 42 (aif (+ 40 2) it))
+  (should-be-null (aif nil it))
+  (should= 10 (awhen 10 it)))
+
+(behavior 'self
+  ;; The recursive name bound by ALAMBDA.
+  (should= 120
+           (funcall (alambda (n)
+                      (if (<= n 1)
+                          1
+                          (* n (self (1- n)))))
+                    5))
+  (should= 0
+           (funcall (alambda (n)
+                      (if (zerop n)
+                          0
+                          (1+ (self (1- n)))))
+                    0)))
 
 (defmacro while (conditional &body body)
   "A WHILE macro, similar to the while loop in C.  Returns the value of the

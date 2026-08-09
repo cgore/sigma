@@ -245,6 +245,12 @@ MULTIPLICANDS is empty."
   (should-not #'nonnegative-integer? 12.7)
   (should-not #'nonnegative-integer? -12))
 
+(behavior 'nonnegative-integer
+  (should-be-true (typep 0 'nonnegative-integer))
+  (should-be-true (typep 12 'nonnegative-integer))
+  (should-be-false (typep -1 'nonnegative-integer))
+  (should-be-false (typep 1.5 'nonnegative-integer)))
+
 (defun unsigned-integer? (unsigned-integer)
   "Return true if UNSIGNED-INTEGER is a nonnegative integer.  This is an alias
 for NONNEGATIVE-INTEGER?."
@@ -271,6 +277,12 @@ for NONNEGATIVE-INTEGER?."
   (should-not #'positive-integer? 0)
   (should-not #'positive-integer? 12.7)
   (should-not #'positive-integer? -12))
+
+(behavior 'positive-integer
+  (should-be-true (typep 1 'positive-integer))
+  (should-be-true (typep 12 'positive-integer))
+  (should-be-false (typep 0 'positive-integer))
+  (should-be-false (typep -3 'positive-integer)))
 
 (defun product (sequence &key (key 'identity) (start 0) (end nil))
   "Return the product of the elements of SEQUENCE, optionally transformed by
