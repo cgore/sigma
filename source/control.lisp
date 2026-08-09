@@ -54,6 +54,8 @@
            :a?lambda
            :compose
            :conjoin
+           :cond->
+           :cond->>
            :curry
            :defconstant-once
            :deletef
@@ -78,12 +80,18 @@
            :rcompose
            :rcurry
            :self
+           :some->
+           :some->>
            :swap
            :swap-unless
            :swap-when
            :thread-as
+           :thread-cond-first
+           :thread-cond-last
            :thread-first
            :thread-last
+           :thread-some-first
+           :thread-some-last
            :unimplemented
            :until
            :while))
@@ -519,6 +527,137 @@ With no FORMS, expands to EXPR.  The macro AS-> is an alias for THREAD-AS."
                 (thread-as 'X v
                   (list 'a v 'b))))
 
+(defmacro thread-some-first (expr &rest forms)
+  "Like THREAD-FIRST, but if any intermediate value is NIL, stop and return NIL
+without evaluating further forms.  As in Clojure's some->.
+The macro SOME-> is an alias for THREAD-SOME-FIRST."
+  (reduce (lambda (acc form)
+            (let ((g (gensym "SOME"))
+                  (form (if (listp form) form (list form))))
+              `(let ((,g ,acc))
+                 (when ,g
+                   (,(first form) ,g ,@(rest form))))))
+          forms
+          :initial-value expr))
+
+(behavior 'thread-some-first
+  (should= 5 (thread-some-first 5))
+  (should= 6 (thread-some-first 5 1+))
+  (should-be-null (thread-some-first nil 1+))
+  (should-be-null
+   (thread-some-first (cons 1 nil)
+     (cdr)
+     (car)
+     (1+)))
+  (should= 2
+           (thread-some-first (cons 1 (cons 2 nil))
+             (cdr)
+             (car)))
+  (should= 11
+           (thread-some-first 10
+             (1+)
+             identity)))
+
+(defmacro thread-some-last (expr &rest forms)
+  "Like THREAD-LAST, but if any intermediate value is NIL, stop and return NIL
+without evaluating further forms.  As in Clojure's some->>.
+The macro SOME->> is an alias for THREAD-SOME-LAST."
+  (reduce (lambda (acc form)
+            (let ((g (gensym "SOME"))
+                  (form (if (listp form) form (list form))))
+              `(let ((,g ,acc))
+                 (when ,g
+                   (,@form ,g)))))
+          forms
+          :initial-value expr))
+
+(behavior 'thread-some-last
+  (should= 5 (thread-some-last 5))
+  (should= 6 (thread-some-last 5 1+))
+  (should-be-null (thread-some-last nil reverse))
+  (should-be-null
+   (thread-some-last nil
+     (cons 1)
+     (cons 2)))
+  (should-equal '(3 2 1)
+                (thread-some-last '(1 2 3)
+                  (copy-list)
+                  (reverse)))
+  (should-equal '(2 4)
+                (thread-some-last '(1 2 3 4)
+                  (mapcar #'1+)
+                  (remove-if-not #'evenp))))
+
+(defmacro thread-cond-first (expr &rest clauses)
+  "Conditional thread-first, as in Clojure's cond->.
+
+CLAUSES are alternating TESTs and FORMs.  Starting from EXPR, for each pair:
+if TEST is true, thread the current value through FORM as in THREAD-FIRST;
+otherwise skip FORM.  Tests are always evaluated; a false test does not abort
+the remaining clauses.  The macro COND-> is an alias for THREAD-COND-FIRST."
+  (assert (evenp (length clauses)) (clauses)
+          "THREAD-COND-FIRST expects an even number of clause elements (test form).")
+  (let ((g (gensym "COND")))
+    `(let ((,g ,expr))
+       ,@(loop for (test form) on clauses by #'cddr
+               for f = (if (listp form) form (list form))
+               collect `(when ,test
+                          (setf ,g (,(first f) ,g ,@(rest f)))))
+       ,g)))
+
+(behavior 'thread-cond-first
+  (should= 1 (thread-cond-first 1))
+  (should= 6
+           (thread-cond-first 1
+             t 1+
+             t (* 3)
+             nil (* 100)))
+  (should= 1
+           (thread-cond-first 1
+             nil 1+
+             nil (* 3)))
+  (should= 11
+           (thread-cond-first 10
+             (> 5 3) 1+
+             t identity))
+  (should-equal '(1 2 3)
+                (thread-cond-first nil
+                  t (or '(1 2 3))
+                  t (copy-list))))
+
+(defmacro thread-cond-last (expr &rest clauses)
+  "Conditional thread-last, as in Clojure's cond->>.
+
+CLAUSES are alternating TESTs and FORMs.  Starting from EXPR, for each pair:
+if TEST is true, thread the current value through FORM as in THREAD-LAST;
+otherwise skip FORM.  Tests are always evaluated; a false test does not abort
+the remaining clauses.  The macro COND->> is an alias for THREAD-COND-LAST."
+  (assert (evenp (length clauses)) (clauses)
+          "THREAD-COND-LAST expects an even number of clause elements (test form).")
+  (let ((g (gensym "COND")))
+    `(let ((,g ,expr))
+       ,@(loop for (test form) on clauses by #'cddr
+               for f = (if (listp form) form (list form))
+               collect `(when ,test
+                          (setf ,g (,@f ,g))))
+       ,g)))
+
+(behavior 'thread-cond-last
+  (should= 1 (thread-cond-last 1))
+  (should-equal '(2 4 6)
+                (thread-cond-last '(1 2 3 4 5)
+                  t (mapcar #'1+)
+                  t (remove-if-not #'evenp)
+                  nil (cons 0)))
+  (should-equal '(1 2 3)
+                (thread-cond-last '(1 2 3)
+                  nil reverse
+                  nil (cons 0)))
+  (should-equal '(c a b)
+                (thread-cond-last '(a b)
+                  t (cons 'c)
+                  nil reverse)))
+
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
 returns true whenever all of the predicates return true.  This is from Paul
@@ -843,6 +982,37 @@ For example, you might do something like:
   (should-eq (macro-function 'as->) (macro-function 'thread-as))
   (should= 7 (eval '(as-> 0 n (1+ n) (* n 2) (+ n 5))))
   (should= 1 (eval '(as-> nil n (or n 0) (1+ n)))))
+
+(macro-alias thread-some-first some->)
+
+(behavior 'some->
+  (should-eq (macro-function 'some->) (macro-function 'thread-some-first))
+  (should-be-null (eval '(some-> nil 1+)))
+  (should= 6 (eval '(some-> 5 1+))))
+
+(macro-alias thread-some-last some->>)
+
+(behavior 'some->>
+  (should-eq (macro-function 'some->>) (macro-function 'thread-some-last))
+  (should-be-null (eval '(some->> nil reverse)))
+  (should-equal '(3 2 1)
+                (eval '(some->> '(1 2 3) (copy-list) (reverse)))))
+
+(macro-alias thread-cond-first cond->)
+
+(behavior 'cond->
+  (should-eq (macro-function 'cond->) (macro-function 'thread-cond-first))
+  (should= 6 (eval '(cond-> 1 t 1+ t (* 3) nil (* 100)))))
+
+(macro-alias thread-cond-last cond->>)
+
+(behavior 'cond->>
+  (should-eq (macro-function 'cond->>) (macro-function 'thread-cond-last))
+  (should-equal '(2 4 6)
+                (eval '(cond->> '(1 2 3 4 5)
+                         t (mapcar #'1+)
+                         t (remove-if-not #'evenp)
+                         nil (cons 0)))))
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."

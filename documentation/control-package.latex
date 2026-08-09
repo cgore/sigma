@@ -800,6 +800,90 @@ name may appear anywhere in each form (unlike \texttt{thread-first} /
   (list 'a v 'b))          ; Returns (A X B)
 \end{lstlisting}
 
+\lispMacroSubsection{thread-some-first}
+
+The \texttt{thread-some-first} macro (Clojure's \texttt{some->}) is like
+\texttt{thread-first}, but if any intermediate value is \texttt{nil}, evaluation
+stops and \texttt{nil} is returned.  The name \texttt{some->} is a
+\texttt{macro-alias}.
+
+\lispSyntax
+
+\texttt{(thread-some-first \lispVar{expr} \&rest \lispVar{forms})}
+
+\texttt{(some-> \lispVar{expr} \&rest \lispVar{forms})}
+
+\lispExamples
+
+\begin{lstlisting}
+(some-> 5 1+)              ; Returns 6
+(some-> nil 1+)            ; Returns NIL
+(some-> '(1) (cdr) (car))  ; Returns NIL (cdr is NIL)
+\end{lstlisting}
+
+\lispMacroSubsection{thread-some-last}
+
+The \texttt{thread-some-last} macro (Clojure's \texttt{some->>}) is like
+\texttt{thread-last} with the same nil short-circuit.  The name \texttt{some->>}
+is a \texttt{macro-alias}.
+
+\lispSyntax
+
+\texttt{(thread-some-last \lispVar{expr} \&rest \lispVar{forms})}
+
+\texttt{(some->> \lispVar{expr} \&rest \lispVar{forms})}
+
+\lispExamples
+
+\begin{lstlisting}
+(some->> '(1 2 3) (copy-list) (reverse))  ; Returns (3 2 1)
+(some->> nil (cons 1))                    ; Returns NIL
+\end{lstlisting}
+
+\lispMacroSubsection{thread-cond-first}
+
+The \texttt{thread-cond-first} macro (Clojure's \texttt{cond->}) takes alternating
+tests and forms.  Starting from \texttt{expr}, each true test threads the
+current value through the following form as in \texttt{thread-first}; a false
+test skips that form without aborting later clauses.  The name \texttt{cond->}
+is a \texttt{macro-alias}.
+
+\lispSyntax
+
+\texttt{(thread-cond-first \lispVar{expr} \&rest \lispVar{clauses})}
+
+\texttt{(cond-> \lispVar{expr} \&rest \lispVar{clauses})}
+
+\lispExamples
+
+\begin{lstlisting}
+(cond-> 1
+  t 1+
+  t (* 3)
+  nil (* 100))   ; Returns 6
+\end{lstlisting}
+
+\lispMacroSubsection{thread-cond-last}
+
+The \texttt{thread-cond-last} macro (Clojure's \texttt{cond->>}) is the
+thread-last analogue of \texttt{thread-cond-first}.  The name \texttt{cond->>}
+is a \texttt{macro-alias}.
+
+\lispSyntax
+
+\texttt{(thread-cond-last \lispVar{expr} \&rest \lispVar{clauses})}
+
+\texttt{(cond->> \lispVar{expr} \&rest \lispVar{clauses})}
+
+\lispExamples
+
+\begin{lstlisting}
+(cond->> '(1 2 3 4 5)
+  t (mapcar #'1+)
+  t (remove-if-not #'evenp)
+  nil (cons 0))   ; Returns (2 4 6)
+\end{lstlisting}
+
 \lispFunctionSubsection{conjoin}
 
 The \texttt{conjoin} function takes in one or more predicates, and returns a
