@@ -146,8 +146,3 @@ interpreter used by \texttt{python}.  The default is \texttt{/usr/bin/python}.
 
 The \texttt{*ruby-path*} parameter holds the pathname of the Ruby interpreter
 used by \texttt{ruby}.  The default is \texttt{/usr/bin/ruby}.
-
-\lispParameterSubsection{*ruby*}
-
-The \texttt{*ruby*} symbol is exported from the package for compatibility.  Prefer
-\texttt{ruby} and \texttt{*ruby-path*} in new code.

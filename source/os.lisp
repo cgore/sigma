@@ -44,7 +44,7 @@
            :read-file
            :read-lines
            :*ruby-path*
-           :*ruby*))
+           :ruby))
 (in-package :sigma/os)
 
 
