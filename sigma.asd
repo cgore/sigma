@@ -98,7 +98,8 @@
                                            "control"
                                            "numeric"))
                              (:file "random"
-                              :depends-on ("control"
+                              :depends-on ("behave"
+                                           "control"
                                            "sequence"))
                              (:file "sequence"
                               :depends-on ("behave"

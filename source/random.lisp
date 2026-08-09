@@ -35,6 +35,7 @@
 
 (defpackage :sigma/random
   (:use :common-lisp
+        :sigma/behave
         :sigma/control
         :sigma/sequence)
   (:export :coin-toss
@@ -94,11 +95,25 @@ empty."))
   (when (plusp (array-total-size array))
     (row-major-aref array (random (array-total-size array)))))
 
+(behavior 'random-element
+  (should-be-null (random-element nil))
+  (should-be-null (random-element #()))
+  (should= 42 (random-element '(42)))
+  (should= 7 (random-element #(7)))
+  (dotimes (i 20)
+    (should-be-true (member (random-element '(a b c)) '(a b c) :test #'eq))))
+
 
 (defun random-argument (&rest rest)
   "Return one of the arguments REST chosen uniformly at random, or NIL if no
 arguments are given."
   (random-element rest))
+
+(behavior 'random-argument
+  (should-be-null (random-argument))
+  (should= 99 (random-argument 99))
+  (dotimes (i 20)
+    (should-be-true (member (random-argument :x :y) '(:x :y) :test #'eq))))
 
 
 (defun coin-toss ()
@@ -132,6 +147,17 @@ and upper may both be sequences, in which case their most extreme members."
         ((> lower upper)
          (random-in-range upper lower))))
 
+(behavior 'random-in-range
+  (should= 5 (random-in-range 5 5))
+  (dotimes (i 30)
+    (let ((r (random-in-range 0 10)))
+      (should-be-true (<= 0 r))
+      (should-be-true (< r 10))))
+  (dotimes (i 20)
+    (let ((r (random-in-range 10 0))) ; arguments swapped
+      (should-be-true (<= 0 r))
+      (should-be-true (< r 10)))))
+
 
 (defun random-in-ranges (&rest ranges)
   "This function, given many restricting ranges all as two-element lists, will
@@ -139,6 +165,12 @@ return a random number in the range that is a common subset to all of them."
   (let ((lower (minimum ranges :key #'minimum))
         (upper (maximum ranges :key #'maximum)))
     (random-in-range lower upper)))
+
+(behavior 'random-in-ranges
+  (dotimes (i 20)
+    (let ((r (random-in-ranges '(0 10) '(2 8))))
+      (should-be-true (<= 0 r))
+      (should-be-true (< r 10)))))
 
 
 (defun random-range (lower upper &key (containing nil))
@@ -161,6 +193,17 @@ HI in [high-min, UPPER) so the resulting range covers CONTAINING."
     (list (random-in-range lower low-max)
           (random-in-range high-min upper))))
 
+(behavior 'random-range
+  (dotimes (i 20)
+    (destructuring-bind (lo hi) (random-range 0 100)
+      (should-be-true (<= lo hi))
+      (should-be-true (<= 0 lo))
+      (should-be-true (< hi 100))))
+  (dotimes (i 20)
+    (destructuring-bind (lo hi) (random-range 0 100 :containing 50)
+      (should-be-true (<= lo 50))
+      (should-be-true (<= 50 hi)))))
+
 
 (defun randomize-array (array argument-for-random)
   "This function randomizes the contents of the array."
@@ -173,6 +216,15 @@ HI in [high-min, UPPER) so the resulting range covers CONTAINING."
 (defun random-array (dimensions argument-for-random)
   "This function returns a new array with randomized contents."
   (randomize-array (make-array dimensions) argument-for-random))
+
+(behavior 'random-array
+  (let ((a (random-array '(2 3) 10)))
+    (should-be-true (arrayp a))
+    (should-equal (array-dimensions a) '(2 3))
+    (dotimes (i (array-total-size a))
+      (let ((v (row-major-aref a i)))
+        (should-be-true (<= 0 v))
+        (should-be-true (< v 10))))))
 
 
 (defgeneric shuffle (container)
@@ -200,3 +252,14 @@ place."))
 (defmacro nshuffle (argument)
   "This randomly shuffles the argument in place."
   `(setf ,argument (shuffle ,argument)))
+
+(behavior 'nshuffle
+  (let ((lst '(1 2 3 4 5)))
+    (nshuffle lst)
+    (should-equal (sort (copy-list lst) #'<) '(1 2 3 4 5))))
+
+(behavior 'gauss
+  (dotimes (i 10)
+    (should-be-a 'float (gauss 0.0 1.0)))
+  ;; With zero variance the result is the mean (generator still runs).
+  (should= 3.0 (gauss 3.0 0.0)))
