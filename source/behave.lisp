@@ -197,3 +197,50 @@ SHOULD-NOT and function =, this defines SHOULD-NOT=."
 (defmacro should-not-be-false (&body body)
   "The SHOULD-BE-FALSE macro is a short-hand method for (SHOULD-NOT #'NOT ...)."
   `(should-not #'not (progn ,@body)))
+
+;;; Self-tests for the behave framework (exercised throughout Sigma, but
+;;; named here so every export has a dedicated behavior block).
+;;;
+;;; Use only SHOULD / SHOULD-NOT / SHOULD-BE-* here — not SHOULD= and friends.
+;;; Those macros are installed at load time by SHOULD-MACRO-CONSTRUCTOR, so
+;;; references to them earlier in this file would compile as function calls.
+
+(behavior 'behavior
+  (behavior 'behavior-nested
+    (should #'= 1 1)))
+
+(behavior 'spec
+  (spec "a nested specification"
+    (should #'= 2 (+ 1 1))))
+
+(behavior 'should
+  (should #'= 3 3)
+  (should #'equal '(a b) '(a b))
+  (should #'string= "x" "x"))
+
+(behavior 'should-not
+  (should-not #'= 1 2)
+  (should-not #'equal '(a) '(b)))
+
+(behavior 'should-be-null
+  (should-be-null nil)
+  (should-be-null (cdr '(only))))
+
+(behavior 'should-be-true
+  (should-be-true t)
+  (should-be-true 1)
+  (should-be-true 'symbol)
+  (should-be-true (plusp 3)))
+
+(behavior 'should-be-false
+  (should-be-false nil)
+  (should-be-false (zerop 1)))
+
+(behavior 'should-not-be-true
+  (should-not-be-true nil)
+  (should-not-be-true (not t)))
+
+(behavior 'should-not-be-false
+  (should-not-be-false t)
+  (should-not-be-false 0)
+  (should-not-be-false (null nil)))
