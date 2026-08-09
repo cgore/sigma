@@ -77,6 +77,10 @@ END."
                 '(#\a)))
 
 (defun character-ranges (&rest rest)
+  "Return a sorted list of unique characters covering one or more inclusive
+ranges.  REST is a flat sequence of endpoint pairs (START END START END ...);
+a single leftover argument is included as-is.  Overlapping ranges are merged
+via REMOVE-DUPLICATES."
   (sort (remove-duplicates
          (cond ((<= (length rest) 1)
                 rest)
@@ -114,11 +118,18 @@ END."
                    (key #'identity)
                    (test #'string=)
                    (remove-separators? t))
+  "Split STRING into a list of substrings on SEPARATORS.  SEPARATORS may be a
+single separator or a sequence of them; KEY and TEST control membership
+tests, and REMOVE-SEPARATORS? controls whether separator text is kept."
   (mapcar (rcurry #'coerce 'string)
           (split (coerce string 'list) separators
                  :key key :test test :remove-separators? remove-separators?)))
 
 (defun string-join (strings &optional (connecting-string ""))
+  "Join STRINGS into one string, inserting CONNECTING-STRING between each
+adjacent pair.  STRINGS may be a list of strings or a single string (returned
+unchanged aside from the single-element join path).  CONNECTING-STRING
+defaults to the empty string."
   (assert (or (stringp strings)
               (and (listp strings)
                    (every #'stringp strings))))
@@ -198,6 +209,8 @@ versions."
 (function-alias 'strcat 'string-concatenate)
 
 (defun escape-tildes (string)
+  "Return a copy of STRING in which every tilde (#\\~) is doubled, suitable
+for use as a FORMAT control string that should print tildes literally."
   (let ((input (vector-to-list string))
         (result nil)
         (current nil))
@@ -215,5 +228,8 @@ versions."
                 "foo~~bar"))
 
 (defun strmult (count &rest strings)
+  "Concatenate STRINGS (via STRCAT) and repeat that result COUNT times,
+returning one combined string.  When COUNT is less than 1, returns the empty
+string."
   (apply #'strcat (loop for i from 1 to count
                      collect (apply #'strcat strings))))

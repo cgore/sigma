@@ -67,6 +67,7 @@
 (in-package :sigma/numeric)
 
 (defun bit? (b)
+  "Return true if B is of type BIT (that is, 0 or 1)."
   (typep b 'bit))
 
 #|
@@ -102,19 +103,28 @@ to a variable."
     (should= x 123)))
 
 (defmacro f+ (variable &rest addends)
+  "Like INCF, but returns a new value via FOP rather than modifying VARIABLE
+through a place.  With no ADDENDS, adds 1."
   `(if (null ',addends)
        (fop #'+ ,variable 1)
        (fop #'+ ,variable ,@addends)))
 
 (defmacro f- (variable &rest subtrahends)
+  "Like DECF, but returns a new value via FOP rather than modifying VARIABLE
+through a place.  With no SUBTRAHENDS, subtracts 1."
   `(if (null ',subtrahends)
        (fop #'- ,variable 1)
        (fop #'- ,variable ,@subtrahends)))
 
 (defmacro f* (variable &rest multiplicands)
+  "Multiply VARIABLE by MULTIPLICANDS via FOP, returning a new value rather
+than modifying a place.  (* VARIABLE) works as expected when MULTIPLICANDS
+is empty."
   `(fop #'* ,variable ,@multiplicands)) ; (* variable) works as we want.
 
 (defmacro f/ (variable &rest divisors)
+  "Divide VARIABLE by DIVISORS via FOP, returning a new value rather than
+modifying a place.  With no DIVISORS, returns VARIABLE unchanged."
   `(if (null ',divisors)
        ,variable
        (fop #'/ ,variable ,@divisors)))
@@ -153,6 +163,9 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should= 0.0 (fractional-value -10.0)))
 
 (defmacro multf (variable &rest multiplicands)
+  "MULTF is analogous to INCF or DECF, just with multiplication.  It
+multiplies-and-stores into VARIABLE.  (* VARIABLE) works as expected when
+MULTIPLICANDS is empty."
   `(opf #'* ,variable ,@multiplicands)) ; (* variable) works as we want.
 
 (behavior 'multf
@@ -165,6 +178,7 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
     (should= x 1200)))
 
 (defun nonnegative? (x)
+  "Return true if X is not negative (that is, X >= 0)."
   (not (minusp x)))
 
 (deftype nonnegative-float ()
@@ -177,6 +191,7 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   'nonnegative-integer)
 
 (defun nonnegative-integer? (nonnegative-integer)
+  "Return true if NONNEGATIVE-INTEGER is an integer greater than or equal to 0."
   (typep nonnegative-integer 'nonnegative-integer))
 
 (behavior 'nonnegative-integer?
@@ -186,6 +201,8 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should-not #'nonnegative-integer? -12))
 
 (defun unsigned-integer? (unsigned-integer)
+  "Return true if UNSIGNED-INTEGER is a nonnegative integer.  This is an alias
+for NONNEGATIVE-INTEGER?."
   (typep unsigned-integer 'unsigned-integer))
 
 (behavior 'unsigned-integer?
@@ -201,6 +218,7 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   '(integer (0) *))
 
 (defun positive-integer? (positive-integer)
+  "Return true if POSITIVE-INTEGER is an integer strictly greater than 0."
   (typep positive-integer 'positive-integer))
 
 (behavior 'positive-integer?
@@ -210,10 +228,16 @@ Cf. <http://mathworld.wolfram.com/FractionalPart.html>"
   (should-not #'positive-integer? -12))
 
 (defun product (sequence &key (key 'identity) (start 0) (end nil))
+  "Return the product of the elements of SEQUENCE, optionally transformed by
+KEY and restricted to the subsequence bounded by START and END.  An empty
+range yields 1."
   (assert (sequence? sequence))
   (reduce #'* sequence :key key :start start :end end :initial-value 1))
 
 (defun sum (sequence &key (key 'identity) (start 0) (end nil))
+  "Return the sum of the elements of SEQUENCE, optionally transformed by KEY
+and restricted to the subsequence bounded by START and END.  An empty range
+yields 0."
   (assert (sequence? sequence))
   (reduce #'+ sequence :key key :start start :end end :initial-value 0))
 
@@ -307,13 +331,17 @@ as 'n choose k'."
 (assert (= 66 (choose 12 2)))
 
 (defmacro +f (&rest rest)
+  "Alias for INCF: add to and store into a place."
   `(incf ,@rest))
 
 (defmacro -f (&rest rest)
+  "Alias for DECF: subtract from and store into a place."
   `(decf ,@rest))
 
 (defmacro *f (&rest rest)
+  "Alias for MULTF: multiply and store into a place."
   `(multf ,@rest))
 
 (defmacro /f (&rest rest)
+  "Alias for DIVF: divide and store into a place."
   `(divf ,@rest))

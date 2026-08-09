@@ -473,8 +473,11 @@ and Common Lisp, with a syntax like Pascal.''"
                do (should-eq (or (%2? i) (%3? i))
                              (funcall (disjoin #'%2? #'%3?) i)))))
 
-;;; The DUPLICATE generic is designed to provide a deep-copy functionality.
-(defgeneric duplicate (item))
+(defgeneric duplicate (item)
+  (:documentation
+   "Return a deep copy of ITEM.  Composite structures such as lists and arrays
+are recursively duplicated; atomic values such as numbers, symbols, and
+functions are returned as-is."))
 
 (defmethod duplicate ((list list))
   "This returns a deeply new duplicate of the list."
@@ -492,13 +495,16 @@ and Common Lisp, with a syntax like Pascal.''"
     result))
 
 (defmethod duplicate ((number number))
+  "Numbers are immutable, so this returns NUMBER unchanged."
   number)
 
 (defmethod duplicate ((symbol symbol))
+  "Symbols are not copied; this returns SYMBOL unchanged."
   symbol)
 
 (defmethod duplicate ((function function))
-  ;; XXX: I believe this is correct, but I am not really sure.
+  "Functions are not copied; this returns FUNCTION unchanged.
+XXX: I believe this is correct, but I am not really sure."
   function)
 
 (defmacro for (initial conditional step-action &body body)
@@ -683,6 +689,7 @@ swapped with each other."
             (should= larger 2)))
 
 (defun unimplemented ()
+  "Signal an error indicating that this code path is not yet implemented."
   (error "This is not yet implemented."))
 
 ;;; TODO: It would be nice if this returned the last evaluated element of

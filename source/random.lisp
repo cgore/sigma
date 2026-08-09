@@ -77,7 +77,10 @@
       (+ mu (* z sigma)))))
 
 
-(defgeneric random-element (sequence))
+(defgeneric random-element (sequence)
+  (:documentation
+   "Return a randomly chosen element from SEQUENCE, or NIL if SEQUENCE is
+empty."))
 
 
 (defmethod random-element ((list list))
@@ -93,10 +96,13 @@
 
 
 (defun random-argument (&rest rest)
+  "Return one of the arguments REST chosen uniformly at random, or NIL if no
+arguments are given."
   (random-element rest))
 
 
 (defun coin-toss ()
+  "Return T or NIL with equal probability, like a fair coin toss."
   (random-argument t nil))
 
 ;; This is a simple assertion to ensure that the distribution of coin tosses is
@@ -136,6 +142,10 @@ return a random number in the range that is a common subset to all of them."
 
 
 (defun random-range (lower upper &key (containing nil))
+  "Return a two-element list (LO HI) of random bounds within [LOWER, UPPER).
+Without CONTAINING, LO and HI are two independent samples ordered so LO <= HI.
+With CONTAINING (a number or sequence), LO is chosen in [LOWER, low-max) and
+HI in [high-min, UPPER) so the resulting range covers CONTAINING."
   (when (null containing)
     (let ((a (random-in-range lower upper))
           (b (random-in-range lower upper)))
@@ -165,7 +175,11 @@ return a random number in the range that is a common subset to all of them."
   (randomize-array (make-array dimensions) argument-for-random))
 
 
-(defgeneric shuffle (container))
+(defgeneric shuffle (container)
+  (:documentation
+   "Return a new container with the same elements as CONTAINER in random
+order.  The original CONTAINER is not modified; see NSHUFFLE to shuffle in
+place."))
 
 
 (defmethod shuffle ((array array))

@@ -118,6 +118,10 @@ specified by TYPE.
           things))
 
 (defun should-macro-constructor (should-prefix test-function)
+  "Define and export a SHOULD-style macro named by concatenating SHOULD-PREFIX
+with TEST-FUNCTION.  The generated macro asserts that TEST-FUNCTION holds of
+its arguments.  For example, with prefix SHOULD and function =, this defines
+SHOULD=."
   (assert (symbolp should-prefix))
   (assert (symbolp test-function))
   (let ((macro-name (intern (concatenate 'string
@@ -128,6 +132,10 @@ specified by TYPE.
                   (export ',macro-name)))))
 
 (defun should-not-macro-constructor (should-not-prefix test-function)
+  "Define and export a SHOULD-NOT-style macro named by concatenating
+SHOULD-NOT-PREFIX with TEST-FUNCTION.  The generated macro asserts that
+TEST-FUNCTION does not hold of its arguments.  For example, with prefix
+SHOULD-NOT and function =, this defines SHOULD-NOT=."
   (assert (symbolp should-not-prefix))
   (assert (symbolp test-function))
   (let ((macro-name (intern (concatenate 'string

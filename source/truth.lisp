@@ -42,7 +42,10 @@
 (in-package :sigma/truth)
 
 
-(defgeneric ? (x))
+(defgeneric ? (x)
+  (:documentation
+   "Convert a generalized boolean X into a strict boolean: NIL stays NIL, and
+any non-NIL value becomes T."))
 
 
 (defmethod ? (x)
@@ -52,6 +55,7 @@ Lisp-style simplistic truth value (NIL, T)."
 
 
 (defun toggle (x)
+  "Return the boolean negation of X: NIL if X is true, T if X is false."
   (if x nil t))
 
 

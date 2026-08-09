@@ -56,6 +56,9 @@
 
 
 (defmacro decaying-probability? (probability &optional (factor 1/2))
+  "With probability PROBABILITY, return T and multiply PROBABILITY by FACTOR
+(default 1/2) in place so successive calls become less likely.  Otherwise
+return NIL without changing PROBABILITY."
   `(if (probability? ,probability)
      (progn (multf ,probability ,factor)
             t)

@@ -86,6 +86,8 @@
                  nil)))
 
 (defmacro set-nthcdr (n list new-value)
+  "Set the Nth CDR of LIST to NEW-VALUE.  When N is 0, SETF LIST itself.
+Used as the SETF expander for NTHCDR on implementations that allow it."
   `(progn (assert (and (integerp ,n)
                        (not (minusp ,n)))
                   (,n)
@@ -99,18 +101,25 @@
 #+clisp (ext:without-package-lock () (defsetf nthcdr set-nthcdr))
 
 (defun sequence? (sequence)
+  "Return true if SEQUENCE is of type SEQUENCE (a list or vector)."
   (typep sequence 'sequence))
 
 (defun empty-sequence? (sequence)
+  "Return true if SEQUENCE is a sequence that contains no elements.  For
+arrays, any dimension of size zero counts as empty."
   (and (sequence? sequence)
        (or (null sequence)
            (and (arrayp sequence)
                 (some #'zerop (array-dimensions sequence))))))
 
 (defmacro nconcf (list-1 list-2)
+  "Destructively concatenate LIST-2 onto LIST-1 and store the result back
+into the place LIST-1, analogous to NCONC with assignment."
   `(setf ,list-1 (nconc ,list-1 ,list-2)))
 
 (defun the-last (list)
+  "Return the last element of LIST (the CAR of its LAST cons), or NIL if
+LIST is empty."
   (assert (listp list))
   (car (last list)))
 
@@ -152,39 +161,59 @@ the minimum value within all of them."
                       '(7 8 -100)
                       '(10 11))))
 
-(defgeneric minimum (sequence &key key start end))
+(defgeneric minimum (sequence &key key start end)
+  (:documentation
+   "Return the minimum element of SEQUENCE, optionally after applying KEY,
+considering only the subsequence from START to END."))
 
 (defmethod minimum ((sequence sequence)
                     &key (key #'identity) (start 0) (end nil))
   "This reduces MIN onto the sequence provided."
   (reduce #'min sequence :key key :start start :end end))
 
-(defgeneric maximum (sequence &key key start end))
+(defgeneric maximum (sequence &key key start end)
+  (:documentation
+   "Return the maximum element of SEQUENCE, optionally after applying KEY,
+considering only the subsequence from START to END."))
 
 (defmethod maximum ((sequence sequence)
                     &key (key #'identity) (start 0) (end nil))
   "This reduces MAX onto the sequence provided."
   (reduce #'max sequence :key key :start start :end end))
 
-(defgeneric minimum? (sequence &key position key start end))
+(defgeneric minimum? (sequence &key position key start end)
+  (:documentation
+   "Return true if the element at POSITION in SEQUENCE is a minimum under KEY
+within the subsequence from START to END.  POSITION defaults to the last
+index."))
 
 (defmethod minimum? ((sequence sequence)
                       &key (position nil) (key #'identity) (start 0) (end nil))
+  "Return true if the element at POSITION is a minimum of SEQUENCE under KEY."
   (when (null position)
     (setf position (1- (length sequence))))
   (<= (funcall key (elt sequence position))
       (minimum sequence :key key :start start :end end)))
 
-(defgeneric maximum? (sequence &key position key start end))
+(defgeneric maximum? (sequence &key position key start end)
+  (:documentation
+   "Return true if the element at POSITION in SEQUENCE is a maximum under KEY
+within the subsequence from START to END.  POSITION defaults to the last
+index."))
 
 (defmethod maximum? ((sequence sequence)
                      &key (position nil) (key #'identity) (start 0) (end nil))
+  "Return true if the element at POSITION is a maximum of SEQUENCE under KEY."
   (when (null position)
     (setf position (1- (length sequence))))
   (>= (funcall key (elt sequence position))
       (maximum sequence :key key :start start :end end)))
 
-(defgeneric best (sequence predicate &key key))
+(defgeneric best (sequence predicate &key key)
+  (:documentation
+   "Return the ``best'' element of SEQUENCE according to PREDICATE and KEY.
+Equivalent to the first element of SEQUENCE sorted by PREDICATE, but in
+linear time."))
 
 (defmethod best ((list list) predicate &key (key #'identity))
   "This returns the ``best'' element in a list.  This is equivalent to, but
@@ -214,7 +243,11 @@ sequence with the same predicate and key."
         (setf best (aref vector i))))
     best))
 
-(defgeneric worst (sequence predicate &key key))
+(defgeneric worst (sequence predicate &key key)
+  (:documentation
+   "Return the ``worst'' element of SEQUENCE according to PREDICATE and KEY.
+Equivalent to the last element of SEQUENCE sorted by PREDICATE, but in
+linear time."))
 
 (defmethod worst ((list list) predicate &key (key #'identity))
   "This returns the ``worst'' element in a list.  This is equivalent to, but
@@ -245,10 +278,14 @@ sequence with the same predicate and key."
     worst))
 
 (defun nthable? (n list)
+  "Return true if N is a valid index for LIST via NTH (a nonnegative integer
+strictly less than the length of LIST)."
   (and (listp list)
        (typep n `(integer 0 ,(1- (length list))))))
 
 (defun arefable? (array position)
+  "Return true if POSITION is a valid multidimensional index list for ARRAY
+via AREF: same rank as ARRAY, each coordinate in range for its dimension."
   (and (arrayp array)
        (listp position)
        (= (length (array-dimensions array))
@@ -258,7 +295,12 @@ sequence with the same predicate and key."
               position
               (array-dimensions array))))
 
-(defgeneric sort-on (sequence-to-sort ordering-sequence predicate &key key))
+(defgeneric sort-on (sequence-to-sort ordering-sequence predicate &key key)
+  (:documentation
+   "Sort SEQUENCE-TO-SORT according to the parallel ORDERING-SEQUENCE.
+Corresponding elements are paired; pairs are sorted by PREDICATE on the
+ordering values (optionally through KEY), and the sorted SEQUENCE-TO-SORT
+elements are returned."))
 
 (defmethod sort-on ((sequence-to-sort list)
                     (ordering-sequence list)
@@ -278,6 +320,8 @@ sequence with the same predicate and key."
                     (ordering-sequence list)
                     predicate
                     &key (key #'identity))
+  "Sort the vector SEQUENCE-TO-SORT using the list ORDERING-SEQUENCE; return
+a vector."
   (list-to-vector (sort-on (vector-to-list sequence-to-sort)
                            ordering-sequence
                            predicate
@@ -287,6 +331,7 @@ sequence with the same predicate and key."
                     (ordering-sequence vector)
                     predicate
                     &key (key #'identity))
+  "Sort SEQUENCE-TO-SORT using the vector ORDERING-SEQUENCE."
   (sort-on sequence-to-sort
            (vector-to-list ordering-sequence)
            predicate
@@ -299,7 +344,11 @@ sequence with the same predicate and key."
            predicate
            :key key))
 
-(defgeneric split (sequence separators &key key test remove-separators?))
+(defgeneric split (sequence separators &key key test remove-separators?)
+  (:documentation
+   "Split SEQUENCE into subsequences wherever an element is a member of
+SEPARATORS (under KEY and TEST).  When REMOVE-SEPARATORS? is true (the
+default), separator elements are omitted from the results."))
 
 (defmethod split ((list list)
                    separators
@@ -327,7 +376,10 @@ SEQUENCE for membership in the SEPERATORS."
     (push (reverse current-list) result)
     (reverse result)))
 
-(defgeneric slice (sequence &optional slice))
+(defgeneric slice (sequence &optional slice)
+  (:documentation
+   "Return a modular subset of SEQUENCE, taking every SLICE-th element
+(SLICE defaults to 1).  SLICE may be any positive rational number."))
 
 (defmethod slice ((vector vector) &optional (slice 1))
   "This method returns a slice from a one-dimensional vector; that is, a modular
@@ -451,6 +503,9 @@ the FORMAT builtin function."
                '(:foobar :foobaz)))
 
 (defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
+  "Return true if LIST-1 and LIST-2 contain the same elements when viewed as
+sets, using KEY and either TEST or TEST-NOT for element comparison.  Order
+and duplicate multiplicity are ignored."
   (assert (listp list-1))
   (assert (listp list-2))
   (assert (not (and test test-not)))

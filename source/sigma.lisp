@@ -68,4 +68,6 @@
     :sigma))
 
 (defun use-all-sigma ()
+  "Use every Sigma package in *SIGMA-PACKAGES* from the current package,
+making all of their external symbols available without package prefixes."
   (mapcar #'use-package *sigma-packages*))
