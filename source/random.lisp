@@ -120,15 +120,17 @@ arguments are given."
   "Return T or NIL with equal probability, like a fair coin toss."
   (random-argument t nil))
 
-;; This is a simple assertion to ensure that the distribution of coin tosses is
-;; within our general assumptions for distribution.
-(let ((nils 0)
-      (ts 0))
-  (loop for i from 1 to 100000
-        do (if (coin-toss)
-             (incf ts)
-             (incf nils)))
-  (assert (< 0.9 (/ ts nils) 1.1)))
+(behavior 'coin-toss
+  (dotimes (i 20)
+    (should-be-true (member (coin-toss) '(t nil) :test #'eq)))
+  ;; Distribution check (same spirit as the historical load-time assert).
+  (let ((nils 0)
+        (ts 0))
+    (loop for i from 1 to 100000
+          do (if (coin-toss)
+                 (incf ts)
+                 (incf nils)))
+    (should-be-true (< 0.9 (/ ts nils) 1.1))))
 
 
 (defun random-in-range (lower upper)
@@ -211,6 +213,14 @@ HI in [high-min, UPPER) so the resulting range covers CONTAINING."
   (dotimes (index (array-total-size array) array)
     (setf (row-major-aref array index)
           (random argument-for-random))))
+
+(behavior 'randomize-array
+  (let ((a (make-array 5 :initial-element 0)))
+    (should-eq a (randomize-array a 10))
+    (dotimes (i 5)
+      (let ((v (aref a i)))
+        (should-be-true (<= 0 v))
+        (should-be-true (< v 10))))))
 
 
 (defun random-array (dimensions argument-for-random)

@@ -50,6 +50,13 @@
   "The SETHASH macro is a shortcut for SETF GETHASH."
   `(setf (gethash ,key ,hash-table) ,value))
 
+(behavior 'sethash
+  (let ((h (make-hash-table)))
+    (sethash 'k h 42)
+    (should= 42 (gethash 'k h))
+    (sethash 'k h 99)
+    (should= 99 (gethash 'k h))))
+
 (defun populate-hash-table (&rest pairs)
   "The POPULATE-HASH-TABLE function makes initial construction of hash tables a
 lot easier, just taking in key/value pairs as the arguments to the function, and
@@ -99,6 +106,25 @@ initializing it to -1 if it isn't currently defined."
       (setf (gethash key hash-table) -1)
       (decf (gethash key hash-table))))
 
+(behavior 'inchash
+  (let ((h (make-hash-table)))
+    (inchash 'a h)
+    (should= 1 (gethash 'a h))
+    (inchash 'a h)
+    (should= 2 (gethash 'a h))
+    (inchash 'a h)
+    (should= 3 (gethash 'a h))))
+
+(behavior 'dechash
+  (let ((h (make-hash-table)))
+    (dechash 'a h)
+    (should= -1 (gethash 'a h))
+    (dechash 'a h)
+    (should= -2 (gethash 'a h))
+    (sethash 'b h 5)
+    (dechash 'b h)
+    (should= 4 (gethash 'b h))))
+
 (defun gethash-in (keys hash-table &optional (default nil))
   "The GETHASH-IN function works like gethash, but allows for multiple keys to
 be specified at once, to work with nested hash tables."
@@ -133,6 +159,13 @@ be specified at once, to work with nested hash tables."
 you're going to use the hash table for partitions with multiple entries per
 key, not a one-to-one hashmap."
   (make-hash-table :test 'equal))
+
+(behavior 'make-partition
+  (let ((p (make-partition)))
+    (should-be-a 'hash-table p)
+    (should-eq 'equal (hash-table-test p))
+    (sethash "k" p 1)
+    (should= 1 (gethash "k" p))))
 
 (defmacro set-partition (key hash-table value)
   "The SET-PARTITION macro is a variant of SETHASH that assumes the hash entries

@@ -70,6 +70,13 @@
   "Return true if B is of type BIT (that is, 0 or 1)."
   (typep b 'bit))
 
+(behavior 'bit?
+  (should-be-true (bit? 0))
+  (should-be-true (bit? 1))
+  (should-be-false (bit? 2))
+  (should-be-false (bit? -1))
+  (should-be-false (bit? 0.0)))
+
 #|
 (ext:without-package-locks
   (defmacro incf (variable &rest addends)
@@ -129,6 +136,37 @@ modifying a place.  With no DIVISORS, returns VARIABLE unchanged."
        ,variable
        (fop #'/ ,variable ,@divisors)))
 
+(behavior 'f+
+  ;; F+ is post-assignment (via FOP): returns the old value, then updates X.
+  (let ((x 10))
+    (should= 10 (f+ x))
+    (should= 11 x)
+    (should= 11 (f+ x 4))
+    (should= 15 x)))
+
+(behavior 'f-
+  (let ((x 10))
+    (should= 10 (f- x))
+    (should= 9 x)
+    (should= 9 (f- x 3))
+    (should= 6 x)))
+
+(behavior 'f*
+  (let ((x 10))
+    (should= 10 (f* x))
+    (should= 10 x)
+    (should= 10 (f* x 3))
+    (should= 30 x)))
+
+(behavior 'f/
+  (let ((x 100))
+    (should= 100 (f/ x))
+    (should= 100 x)
+    (should= 100 (f/ x 10))
+    (should= 10 x)
+    (should= 10 (f/ x 2 1))
+    (should= 5 x)))
+
 (defun fractional-part (number)
   "This is the fractional part formula most familiar to computer scientists.
 It possesses the useful feature that frac(x)+int(x)=x, but may be negative.
@@ -180,6 +218,13 @@ MULTIPLICANDS is empty."
 (defun nonnegative? (x)
   "Return true if X is not negative (that is, X >= 0)."
   (not (minusp x)))
+
+(behavior 'nonnegative?
+  (should-be-true (nonnegative? 0))
+  (should-be-true (nonnegative? 3))
+  (should-be-true (nonnegative? 0.0))
+  (should-be-false (nonnegative? -1))
+  (should-be-false (nonnegative? -0.5)))
 
 (deftype nonnegative-float ()
   '(float 0.0 *))
@@ -233,6 +278,14 @@ KEY and restricted to the subsequence bounded by START and END.  An empty
 range yields 1."
   (assert (sequence? sequence))
   (reduce #'* sequence :key key :start start :end end :initial-value 1))
+
+(behavior 'product
+  (should= 1 (product '()))
+  (should= 1 (product #()))
+  (should= 120 (product '(1 2 3 4 5)))
+  (should= 120 (product #(1 2 3 4 5)))
+  (should= 6 (product '(1 2 3 4 5) :start 1 :end 3))
+  (should= 8 (product '(1 2 3 4) :key (lambda (x) (* x 2)) :end 2)))
 
 (defun sum (sequence &key (key 'identity) (start 0) (end nil))
   "Return the sum of the elements of SEQUENCE, optionally transformed by KEY
@@ -318,6 +371,13 @@ intelligent, and uses a loop instead of better approaches."
   (assert (positive-integer? n))
   (product (loop for i from 1 to n collect i)))
 
+(behavior 'factorial
+  (should= 1 (factorial 1))
+  (should= 2 (factorial 2))
+  (should= 6 (factorial 3))
+  (should= 24 (factorial 4))
+  (should= 120 (factorial 5)))
+
 (defun choose (n k)
   "The CHOOSE function computes the binomial coefficient for n and k, also known
 as 'n choose k'."
@@ -328,7 +388,12 @@ as 'n choose k'."
      (* (factorial (- n k))
         (factorial k))))
 
-(assert (= 66 (choose 12 2)))
+(behavior 'choose
+  ;; Requires 1 <= K <= N-1 because N, K, and N-K must all be positive integers.
+  (should= 66 (choose 12 2))
+  (should= 10 (choose 5 2))
+  (should= 10 (choose 5 3))
+  (should= 2 (choose 2 1)))
 
 (defmacro +f (&rest rest)
   "Alias for INCF: add to and store into a place."
@@ -345,3 +410,47 @@ as 'n choose k'."
 (defmacro /f (&rest rest)
   "Alias for DIVF: divide and store into a place."
   `(divf ,@rest))
+
+(behavior '+f
+  (let ((x 10))
+    (+f x)
+    (should= x 11)
+    (+f x 4)
+    (should= x 15)))
+
+(behavior '-f
+  (let ((x 10))
+    (-f x)
+    (should= x 9)
+    (-f x 3)
+    (should= x 6)))
+
+(behavior '*f
+  (let ((x 10))
+    (*f x 2)
+    (should= x 20)
+    (*f x 3 4)
+    (should= x 240)))
+
+(behavior '/f
+  (let ((x 100))
+    (/f x 2)
+    (should= x 50)
+    (/f x 5 2)
+    (should= x 5)))
+
+(behavior 'nonnegative-float
+  (should-be-true (typep 0.0 'nonnegative-float))
+  (should-be-true (typep 1.5 'nonnegative-float))
+  (should-be-false (typep -0.1 'nonnegative-float))
+  (should-be-false (typep 1 'nonnegative-float)))
+
+(behavior 'positive-float
+  (should-be-true (typep 0.1 'positive-float))
+  (should-be-false (typep 0.0 'positive-float))
+  (should-be-false (typep -1.0 'positive-float)))
+
+(behavior 'sawtooth-wave
+  (should= 0.5 (sawtooth-wave 10.5))
+  (should= 0.5 (sawtooth-wave -10.5))
+  (should-eq (fdefinition 'sawtooth-wave) (fdefinition 'fractional-value)))

@@ -112,6 +112,14 @@ via REMOVE-DUPLICATES."
           (setf (char string i) to-char)))
   string)
 
+(behavior 'replace-char
+  ;; Destructive: use a fresh string, not a literal constant.
+  (let ((s (copy-seq "banana")))
+    (should-string= (replace-char s #\a #\o) "bonono")
+    (should-string= s "bonono"))
+  (let ((s (copy-seq "xyz")))
+    (should-string= (replace-char s #\a #\b) "xyz")))
+
 (defmethod split ((string string)
                    separators
                    &key
@@ -124,6 +132,11 @@ tests, and REMOVE-SEPARATORS? controls whether separator text is kept."
   (mapcar (rcurry #'coerce 'string)
           (split (coerce string 'list) separators
                  :key key :test test :remove-separators? remove-separators?)))
+
+(behavior 'split
+  (should-equal (split "a,b,c" #\,) '("a" "b" "c"))
+  (should-equal (split "a::b::c" #\:) '("a" "" "b" "" "c"))
+  (should-equal (split "one two three" #\Space) '("one" "two" "three")))
 
 (defun string-join (strings &optional (connecting-string ""))
   "Join STRINGS into one string, inserting CONNECTING-STRING between each
@@ -140,6 +153,12 @@ defaults to the empty string."
            (mapcar (lambda (string)
                      (concatenate 'string connecting-string string))
                    (rest strings)))))
+
+(behavior 'string-join
+  (should-string= (string-join "solo") "solo")
+  (should-string= (string-join '("a" "b" "c")) "abc")
+  (should-string= (string-join '("a" "b" "c") ",") "a,b,c")
+  (should-string= (string-join '("x") "-") "x"))
 
 (defun string-trim-whitespace (string)
   "Removes whitespace from the left side and the right side of a string."
@@ -208,6 +227,10 @@ versions."
 
 (function-alias 'strcat 'string-concatenate)
 
+(behavior 'string-concatenate
+  (should-string= "ab" (string-concatenate "a" "b"))
+  (should-eq (fdefinition 'string-concatenate) (fdefinition 'strcat)))
+
 (defun escape-tildes (string)
   "Return a copy of STRING in which every tilde (#\\~) is doubled, suitable
 for use as a FORMAT control string that should print tildes literally."
@@ -233,3 +256,10 @@ returning one combined string.  When COUNT is less than 1, returns the empty
 string."
   (apply #'strcat (loop for i from 1 to count
                      collect (apply #'strcat strings))))
+
+(behavior 'strmult
+  (should-string= (strmult 3 "ab") "ababab")
+  (should-string= (strmult 2 "x" "y") "xyxy")
+  (should-string= (strmult 1 "z") "z")
+  (should-string= (strmult 0 "nope") "")
+  (should-string= (strmult -1 "nope") ""))

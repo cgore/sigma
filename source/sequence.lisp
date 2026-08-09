@@ -93,6 +93,17 @@ Used as the SETF expander for NTHCDR on implementations that allow it."
               (setf ,list ,new-value)
               (setf (cdr (nthcdr (1- ,n) ,list)) ,new-value))))
 
+(behavior 'set-nthcdr
+  ;; N must be a place-friendly form for ASSERT's restart list inside SET-NTHCDR.
+  (let ((lst (list 1 2 3 4))
+        (n 2))
+    (set-nthcdr n lst (list 9 9))
+    (should-equal lst '(1 2 9 9)))
+  (let ((lst (list 1 2 3))
+        (n 0))
+    (set-nthcdr n lst (list 'a 'b))
+    (should-equal lst '(a b))))
+
 #+cmu (defsetf nthcdr set-nthcdr)
 #+sbcl (sb-ext:without-package-locks (defsetf nthcdr set-nthcdr))
 #+clisp (ext:without-package-lock () (defsetf nthcdr set-nthcdr))

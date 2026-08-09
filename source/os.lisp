@@ -137,3 +137,20 @@
   (sb-ext:run-program *ruby-path*
                       `("-e" ,(apply #'strcat code))
                       :output t))
+
+(behavior 'script-runners
+  ;; Only exercise runners when the configured interpreter exists so the
+  ;; suite stays hermetic on minimal systems.
+  (when (probe-file *perl-path*)
+    (should-be-true (sb-ext:process-p
+                     (perl "print 2 + 2;"))))
+  (when (or (probe-file *python-path*)
+            (probe-file "/usr/bin/python3"))
+    (let ((*python-path* (if (probe-file *python-path*)
+                             *python-path*
+                             "/usr/bin/python3")))
+      (should-be-true (sb-ext:process-p
+                       (python "print(2 + 2)")))))
+  (when (probe-file *ruby-path*)
+    (should-be-true (sb-ext:process-p
+                     (ruby "puts 2 + 2")))))

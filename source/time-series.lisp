@@ -387,3 +387,16 @@ infinity norm, use :INFINITY for the power (maximum absolute component)."
                            :coordinate-assertion coordinate-assertion
                            :from-start from-start
                            :from-end from-end)))
+
+(behavior 'tms-raster-line
+  ;; 1-D series: positions are times; path from time 0 to time 2.
+  (should-equal (tms-raster-line '(10 20 30) '(0) '(2)
+                                 :coordinate-assertion #'integerp)
+                '(10 20 30))
+  (let ((tms (list (make-array '(2) :initial-contents '(1 2))
+                   (make-array '(2) :initial-contents '(3 4))
+                   (make-array '(2) :initial-contents '(5 6)))))
+    ;; Path along time at spatial index 0: (0 0) -> (2 0).
+    (should-equal (tms-raster-line tms '(0 0) '(2 0)
+                                   :coordinate-assertion #'integerp)
+                  '(1 3 5))))

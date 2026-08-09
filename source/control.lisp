@@ -532,6 +532,25 @@ functions are returned as-is."))
 XXX: I believe this is correct, but I am not really sure."
   function)
 
+(behavior 'duplicate
+  (should= 42 (duplicate 42))
+  (should-eq 'foo (duplicate 'foo))
+  (let* ((orig (list 1 (list 2 3) 4))
+         (copy (duplicate orig)))
+    (should-equal copy '(1 (2 3) 4))
+    (should-not-eq orig copy)
+    (should-not-eq (second orig) (second copy))
+    (setf (first (second copy)) 99)
+    (should-equal orig '(1 (2 3) 4)))
+  (let* ((orig (make-array '(2 2) :initial-contents '((1 2) (3 4))))
+         (copy (duplicate orig)))
+    (should-equalp copy #2A((1 2) (3 4)))
+    (should-not-eq orig copy)
+    (setf (aref copy 0 0) 0)
+    (should= 1 (aref orig 0 0)))
+  (let ((f #'identity))
+    (should-eq f (duplicate f))))
+
 (defmacro for (initial conditional step-action &body body)
   "A FOR macro, much like the ``for'' in the C programming language.
 A simple example:
@@ -556,6 +575,14 @@ expressiveness and explicitness."
      ,@(mapcar (lambda (a)
                  `(setf (macro-function ',a) (macro-function ',macro)))
                aliases)))
+
+(behavior 'macro-alias
+  ;; Alias is installed at load time, so call sites must EVAL (they cannot be
+  ;; compiled as ordinary function calls before the macro exists).
+  (macro-alias when macro-alias-behavior-when)
+  (should-be-true (macro-function 'macro-alias-behavior-when))
+  (should= 2 (eval '(macro-alias-behavior-when t 2)))
+  (should-be-null (eval '(macro-alias-behavior-when nil 2))))
 
 (defun function-alias-as-a-function (function &rest aliases)
   "This produces one or more aliases (alternate names) for a function.
@@ -639,6 +666,11 @@ can treat macros and other non-function things like a function, for using them
 with MAPCAR or similar."
   (lambda (&rest rest)
     (eval `(,operator ,@rest))))
+
+(behavior 'operator-to-function
+  (should= 6 (funcall (operator-to-function '+) 1 2 3))
+  (should-equal '(1 2 3)
+                (mapcar (operator-to-function '1+) '(0 1 2))))
 
 (defmacro opf (operator variable &rest arguments)
   "OPF is a generic operate-and-store macro, along the lines of INCF and DECF,
@@ -799,3 +831,28 @@ BODY never runs."
                           (incf x)))
             (should= x 10))
           (should-be-null (until t t)))
+
+;; FOR and FOREVER expand to WHILE; keep their behaviors after WHILE is defined.
+(behavior 'for
+  (let ((sum 0))
+    (for ((i 0))
+         (< i 5)
+         (incf i)
+      (incf sum i))
+    ;; (prog1 body step): body runs with i = 0..4; sum = 0+1+2+3+4 = 10.
+    (should= 10 sum))
+  (let ((xs nil))
+    (for ((i 1))
+         (<= i 3)
+         (incf i)
+      (push i xs))
+    (should-equal (reverse xs) '(1 2 3))))
+
+(behavior 'forever
+  (let ((n 0))
+    (block done
+      (forever
+        (incf n)
+        (when (>= n 5)
+          (return-from done))))
+    (should= 5 n)))
