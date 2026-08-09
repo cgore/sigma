@@ -103,9 +103,7 @@
 \author{Christopher Mark Gore\\
   \url{http://www.cgore.com}\\
   \mailto{cgore@cgore.com}}
-\date{{\color{red}
-    \textsc{Incomplete Draft}}\\
-  \cgoredate\today}
+\date{\cgoredate\today}
 
 \begin{document}
 

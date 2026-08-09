@@ -415,11 +415,24 @@ and Common Lisp, with a syntax like Pascal.''"
 (defmacro defconstant-once (name value &optional docstring)
   "Define NAME as a constant with VALUE, but only if it is not already bound.
 
+Unlike wrapping DEFCONSTANT in UNLESS, this expands to a real top-level
+DEFCONSTANT (inside EVAL-WHEN) so the compiler can see NAME when compiling
+later forms in the same file.  On reload, the value form returns the existing
+binding so the constant is not redefined inconsistently.  Documentation is set
+only when NAME has no variable documentation yet, so reloads do not overwrite
+an existing docstring.
+
 NAME should be a symbol (typically in +plus-signs+ convention).
 VALUE is evaluated once, when the constant is first defined.
 DOCSTRING is an optional documentation string."
-  `(unless (boundp ',name)
-     (defconstant ,name ,value ,@(when docstring (list docstring)))))
+  `(eval-when (:compile-toplevel :load-toplevel :execute)
+     (defconstant ,name
+       (if (boundp ',name)
+           (symbol-value ',name)
+           ,value))
+     ,@(when docstring
+         `((unless (documentation ',name 'variable)
+             (setf (documentation ',name 'variable) ,docstring))))))
 
 (let ((unique-name (gentemp "TEST-CONSTANT-")))
   (eval `(defconstant-once ,unique-name 42 "A test constant."))

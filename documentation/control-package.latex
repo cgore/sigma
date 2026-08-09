@@ -349,9 +349,12 @@ returns the value of the last form in the body from the last iteration, or
 \lispMacroSubsection{defconstant-once}
 
 The \texttt{defconstant-once} macro defines a constant using
-\texttt{defconstant}, but only if it is not already bound.  This is particularly
-useful for large immutable datasets so that reloading a file with ASDF does not
-produce redefinition warnings.
+\texttt{defconstant}, but only if it is not already bound.  It expands to a
+top-level \texttt{defconstant} inside \texttt{eval-when} so the compiler can
+see the name when compiling later forms in the same file; on reload the value
+form returns the existing binding so the constant is not redefined
+inconsistently.  This is particularly useful for large immutable datasets so
+that reloading a file with ASDF does not produce redefinition warnings.
 
 \lispSyntax
 
