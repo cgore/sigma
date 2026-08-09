@@ -715,8 +715,9 @@ from \cite{ansi-common-lisp} and is based upon the disjoin function from Dylan.
 
 \lispMacroSubsection{function-alias}
 
-The \texttt{function-alias} function produces one or more aliases (alternate
-names) for a function.
+The \texttt{function-alias} macro produces one or more aliases (alternate
+names) for a function.  Each name in \texttt{aliases} is given the same
+\texttt{fdefinition} as \texttt{function}.
 
 \lispSyntax
 
@@ -726,6 +727,7 @@ names) for a function.
 
 \begin{lstlisting}
 (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)
+(function-alias 'long-name 'short-a 'short-b)
 \end{lstlisting}
 
 \lispMacroSubsection{function-aliases}

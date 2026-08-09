@@ -549,7 +549,8 @@ This is the older DEFUN variant, the newer variant is a DEFMACRO below."
   "This produces one or more aliases (alternate names) for a function.
 For example, you might do something like:
 
-> (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)"
+> (function-alias 'that-guy-doesnt-know-when-to-stop-typing 'shorter)
+> (function-alias 'long-name 'short-a 'short-b)"
   (let* ((the-function (if (consp function)
                            (second function)
                            function))
@@ -560,9 +561,28 @@ For example, you might do something like:
                               aliases)))
     `(progn
        ,@(mapcar #'(lambda (a) `(declaim (ftype function ,a))) the-aliases)
-       ,(when the-aliases
-          `(setf (fdefinition ',(first the-aliases))
-                 (fdefinition ',the-function))))))
+       ,@(mapcar #'(lambda (a)
+                     `(setf (fdefinition ',a)
+                            (fdefinition ',the-function)))
+                 the-aliases))))
+
+(behavior 'function-alias
+  (flet ((sample (x) (+ x 1)))
+    (setf (fdefinition 'function-alias-behavior-sample) #'sample)
+    (function-alias 'function-alias-behavior-sample
+                    'function-alias-behavior-a
+                    'function-alias-behavior-b)
+    (should-be-true (fboundp 'function-alias-behavior-a))
+    (should-be-true (fboundp 'function-alias-behavior-b))
+    (should-eq (fdefinition 'function-alias-behavior-a)
+               (fdefinition 'function-alias-behavior-sample))
+    (should-eq (fdefinition 'function-alias-behavior-b)
+               (fdefinition 'function-alias-behavior-sample))
+    (should= (function-alias-behavior-a 41) 42)
+    (should= (function-alias-behavior-b 41) 42)
+    (fmakunbound 'function-alias-behavior-sample)
+    (fmakunbound 'function-alias-behavior-a)
+    (fmakunbound 'function-alias-behavior-b)))
 
 (macro-alias function-alias function-aliases)
 
