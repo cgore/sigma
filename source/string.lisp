@@ -198,27 +198,50 @@ defaults to the empty string."
 
 (defun stringify (argument)
   "The STRINGIFY function takes in an argument of any type and converts it to a
-string.  This produces the string as from the ~A directive to FORMAT.  Also see
-TO-STRING."
-  (format nil "~A" argument))
+string using FORMAT's ~A directive under WITH-STANDARD-IO-SYNTAX, so the result
+does not depend on the caller's *PRINT-CASE*, *PRINT-BASE*, or other printer
+controls.  Also see TO-STRING."
+  (with-standard-io-syntax
+    (format nil "~A" argument)))
 
 (behavior 'stringify
-          (should-string= "12" (stringify 12)))
+  (should-string= "12" (stringify 12))
+  (should-string= "FOO" (stringify :foo))
+  (should-string= "FOO" (stringify 'foo))
+  ;; Stable under ambient printer settings (GitHub issue #3).
+  (let ((*print-case* :downcase)
+        (*print-base* 16)
+        (*print-radix* t))
+    (should-string= "FOO" (stringify :foo))
+    (should-string= "255" (stringify 255))
+    (should-string= "12" (stringify 12))))
 
 (defun to-string (s)
   "The TO-STRING function converts common types of things into a string.  It
 handles some special cases more usefully than STRINGIFY for most user-facing
-output."
+output: NIL becomes the empty string, symbols use a downcased SYMBOL-NAME, and
+strings are returned unchanged.  All other values are printed with ~A under
+WITH-STANDARD-IO-SYNTAX so ambient printer controls do not affect the result."
   (cond ((null s) "")
         ((symbolp s) (string-downcase (symbol-name s)))
         ((stringp s) s)
-        (t (format nil "~A" s))))
+        (t (with-standard-io-syntax
+             (format nil "~A" s)))))
 
 (behavior 'to-string
-          (should-equal (to-string nil) "")
-          (should-equal (to-string :foo) "foo")
-          (should-equal (to-string "hello") "hello")
-          (should-equal (to-string "Hello, world!") "Hello, world!"))
+  (should-equal (to-string nil) "")
+  (should-equal (to-string :foo) "foo")
+  (should-equal (to-string 'BAR) "bar")
+  (should-equal (to-string "hello") "hello")
+  (should-equal (to-string "Hello, world!") "Hello, world!")
+  (should-equal (to-string 12) "12")
+  ;; Special cases and fallback stay stable under weird printer settings.
+  (let ((*print-case* :upcase)
+        (*print-base* 16)
+        (*print-radix* t))
+    (should-equal (to-string :foo) "foo")
+    (should-equal (to-string nil) "")
+    (should-equal (to-string 255) "255")))
 
 (defun strcat (&rest rest)
   "The STRCAT function takes in a list of things concatenates their string

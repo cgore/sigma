@@ -219,8 +219,10 @@ join path.  The connecting string defaults to the empty string.
 \lispFunctionSubsection{stringify}
 
 The \texttt{stringify} function takes an argument of any type and converts it
-to a string.  This produces the string as from the \texttt{\textasciitilde A}
-directive to \texttt{format}.  Also see \texttt{to-string}.
+to a string using the \texttt{\textasciitilde A} directive to \texttt{format}
+inside \texttt{with-standard-io-syntax}, so the result does not depend on the
+caller's printer controls (for example \texttt{*print-case*} or
+\texttt{*print-base*}).  Also see \texttt{to-string}.
 
 \lispSyntax
 
@@ -229,7 +231,11 @@ directive to \texttt{format}.  Also see \texttt{to-string}.
 \lispExamples
 
 \begin{lstlisting}
-(stringify 12) ; Returns "12"
+(stringify 12)   ; Returns "12"
+(stringify :foo) ; Returns "FOO"
+(let ((*print-case* :downcase) (*print-base* 16))
+  (stringify :foo)  ; Still "FOO"
+  (stringify 255))  ; Still "255"
 \end{lstlisting}
 
 \lispFunctionSubsection{string-trim-whitespace}
@@ -281,8 +287,10 @@ right side only of a string.
 
 The \texttt{to-string} function converts common types of things into a string.
 It handles some special cases more usefully than \texttt{stringify} for most
-user-facing output: \texttt{nil} becomes the empty string, and symbols become
-their downcased names.
+user-facing output: \texttt{nil} becomes the empty string, symbols become
+their downcased \texttt{symbol-name}s, and strings are returned unchanged.
+Other values are printed with \texttt{\textasciitilde A} under
+\texttt{with-standard-io-syntax}.
 
 \lispSyntax
 
@@ -294,6 +302,7 @@ their downcased names.
 (to-string nil)    ; Returns ""
 (to-string :foo)   ; Returns "foo"
 (to-string "hello"); Returns "hello"
+(to-string 255)    ; Returns "255" even if *print-base* is 16
 \end{lstlisting}
 
 \section{Methods}
