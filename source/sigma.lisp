@@ -67,7 +67,32 @@
     :sigma/truth
     :sigma))
 
+(behavior '*sigma-packages*
+  (should-be-true (listp *sigma-packages*))
+  (should-be-true (member :sigma/control *sigma-packages*))
+  (should-be-true (member :sigma/numeric *sigma-packages*))
+  (should-be-true (member :sigma *sigma-packages*))
+  (should-be-true
+   (every (lambda (p) (find-package p)) *sigma-packages*)))
+
 (defun use-all-sigma ()
   "Use every Sigma package in *SIGMA-PACKAGES* from the current package,
 making all of their external symbols available without package prefixes."
   (mapcar #'use-package *sigma-packages*))
+
+(behavior 'use-all-sigma
+  (let* ((name (format nil "SIGMA-USE-ALL-TEST-~A" (random 100000000)))
+         (pkg (make-package name :use '())))
+    (unwind-protect
+         (let ((*package* pkg))
+           (use-all-sigma)
+           (dolist (p *sigma-packages*)
+             (should-be-true (member (find-package p)
+                                     (package-use-list pkg))))
+           ;; External symbols become accessible without a package prefix.
+           (should-be-true (find-symbol "SUM" pkg))
+           (should-be-true (find-symbol "STRCAT" pkg))
+           (should-be-true (find-symbol "BEHAVIOR" pkg)))
+      (dolist (p *sigma-packages*)
+        (ignore-errors (unuse-package p pkg)))
+      (delete-package pkg))))
