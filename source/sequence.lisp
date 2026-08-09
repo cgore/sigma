@@ -75,15 +75,12 @@
                  (return-from nth-from-end (first a))))
            list (nthcdr n list)))
 
-(let ((0-to-10 '(0 1 2 3 4 5 6 7 8 9 10)))
-  (assert (equal (nth-from-end 0 0-to-10)
-                 10))
-  (assert (equal (nth-from-end 3 0-to-10)
-                 7))
-  (assert (equal (nth-from-end 10 0-to-10)
-                 0))
-  (assert (equal (nth-from-end 11 0-to-10)
-                 nil)))
+(behavior 'nth-from-end
+  (let ((0-to-10 '(0 1 2 3 4 5 6 7 8 9 10)))
+    (should-equal (nth-from-end 0 0-to-10) 10)
+    (should-equal (nth-from-end 3 0-to-10) 7)
+    (should-equal (nth-from-end 10 0-to-10) 0)
+    (should-be-null (nth-from-end 11 0-to-10))))
 
 (defmacro set-nthcdr (n list new-value)
   "Set the Nth CDR of LIST to NEW-VALUE.  When N is 0, SETF LIST itself.
@@ -112,16 +109,46 @@ arrays, any dimension of size zero counts as empty."
            (and (arrayp sequence)
                 (some #'zerop (array-dimensions sequence))))))
 
+(behavior 'sequence?
+  (should-be-true (sequence? nil))
+  (should-be-true (sequence? '(1 2)))
+  (should-be-true (sequence? #(1 2)))
+  (should-be-false (sequence? 5))
+  (should-be-false (sequence? 'symbol)))
+
+(behavior 'empty-sequence?
+  (should-be-true (empty-sequence? nil))
+  (should-be-true (empty-sequence? #()))
+  (should-be-true (empty-sequence? (make-array 0)))
+  ;; Multi-dimensional arrays are not SEQUENCEs, so this is false under the
+  ;; current predicate (SEQUENCE? fails first).
+  (should-be-false (empty-sequence? (make-array '(0 3))))
+  (should-be-false (empty-sequence? '(1)))
+  (should-be-false (empty-sequence? #(1)))
+  (should-be-false (empty-sequence? 1)))
+
 (defmacro nconcf (list-1 list-2)
   "Destructively concatenate LIST-2 onto LIST-1 and store the result back
 into the place LIST-1, analogous to NCONC with assignment."
   `(setf ,list-1 (nconc ,list-1 ,list-2)))
+
+(behavior 'nconcf
+  ;; Use LIST (not quoted literals): NCONC is destructive and must not mutate
+  ;; constants shared across the compiled file.
+  (let ((a (list 1 2))
+        (b (list 3 4)))
+    (nconcf a b)
+    (should-equal a '(1 2 3 4))))
 
 (defun the-last (list)
   "Return the last element of LIST (the CAR of its LAST cons), or NIL if
 LIST is empty."
   (assert (listp list))
   (car (last list)))
+
+(behavior 'the-last
+  (should-be-null (the-last nil))
+  (should= 3 (the-last '(1 2 3))))
 
 (defun list-to-vector (list)
   "This takes in a list and returns an equivalent vector."
@@ -138,6 +165,15 @@ LIST is empty."
   (assert (vectorp vector))
   (loop for index from 0 to (1- (length vector))
         collect (svref vector index)))
+
+(behavior 'list-to-vector
+  (should-equalp (list-to-vector '(1 2 3)) #(1 2 3))
+  (should-equalp (list-to-vector nil) #()))
+
+(behavior 'vector-to-list
+  (should-equal (vector-to-list #(1 2 3)) '(1 2 3))
+  (should-equal (vector-to-list #()) nil)
+  (should-equal (simple-vector-to-list #(a b)) '(a b)))
 
 (defun max* (&rest lists)
   "The MAX* function is a shortcut for MAX. It takes in one or more lists and finds
@@ -209,6 +245,26 @@ index."))
   (>= (funcall key (elt sequence position))
       (maximum sequence :key key :start start :end end)))
 
+(behavior 'minimum
+  (should= 1 (minimum '(3 1 4 1 5)))
+  (should= 1 (minimum #(3 1 4 1 5)))
+  ;; Subsequence from index 2 is (4 1 5).
+  (should= 1 (minimum '(3 1 4 1 5) :start 2)))
+
+(behavior 'maximum
+  (should= 5 (maximum '(3 1 4 1 5)))
+  (should= 5 (maximum #(3 1 4 1 5)))
+  ;; Subsequence before index 3 is (3 1 4).
+  (should= 4 (maximum '(3 1 4 1 5) :end 3)))
+
+(behavior 'minimum?
+  (should-be-true (minimum? '(3 1 4) :position 1))
+  (should-be-false (minimum? '(3 1 4) :position 0)))
+
+(behavior 'maximum?
+  (should-be-true (maximum? '(3 1 4) :position 2))
+  (should-be-false (maximum? '(3 1 4) :position 0)))
+
 (defgeneric best (sequence predicate &key key)
   (:documentation
    "Return the ``best'' element of SEQUENCE according to PREDICATE and KEY.
@@ -277,6 +333,19 @@ sequence with the same predicate and key."
         (setf worst (aref vector i))))
     worst))
 
+(behavior 'best
+  (should-be-null (best nil #'<))
+  (should= 1 (best '(3 1 4 1 5) #'<))
+  (should= 5 (best '(3 1 4 1 5) #'>))
+  (should= 1 (best #(3 1 4) #'<))
+  (should-equal "aa" (best '("bb" "aa" "cc") #'string<)))
+
+(behavior 'worst
+  (should-be-null (worst nil #'<))
+  (should= 5 (worst '(3 1 4 1 5) #'<))
+  (should= 1 (worst '(3 1 4 1 5) #'>))
+  (should= 4 (worst #(3 1 4) #'<)))
+
 (defun nthable? (n list)
   "Return true if N is a valid index for LIST via NTH (a nonnegative integer
 strictly less than the length of LIST)."
@@ -294,6 +363,21 @@ via AREF: same rank as ARRAY, each coordinate in range for its dimension."
                   (typep position `(integer 0 ,(1- dimension))))
               position
               (array-dimensions array))))
+
+(behavior 'nthable?
+  (should-be-true (nthable? 0 '(a b c)))
+  (should-be-true (nthable? 2 '(a b c)))
+  (should-be-false (nthable? 3 '(a b c)))
+  (should-be-false (nthable? -1 '(a b c)))
+  (should-be-false (nthable? 0 'not-a-list)))
+
+(behavior 'arefable?
+  (let ((a (make-array '(2 3))))
+    (should-be-true (arefable? a '(0 0)))
+    (should-be-true (arefable? a '(1 2)))
+    (should-be-false (arefable? a '(2 0)))
+    (should-be-false (arefable? a '(0)))
+    (should-be-false (arefable? 1 '(0)))))
 
 (defgeneric sort-on (sequence-to-sort ordering-sequence predicate &key key)
   (:documentation
@@ -344,6 +428,16 @@ a vector."
            predicate
            :key key))
 
+(behavior 'sort-on
+  (should-equal (sort-on '("a" "b" "c") '(3 1 2) #'<)
+                '("b" "c" "a"))
+  (should-equalp (sort-on #("a" "b" "c") '(3 1 2) #'<)
+                 #("b" "c" "a")))
+
+(behavior 'sort-order
+  (should-equal (sort-order '(30 10 20) #'<) '(1 2 0))
+  (should-equal (sort-order '(30 10 20) #'>) '(0 2 1)))
+
 (defgeneric split (sequence separators &key key test remove-separators?)
   (:documentation
    "Split SEQUENCE into subsequences wherever an element is a member of
@@ -375,6 +469,14 @@ SEQUENCE for membership in the SEPERATORS."
           list)
     (push (reverse current-list) result)
     (reverse result)))
+
+(behavior 'split
+  (should-equal (split '(a b sep c d sep e) 'sep)
+                '((a b) (c d) (e)))
+  (should-equal (split '(a b x c) 'x)
+                '((a b) (c)))
+  (should-equal (split '(a x b) 'x :remove-separators? nil)
+                '((a x) (b))))
 
 (defgeneric slice (sequence &optional slice)
   (:documentation
@@ -415,6 +517,14 @@ The slice argument may be any positive rational number."
       (incf index slice))
     (reverse result)))
 
+(behavior 'slice
+  (should-equal (slice '(1 2 3 4 5 6 7 8 9) 2)
+                '(1 3 5 7 9))
+  (should-equalp (slice #(1 2 3 4 5 6 7 8 9) 2)
+                 #(1 3 5 7 9))
+  (should-equal (slice '(1 2 3 4 5) 1)
+                '(1 2 3 4 5)))
+
 (defun join-symbol-to-all-preceeding (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item preceeding it.  For example:
@@ -441,25 +551,27 @@ the FORMAT builtin function."
     ;; Just return the list passed in unmodified.
     list))
 
-(assert (equal (join-symbol-to-all-preceeding :% '(100 :%))
-               '(:100%)))
-(let ((*print-base* 8))
-  (assert (equal (join-symbol-to-all-preceeding :% '(64 :%))
-                 '(:100%))))
-(assert (equal (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
-               '(:10% :20% :30%)))
-(assert (equal (join-symbol-to-all-preceeding :% '(10 :55%))
-               '(10 :55%)))
-(assert (equal (join-symbol-to-all-preceeding :% '(1 2 3 4 5))
-               '(1 2 3 4 5)))
-(assert (equal (join-symbol-to-all-preceeding :% '(:a :b :c :d :e))
-               '(:a :b :c :d :e)))
-(assert (equal (join-symbol-to-all-preceeding :foo '(:bar :foo :baz :foo))
-               '(:barfoo :bazfoo)))
-(assert (equal
-         (let ((*print-case* :downcase))
-           (join-symbol-to-all-preceeding :b '(:a :b :c :b)))
-         '(:|ab| :|cb|)))
+(behavior 'join-symbol-to-all-preceeding
+  ;; Fresh lists: JOIN-SYMBOL-TO-ALL-PRECEEDING mutates its list argument.
+  (should-equal (join-symbol-to-all-preceeding :% (list 100 :%))
+                '(:100%))
+  (let ((*print-base* 8))
+    (should-equal (join-symbol-to-all-preceeding :% (list 64 :%))
+                  '(:100%)))
+  (should-equal (join-symbol-to-all-preceeding :% (list 10 :% 20 :% 30 :%))
+                '(:10% :20% :30%))
+  (should-equal (join-symbol-to-all-preceeding :% (list 10 :55%))
+                '(10 :55%))
+  (should-equal (join-symbol-to-all-preceeding :% (list 1 2 3 4 5))
+                '(1 2 3 4 5))
+  (should-equal (join-symbol-to-all-preceeding :% (list :a :b :c :d :e))
+                '(:a :b :c :d :e))
+  (should-equal (join-symbol-to-all-preceeding :foo (list :bar :foo :baz :foo))
+                '(:barfoo :bazfoo))
+  (should-equal
+   (let ((*print-case* :downcase))
+     (join-symbol-to-all-preceeding :b (list :a :b :c :b)))
+   '(:|ab| :|cb|)))
 
 (defun join-symbol-to-all-following (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
@@ -486,21 +598,23 @@ the FORMAT builtin function."
     ;; Just return the list passed in unmodified.
     list))
 
-(assert (equal (join-symbol-to-all-following :# '(:# :aabbcc))
-               '(:#aabbcc)))
-(assert (equal (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
-               '(:#10 :#20 :#30)))
-(let ((*print-base* 8))
-  (assert (equal (join-symbol-to-all-following :# '(:# 64))
-                 '(:#100))))
-(assert (equal (join-symbol-to-all-following :# '(:#55 10))
-               '(:#55 10)))
-(assert (equal (join-symbol-to-all-following :# '(1 2 3 4 5))
-               '(1 2 3 4 5)))
-(assert (equal (join-symbol-to-all-following :# '(:a :b :c :d :e))
-               '(:a :b :c :d :e)))
-(assert (equal (join-symbol-to-all-following :foo '(:foo bar :foo :baz))
-               '(:foobar :foobaz)))
+(behavior 'join-symbol-to-all-following
+  ;; Fresh lists: JOIN-SYMBOL-TO-ALL-FOLLOWING mutates its list argument.
+  (should-equal (join-symbol-to-all-following :# (list :# :aabbcc))
+                '(:#aabbcc))
+  (should-equal (join-symbol-to-all-following :# (list :# 10 :# 20 :# 30))
+                '(:#10 :#20 :#30))
+  (let ((*print-base* 8))
+    (should-equal (join-symbol-to-all-following :# (list :# 64))
+                  '(:#100)))
+  (should-equal (join-symbol-to-all-following :# (list :#55 10))
+                '(:#55 10))
+  (should-equal (join-symbol-to-all-following :# (list 1 2 3 4 5))
+                '(1 2 3 4 5))
+  (should-equal (join-symbol-to-all-following :# (list :a :b :c :d :e))
+                '(:a :b :c :d :e))
+  (should-equal (join-symbol-to-all-following :foo (list :foo 'bar :foo :baz))
+                '(:foobar :foobaz)))
 
 (defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
   "Return true if LIST-1 and LIST-2 contain the same elements when viewed as
@@ -518,6 +632,12 @@ and duplicate multiplicity are ignored."
         (t (and (not (set-difference list-1 list-2 :key key))
                 (not (set-difference list-2 list-1 :key key))))))
 
+(behavior 'set-equal
+  (should-be-true (set-equal '(1 2 3) '(3 2 1)))
+  (should-be-true (set-equal '(1 1 2) '(2 1)))
+  (should-be-false (set-equal '(1 2) '(1 2 3)))
+  (should-be-true (set-equal '("a" "b") '("B" "A") :test #'string-equal)))
+
 (defun array-values (array positions)
   "This function returns a list of the values in array found at the specified
 positions."
@@ -529,3 +649,8 @@ positions."
                               (length (array-dimensions array)))))
               (apply #'aref array position))
           positions))
+
+(behavior 'array-values
+  (let ((a (make-array '(2 2) :initial-contents '((1 2) (3 4)))))
+    (should-equal (array-values a '((0 0) (1 1) (0 1)))
+                  '(1 4 2))))
