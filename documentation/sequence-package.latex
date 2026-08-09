@@ -155,7 +155,10 @@ empty.
 \lispFunctionSubsection{join-symbol-to-all-following}
 
 This function takes a symbol and a list, and for every occurrence of the
-symbol in the list, it joins it to the item following it.
+symbol in the list, it joins it to the item following it.  Symbol pieces use
+\texttt{symbol-name}, so \texttt{*print-case*} does not change the result.
+Non-symbol tokens (such as numbers) are printed with the current printer
+controls.
 
 \lispSyntax
 
@@ -166,10 +169,15 @@ symbol in the list, it joins it to the item following it.
 \begin{lstlisting}
 (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
 ;; Returns '(:#10 :#20 :#30)
+
+(let ((*print-case* :downcase))
+  (join-symbol-to-all-following :foo (list :foo 'bar :foo :baz)))
+;; Still returns '(:foobar :foobaz)
 \end{lstlisting}
 
 \lispAffectedBy
 
+For non-symbol tokens only:
 \texttt{*print-escape*},
 \texttt{*print-radix*},
 \texttt{*print-base*},
@@ -177,14 +185,17 @@ symbol in the list, it joins it to the item following it.
 \texttt{*print-pretty*},
 \texttt{*print-level*},
 \texttt{*print-length*},
-\texttt{*print-case*},
 \texttt{*print-gensym*},
 \texttt{*print-array*}.
+Symbol pieces are not affected by \texttt{*print-case*}.
 
 \lispFunctionSubsection{join-symbol-to-all-preceeding}
 
 This function takes a symbol and a list, and for every occurrence of the
-symbol in the list, it joins it to the item preceding it.
+symbol in the list, it joins it to the item preceding it.  Symbol pieces use
+\texttt{symbol-name}, so \texttt{*print-case*} does not change the result.
+Non-symbol tokens (such as numbers) are printed with the current printer
+controls (for example \texttt{*print-base*}).
 
 \lispSyntax
 
@@ -195,10 +206,19 @@ symbol in the list, it joins it to the item preceding it.
 \begin{lstlisting}
 (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
 ;; Returns '(:10% :20% :30%)
+
+(let ((*print-base* 8))
+  (join-symbol-to-all-preceeding :% (list 64 :%)))
+;; Returns '(:100%)
+
+(let ((*print-case* :downcase))
+  (join-symbol-to-all-preceeding :foo (list :bar :foo :baz :foo)))
+;; Still returns '(:barfoo :bazfoo)
 \end{lstlisting}
 
 \lispAffectedBy
 
+For non-symbol tokens only:
 \texttt{*print-escape*},
 \texttt{*print-radix*},
 \texttt{*print-base*},
@@ -206,9 +226,9 @@ symbol in the list, it joins it to the item preceding it.
 \texttt{*print-pretty*},
 \texttt{*print-level*},
 \texttt{*print-length*},
-\texttt{*print-case*},
 \texttt{*print-gensym*},
 \texttt{*print-array*}.
+Symbol pieces are not affected by \texttt{*print-case*}.
 
 \lispFunctionSubsection{list-to-vector}
 

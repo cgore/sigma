@@ -540,6 +540,27 @@ The slice argument may be any positive rational number."
   (should-equal (slice '(1 2 3 4 5) 1)
                 '(1 2 3 4 5)))
 
+(defun join-token-string (token)
+  "Stringify TOKEN for joining into a keyword name.
+
+Symbols use SYMBOL-NAME so the result is stable under *PRINT-CASE* (and
+similar display settings).  Strings and characters are used as their
+character content.  All other objects are printed with WRITE-TO-STRING so
+numeric *PRINT-BASE* (and related printer controls for non-symbols) still
+apply — e.g. 64 under base 8 becomes \"100\"."
+  (typecase token
+    (symbol (symbol-name token))
+    (string token)
+    (character (string token))
+    (t (write-to-string token :escape nil :readably nil))))
+
+(defun join-tokens-to-keyword (left right)
+  "Intern the concatenation of LEFT and RIGHT as a keyword symbol."
+  (intern (concatenate 'string
+                       (join-token-string left)
+                       (join-token-string right))
+          "KEYWORD"))
+
 (defun join-symbol-to-all-preceeding (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
 symbol in the list, it joins it to the item preceeding it.  For example:
@@ -547,9 +568,13 @@ symbol in the list, it joins it to the item preceeding it.  For example:
 > (join-symbol-to-all-preceeding :% '(10 :% 20 :% 30 :%))
 => '(:10% :20% :30%)
 
-The result is affected by all of the *PRINT-...* variables in the same was as
-the FORMAT builtin function."
-;  (format t "join-symbol-to-all-preceeding ~A ~A~%" symbol list)
+Symbol pieces always use SYMBOL-NAME, so *PRINT-CASE* does not change the
+result.  Non-symbol tokens (notably numbers) are printed with the current
+printer controls such as *PRINT-BASE*, so for example:
+
+> (let ((*print-base* 8))
+>   (join-symbol-to-all-preceeding :% (list 64 :%)))
+=> '(:100%)"
   (assert (symbolp symbol))
   (assert (listp list))
   (aif (position symbol list)
@@ -559,7 +584,7 @@ the FORMAT builtin function."
       (assert (<= 1 it))
       (let ((previous (nth (1- it) list)))
         (setf (nth (1- it) list)
-              (intern (format nil "~A~A" previous symbol) "KEYWORD"))
+              (join-tokens-to-keyword previous symbol))
         ;; Recursively apply the modification to the entire list.
         (join-symbol-to-all-preceeding symbol (remove symbol list :count 1))))
     ;; Otherwise, we have no instances of the specified symbol in the list.
@@ -583,10 +608,19 @@ the FORMAT builtin function."
                 '(:a :b :c :d :e))
   (should-equal (join-symbol-to-all-preceeding :foo (list :bar :foo :baz :foo))
                 '(:barfoo :bazfoo))
+  ;; GitHub issue #2: *PRINT-CASE* must not change symbol join results.
+  (should-equal
+   (let ((*print-case* :downcase))
+     (join-symbol-to-all-preceeding :foo (list :bar :foo :baz :foo)))
+   '(:barfoo :bazfoo))
   (should-equal
    (let ((*print-case* :downcase))
      (join-symbol-to-all-preceeding :b (list :a :b :c :b)))
-   '(:|ab| :|cb|)))
+   '(:ab :cb))
+  (should-equal
+   (let ((*print-case* :capitalize))
+     (join-symbol-to-all-preceeding :foo (list :bar :foo :baz :foo)))
+   '(:barfoo :bazfoo)))
 
 (defun join-symbol-to-all-following (symbol list)
   "This function takes a symbol and a list, and for every occurance of the
@@ -595,8 +629,9 @@ symbol in the list, it joins it to the item following it.  For example:
 > (join-symbol-to-all-following :# '(:# 10 :# 20 :# 30))
 => '(:#10 :#20 :#30)
 
-The result is affected by all of the *PRINT-...* variables in the same was as
-the FORMAT builtin function."
+Symbol pieces always use SYMBOL-NAME, so *PRINT-CASE* does not change the
+result.  Non-symbol tokens (notably numbers) are printed with the current
+printer controls such as *PRINT-BASE*."
   (assert (symbolp symbol))
   (assert (listp list))
   (aif (position symbol list)
@@ -606,7 +641,7 @@ the FORMAT builtin function."
       (assert (< it (length list)))
       (let ((next (nth (1+ it) list)))
         (setf (nth (1+ it) list)
-              (intern (format nil "~A~A" symbol next) "KEYWORD"))
+              (join-tokens-to-keyword symbol next))
         ;; Recursively apply the modification to the entire list.
         (join-symbol-to-all-following symbol (remove symbol list :count 1))))
     ;; Otherwise, we have no instances of the specified symbol in the list.
@@ -629,7 +664,11 @@ the FORMAT builtin function."
   (should-equal (join-symbol-to-all-following :# (list :a :b :c :d :e))
                 '(:a :b :c :d :e))
   (should-equal (join-symbol-to-all-following :foo (list :foo 'bar :foo :baz))
-                '(:foobar :foobaz)))
+                '(:foobar :foobaz))
+  (should-equal
+   (let ((*print-case* :downcase))
+     (join-symbol-to-all-following :foo (list :foo 'bar :foo :baz)))
+   '(:foobar :foobaz)))
 
 (defun set-equal (list-1 list-2 &key (key #'identity) test test-not)
   "Return true if LIST-1 and LIST-2 contain the same elements when viewed as
