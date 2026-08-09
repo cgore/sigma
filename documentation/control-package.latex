@@ -699,6 +699,40 @@ for \texttt{juxtapose}.
 (funcall (juxtapose #'+ #'*) 2 3 4)     ; Returns (9 24)
 \end{lstlisting}
 
+\lispMacroSubsection{thread-first}
+
+The \texttt{thread-first} macro (Clojure's \texttt{->}) inserts an expression
+as the first argument of a sequence of forms, nesting left-to-right.  That is,
+
+\begin{lstlisting}
+(thread-first x (foo y) (bar z) (baz w))
+\end{lstlisting}
+
+expands to
+
+\begin{lstlisting}
+(baz (bar (foo x y) z) w)
+\end{lstlisting}
+
+instead of writing the nested form by hand.  A non-list form \texttt{f} is
+treated as \texttt{(f)}.  With no forms, the macro expands to the initial
+expression alone.  The name \texttt{->} is a \texttt{macro-alias} for
+\texttt{thread-first}.
+
+\lispSyntax
+
+\texttt{(thread-first \lispVar{x} \&rest \lispVar{forms})}
+
+\texttt{(-> \lispVar{x} \&rest \lispVar{forms})}
+
+\lispExamples
+
+\begin{lstlisting}
+(-> 2 (* 3) (+ 3))              ; Returns 9
+(thread-first 5 1+)             ; Returns 6
+(-> x (foo y) (bar z) (baz w))  ; => (baz (bar (foo x y) z) w)
+\end{lstlisting}
+
 \lispFunctionSubsection{conjoin}
 
 The \texttt{conjoin} function takes in one or more predicates, and returns a

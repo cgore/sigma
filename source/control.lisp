@@ -47,6 +47,7 @@
            :a?when
            :awhile
            :a?while
+           :->
            :alambda
            :a?lambda
            :compose
@@ -78,6 +79,7 @@
            :swap
            :swap-unless
            :swap-when
+           :thread-first
            :unimplemented
            :until
            :while))
@@ -397,6 +399,41 @@ alias for this function."
   (should-equal (funcall (juxtapose #'identity) 'x) '(x))
   (should-equal (funcall (juxtapose)) '()))
 
+(defmacro thread-first (x &rest forms)
+  "Thread-first macro, as in Clojure's ->.
+
+Inserts X as the second element of each of FORMS (the first argument after the
+operator), nesting left-to-right:
+
+  (thread-first x (foo y) (bar z) (baz w))
+  => (baz (bar (foo x y) z) w)
+
+A non-list form F is treated as (F).  With no FORMS, expands to X.
+The macro -> is an alias for THREAD-FIRST."
+  (reduce (lambda (acc form)
+            (let ((form (if (listp form) form (list form))))
+              `(,(first form) ,acc ,@(rest form))))
+          forms
+          :initial-value x))
+
+(behavior 'thread-first
+  (should= 5 (thread-first 5))
+  (should= 6 (thread-first 5 1+))
+  (should= 6 (thread-first 5 (1+)))
+  (should-equal '(a b c)
+                (thread-first 'a (list 'b) (append '(c))))
+  (should= 9
+           (thread-first 2
+             (* 3)
+             (+ 3)))
+  (should-equal '(3 2 1)
+                (thread-first (list 1 2 3)
+                  (reverse)
+                  (copy-list)))
+  ;; Classic expansion shape from the issue.
+  (should-equal (macroexpand-1 '(thread-first x (foo y) (bar z) (baz w)))
+                '(baz (bar (foo x y) z) w)))
+
 (defun conjoin (predicate &rest predicates)
   "This function takes in one or more predicates, and returns a predicate that
 returns true whenever all of the predicates return true.  This is from Paul
@@ -693,6 +730,16 @@ For example, you might do something like:
 (behavior 'juxt
   (should-eq (fdefinition 'juxt) (fdefinition 'juxtapose))
   (should-equal (funcall (juxt #'1+ #'1-) 10) '(11 9)))
+
+(macro-alias thread-first ->)
+
+(behavior '->
+  ;; -> is installed at load time via MACRO-ALIAS, so call sites here must
+  ;; EVAL (they cannot be compiled as ordinary function calls).
+  (should-eq (macro-function '->) (macro-function 'thread-first))
+  (should= 9 (eval '(-> 2 (* 3) (+ 3))))
+  (should-equal (macroexpand-1 '(-> x (foo y) (bar z) (baz w)))
+                '(baz (bar (foo x y) z) w)))
 
 (defmacro multicond (&rest clauses)
   "A macro much like COND, but where multiple clauses may be evaluated."
