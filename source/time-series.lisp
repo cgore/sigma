@@ -40,7 +40,6 @@
         :sigma/sequence)
   (:export :array-raster-line
            :distance
-           :next-point
            :norm
            :raster-line
            :similar-points?

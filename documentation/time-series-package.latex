@@ -86,11 +86,6 @@ the norm of their coordinate-wise difference.  The optional power is as for
 (distance '(0 0) '(3 4)) ; Returns 5.0
 \end{lstlisting}
 
-\lispFunctionSubsection{next-point}
-
-The \texttt{next-point} symbol is exported from the package.  Use
-\texttt{raster-line} to obtain the full discrete path between two points.
-
 \lispFunctionSubsection{norm}
 
 The \texttt{norm} function returns the mathematical vector norm of a sequence.
