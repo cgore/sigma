@@ -315,9 +315,9 @@ Here it should work for any any n-dimensional space where n is non-negative."
 
 (defun norm (sequence &optional (power 2))
   "This function returns the mathematical vector norm of a sequence.  For the
-infinity norm, use :INFINITY for the power."
+infinity norm, use :INFINITY for the power (maximum absolute component)."
   (cond ((equalp power :infinity)
-         (apply #'max sequence))
+         (apply #'max (mapcar #'abs sequence)))
         ((numberp power)
          (expt (sum sequence :key (rcurry #'expt power))
                (/ power)))
@@ -327,6 +327,17 @@ infinity norm, use :INFINITY for the power."
 (defun distance (initial-point final-point &optional (power 2))
   "This calculates the distance between two points."
   (norm (mapcar #'- initial-point final-point) power))
+
+(behavior 'norm
+  (should= 5.0 (norm '(3 4)))
+  (should= 4 (norm '(3 4) :infinity))
+  (should= 0 (norm '(0 0 0)))
+  (should-be-null (norm '(1 2) :unknown)))
+
+(behavior 'distance
+  (should= 5.0 (distance '(0 0) '(3 4)))
+  (should= 0.0 (distance '(1 2) '(1 2)))
+  (should= 4 (distance '(0 0) '(3 4) :infinity)))
 
 
 (defun array-raster-line (array
@@ -344,6 +355,19 @@ infinity norm, use :INFINITY for the power."
                              :coordinate-assertion coordinate-assertion
                              :from-start from-start
                              :from-end from-end)))
+
+(behavior 'array-raster-line
+  (let ((a (make-array '(3 3) :initial-contents
+                       '((1 2 3)
+                         (4 5 6)
+                         (7 8 9)))))
+    ;; Use INTEGERP so index 0 is allowed (default POSITIVE-INTEGER? excludes 0).
+    (should-equal (array-raster-line a '(0 0) '(0 2)
+                                     :coordinate-assertion #'integerp)
+                  '(1 2 3))
+    (should-equal (array-raster-line a '(0 0) '(2 0)
+                                     :coordinate-assertion #'integerp)
+                  '(1 4 7))))
 
 
 (defun tms-raster-line (time-multiseries
