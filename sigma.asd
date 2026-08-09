@@ -110,7 +110,8 @@
                                            "numeric"
                                            "sequence"))
                              (:file "time-series"
-                              :depends-on ("control"
+                              :depends-on ("behave"
+                                           "control"
                                            "numeric"
                                            "sequence"))
                              (:file "truth"

@@ -35,6 +35,7 @@
 
 (defpackage :sigma/time-series
   (:use :common-lisp
+        :sigma/behave
         :sigma/control
         :sigma/numeric
         :sigma/sequence)
@@ -60,6 +61,13 @@ series."
        (not (null time-series))
        (every (rcurry #'typep element-type) time-series)))
 
+(behavior 'time-series?
+  (should-be-true (time-series? '(1.0 2.0 3.0)))
+  (should-be-true (time-series? '(1.0 2.0 3.0) 'float))
+  (should-be-false (time-series? '(1.0 :x 3.0) 'float))
+  (should-be-false (time-series? '()))
+  (should-be-false (time-series? #(1 2 3))))
+
 
 (defun time-multiseries? (time-multiseries)
   "This predicate returns true if the argument is a time multiseries
@@ -72,6 +80,16 @@ dimensions, where each array represents data from a single time step."
          (every #'(lambda (array)
                     (equalp dimensions (array-dimensions array)))
                 time-multiseries))))
+
+(behavior 'time-multiseries?
+  (should-be-true (time-multiseries?
+                   (list (make-array '(2 2) :initial-element 0)
+                         (make-array '(2 2) :initial-element 1))))
+  (should-be-false (time-multiseries?
+                    (list (make-array '(2 2))
+                          (make-array '(3 2)))))
+  (should-be-false (time-multiseries? '(1 2 3)))
+  (should-be-false (time-multiseries? '())))
 
 
 (deftype time-multiseries ()
@@ -91,6 +109,13 @@ A time series is represented as a list."
     (nth time time-multiseries)
     ;; A (multi-dimensional) time multiseries.
     (apply #'aref (nth time time-multiseries) position)))
+
+(behavior 'tmsref
+  (should= 20 (tmsref '(10 20 30) 1))
+  (let ((tms (list (make-array '(2) :initial-contents '(1 2))
+                   (make-array '(2) :initial-contents '(3 4)))))
+    (should= 4 (tmsref tms 1 1))
+    (should= 1 (tmsref tms 0 0))))
 
 
 (defun tms-values (time-multiseries positions)
@@ -119,6 +144,12 @@ in each position is the time position."
               (apply #'tmsref time-multiseries position))
           positions))
 
+(behavior 'tms-values
+  (should-equal (tms-values '(10 20 30) '(0 2))
+                '(10 30))
+  (should-equal (tms-values '(10 20 30) '((1) (0)))
+                '(20 10)))
+
 
 (defun tms-dimensions (time-multiseries)
   "This works like the ARRAY-DIMENSIONS function, but for a time multiseries.
@@ -132,6 +163,13 @@ in each position is the time position."
     ;; A (one-dimensional) time series.
     (list (length time-multiseries))))
 
+(behavior 'tms-dimensions
+  (should-equal (tms-dimensions '(a b c)) '(3))
+  (should-equal (tms-dimensions
+                 (list (make-array '(2 3))
+                       (make-array '(2 3))))
+                '(2 2 3)))
+
 
 (defmacro snap-index (index bound)
   "This wraps the value of index between 0 and bound."
@@ -141,6 +179,17 @@ in each position is the time position."
      (when (>= ,index ,bound)
        (setf ,index (- ,index ,bound)))))
 
+(behavior 'snap-index
+  (let ((i -1))
+    (snap-index i 5)
+    (should= i 4))
+  (let ((i 5))
+    (snap-index i 5)
+    (should= i 0))
+  (let ((i 2))
+    (snap-index i 5)
+    (should= i 2)))
+
 
 (defun similar-points? (p q &optional (coordinate-assertion #'numberp))
   "This predicate determines if the points P and Q are similar."
@@ -149,6 +198,13 @@ in each position is the time position."
        (= (length p) (length q))
        (every coordinate-assertion p)
        (every coordinate-assertion q)))
+
+(behavior 'similar-points?
+  (should-be-true (similar-points? '(1 2) '(3 4)))
+  (should-be-false (similar-points? '(1 2) '(3)))
+  (should-be-false (similar-points? '(1 2) #(3 4)))
+  (should-be-true (similar-points? '(1 2) '(3 4) #'integerp))
+  (should-be-false (similar-points? '(1.0 2) '(3 4) #'integerp)))
 
 
 (defun raster-line (start-point
@@ -243,6 +299,18 @@ Here it should work for any any n-dimensional space where n is non-negative."
     (unless swap-points?
       (opf #'reverse result))
   result))
+
+(behavior 'raster-line
+  (should-equal (raster-line '(0 0) '(0 0)) '(0 0))
+  (should-equal (raster-line '(0 0) '(3 0))
+                '((0 0) (1 0) (2 0) (3 0)))
+  (should-equal (raster-line '(0 0) '(0 2))
+                '((0 0) (0 1) (0 2)))
+  (let ((line (raster-line '(0 0) '(2 2))))
+    (should-equal (first line) '(0 0))
+    (should-equal (the-last line) '(2 2))
+    (should-be-true (every (lambda (p) (similar-points? p '(0 0) #'integerp))
+                           line))))
 
 
 (defun norm (sequence &optional (power 2))
