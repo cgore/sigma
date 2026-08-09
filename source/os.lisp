@@ -1,4 +1,4 @@
-;;;; Copyright (c) 2005 -- 2021, Christopher Mark Gore,
+;;;; Copyright (c) 2005 -- 2026, Christopher Mark Gore,
 ;;;; Soli Deo Gloria,
 ;;;; All rights reserved.
 ;;;;
@@ -57,15 +57,18 @@
 
 
 (defun perl (&rest code)
-  "This is a simple function to easily call Perl code snippets.  It is far
-  from a full interface, instead just a convenient little script runner."
-  (sb-ext:run-program *perl-path*
-                      `("-e" ,(apply #'strcat code))
-                      :output t))
+  "Run a short Perl snippet by invoking the interpreter at *PERL-PATH* with
+-e.  Arguments are concatenated into one string of source.  Uses
+UIOP:RUN-PROGRAM so this works on non-SBCL Common Lisp implementations.
+Standard output and error are inherited.  Returns the same multiple values
+as UIOP:RUN-PROGRAM (output, error-output, exit-code)."
+  (uiop:run-program (list *perl-path* "-e" (apply #'strcat code))
+                    :output t
+                    :error-output t))
 
 (behavior 'perl
   (when (probe-file *perl-path*)
-    (should-be-true (sb-ext:process-p (perl "print 2 + 2;")))))
+    (should= 0 (nth-value 2 (perl "print 2 + 2;")))))
 
 
 (defparameter *python-path* "/usr/bin/python")
@@ -76,11 +79,14 @@
 
 
 (defun python (&rest code)
-  "This is a simple function to easily call Python code snippets.  It is far
-  from a full interface, instead just a convenient little script runner."
-  (sb-ext:run-program *python-path*
-                      `("-c" ,(apply #'strcat code))
-                      :output t))
+  "Run a short Python snippet by invoking the interpreter at *PYTHON-PATH*
+with -c.  Arguments are concatenated into one string of source.  Uses
+UIOP:RUN-PROGRAM so this works on non-SBCL Common Lisp implementations.
+Standard output and error are inherited.  Returns the same multiple values
+as UIOP:RUN-PROGRAM (output, error-output, exit-code)."
+  (uiop:run-program (list *python-path* "-c" (apply #'strcat code))
+                    :output t
+                    :error-output t))
 
 (behavior 'python
   (when (or (probe-file *python-path*)
@@ -88,7 +94,7 @@
     (let ((*python-path* (if (probe-file *python-path*)
                              *python-path*
                              "/usr/bin/python3")))
-      (should-be-true (sb-ext:process-p (python "print(2 + 2)"))))))
+      (should= 0 (nth-value 2 (python "print(2 + 2)"))))))
 
 
 (defun read-file (filename)
@@ -156,12 +162,15 @@
 
 
 (defun ruby (&rest code)
-  "This is a simple function to easily call Ruby code snippets.  It is far
-  from a full interface, instead just a convenient little script runner."
-  (sb-ext:run-program *ruby-path*
-                      `("-e" ,(apply #'strcat code))
-                      :output t))
+  "Run a short Ruby snippet by invoking the interpreter at *RUBY-PATH* with
+-e.  Arguments are concatenated into one string of source.  Uses
+UIOP:RUN-PROGRAM so this works on non-SBCL Common Lisp implementations.
+Standard output and error are inherited.  Returns the same multiple values
+as UIOP:RUN-PROGRAM (output, error-output, exit-code)."
+  (uiop:run-program (list *ruby-path* "-e" (apply #'strcat code))
+                    :output t
+                    :error-output t))
 
 (behavior 'ruby
   (when (probe-file *ruby-path*)
-    (should-be-true (sb-ext:process-p (ruby "puts 2 + 2")))))
+    (should= 0 (nth-value 2 (ruby "puts 2 + 2")))))

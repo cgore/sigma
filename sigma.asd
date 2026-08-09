@@ -45,7 +45,7 @@
 
 (defparameter version-major 3)
 (defparameter version-minor 9)
-(defparameter version-revision 5)
+(defparameter version-revision 6)
 
 (defun version-list ()
   (list version-major version-minor version-revision))
@@ -63,6 +63,7 @@
   :homepage "https://github.com/cgore/sigma"
   :source-control (:git "https://github.com/cgore/sigma.git")
   :bug-tracker "https://github.com/cgore/sigma/issues"
+  :depends-on ("uiop")
 
   ;; Specs live in the sources as BEHAVIOR/SHOULD forms and run at load time.
   ;; TEST-OP reloads every source file so those top-level assertions run again.

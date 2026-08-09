@@ -36,8 +36,8 @@
 
 The \texttt{sigma/os} package provides a few helpers for talking to the
 operating system: reading files and running short scripts in other languages.
-The script runners use \textsc{Sbcl}'s \texttt{sb-ext:run-program} and are
-convenience wrappers, not full foreign interfaces.
+The script runners use portable \texttt{uiop:run-program} (from ASDF's UIOP)
+and are convenience wrappers, not full foreign interfaces.
 
 \section{Functions}
 
@@ -45,8 +45,8 @@ convenience wrappers, not full foreign interfaces.
 
 The \texttt{perl} function runs a short Perl snippet by invoking the interpreter
 at \texttt{*perl-path*} with \texttt{-e}.  The arguments are concatenated into a
-single string of source before they are passed to Perl.  Standard output is
-inherited from Lisp.
+single string of source before they are passed to Perl.  Standard output and
+error are inherited from Lisp.  Implementation is via \texttt{uiop:run-program}.
 
 \lispSyntax
 
@@ -63,7 +63,8 @@ inherited from Lisp.
 The \texttt{python} function runs a short Python snippet by invoking the
 interpreter at \texttt{*python-path*} with \texttt{-c}.  The arguments are
 concatenated into a single string of source before they are passed to Python.
-Standard output is inherited from Lisp.
+Standard output and error are inherited from Lisp.  Implementation is via
+\texttt{uiop:run-program}.
 
 \lispSyntax
 
@@ -117,8 +118,8 @@ A list of strings, one per line.
 
 The \texttt{ruby} function runs a short Ruby snippet by invoking the interpreter
 at \texttt{*ruby-path*} with \texttt{-e}.  The arguments are concatenated into a
-single string of source before they are passed to Ruby.  Standard output is
-inherited from Lisp.
+single string of source before they are passed to Ruby.  Standard output and
+error are inherited from Lisp.  Implementation is via \texttt{uiop:run-program}.
 
 \lispSyntax
 
