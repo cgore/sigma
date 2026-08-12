@@ -37,6 +37,7 @@
     :common-lisp
     #+cmu :extensions
     #+sbcl :sb-ext
+    :sigma/arrows
     :sigma/behave
     :sigma/control
     :sigma/hash
@@ -54,7 +55,8 @@
 (in-package :sigma)
 
 (defvar *sigma-packages*
-  '(:sigma/behave
+  '(:sigma/arrows
+    :sigma/behave
     :sigma/control
     :sigma/hash
     :sigma/numeric

@@ -44,7 +44,7 @@
 (in-package :sigma/system)
 
 (defparameter version-major 3)
-(defparameter version-minor 14)
+(defparameter version-minor 15)
 (defparameter version-revision 0)
 
 (defun version-list ()
@@ -80,7 +80,10 @@
                       (reload system)))
 
   :components ((:module "source"
-                :components ((:file "behave")
+                :components ((:file "arrows"
+                              :depends-on ("behave"
+                                           "control"))
+                             (:file "behave")
                              (:file "control"
                               :depends-on ("behave"))
                              (:file "hash"
@@ -119,7 +122,8 @@
                               :depends-on ("behave"
                                            "control"))
                              (:file "sigma"
-                              :depends-on ("behave"
+                              :depends-on ("arrows"
+                                           "behave"
                                            "control"
                                            "hash"
                                            "numeric"

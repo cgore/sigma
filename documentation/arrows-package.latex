@@ -1,0 +1,83 @@
+%%%% Copyright (C) 2005 -- 2026, Christopher Mark Gore,
+%%%% Soli Deo Gloria,
+%%%% All rights reserved.
+
+\lispPackageChapter{sigma/arrows}
+
+The \texttt{sigma/arrows} package provides threading / arrow macros, including
+a Common Lisp port of
+\href{https://github.com/rplevy/swiss-arrows}{swiss-arrows} by Robert P.\ Levy
+et al.  English names (\texttt{thread-diamond-first},
+\texttt{thread-branch-last}, \ldots) are primary; swiss-arrows-style symbols
+(\texttt{-<>}, \texttt{-<}, \ldots) are aliases via \texttt{macro-alias},
+matching \texttt{sigma/control}'s \texttt{thread-first} / \texttt{->} pattern.
+Traditional \texttt{thread-first} (\texttt{->}) and \texttt{thread-last}
+(\texttt{->>}) come from \texttt{sigma/control}.
+
+\section{Diamond arrows}
+
+\lispMacroSubsection{thread-diamond-first}
+
+Threads a value through forms, replacing a top-level \texttt{<>} hole when
+present; otherwise inserts like \texttt{thread-first}.  Vectors are supported.
+Alias: \texttt{-<>} (swiss-arrows diamond wand).
+
+\begin{lstlisting}
+(thread-diamond-first 0 (* <> 5) (vector 1 2 <> 3 4))  ; => #(1 2 0 3 4)
+(thread-diamond-first 4 (cons '(1 2 3)))               ; => (4 1 2 3)
+\end{lstlisting}
+
+\lispMacroSubsection{thread-diamond-last}
+
+Same as \texttt{thread-diamond-first} but default insertion is last
+(thread-last style).  Alias: \texttt{-<>>} (swiss-arrows diamond spear).
+
+\begin{lstlisting}
+(thread-diamond-last 0 (list 1 2 3))  ; => (1 2 3 0)
+\end{lstlisting}
+
+\lispMacroSubsection{thread-some-diamond-first / thread-some-diamond-last}
+
+Nil-shortcutting variants of the diamond macros.  Aliases:
+\texttt{some-<>}, \texttt{some-<>>}.
+
+\section{Other arrows}
+
+\lispMacroSubsection{thread-last-reverse}
+
+Like \texttt{thread-last} / \texttt{->>}, but forms are written in reverse
+order (last form is the seed).  Alias: \texttt{<<-} (swiss-arrows back arrow).
+
+\lispMacroSubsection{thread-do-first / thread-do-last /
+thread-do-diamond-first / thread-do-diamond-last}
+
+Non-updating arrows: run a threading pipeline for side effects, return the
+original value.  Aliases: \texttt{-!>}, \texttt{-!>>}, \texttt{-!<>},
+\texttt{-!<>>}.
+
+\lispMacroSubsection{thread-apply-first / thread-apply-last}
+
+Applicative arrows: wrap each step in \texttt{apply}.  Aliases:
+\texttt{apply->}, \texttt{apply->>}.
+
+\lispMacroSubsection{thread-branch-first / thread-branch-last /
+thread-branch-diamond-first / thread-branch-diamond-last}
+
+Branching (furculae): evaluate one expression, then thread it into several
+branches with \texttt{thread-first}, \texttt{thread-last},
+\texttt{thread-diamond-first}, or \texttt{thread-diamond-last}.  Return a list
+of branch results.  Parallel variants:
+\texttt{thread-branch-first-parallel}, \texttt{thread-branch-last-parallel},
+\texttt{thread-branch-diamond-first-parallel},
+\texttt{thread-branch-diamond-last-parallel}.
+
+Symbolic aliases: \texttt{-<}, \texttt{-<<}, \texttt{-<><}, \texttt{-<>><},
+and parallels \texttt{-<-p}, \texttt{-<<-p}, \texttt{-<><-p},
+\texttt{-<>><-p} (swiss-arrows uses \texttt{-<:p} etc.; Common Lisp avoids
+\texttt{:} inside names).  Parallel forms run branches concurrently when
+threads are available (SBCL), otherwise sequentially.
+
+\begin{lstlisting}
+(thread-branch-first (+ 1 2) (list 2) (list 3) (list 4))
+; => ((3 2) (3 3) (3 4))
+\end{lstlisting}
